@@ -59,12 +59,12 @@ public class Bloop_Autonomous extends LinearOpMode {
 
         IMU = hardwareMap.get(BNO055IMU.class, "imu");
 
-        //sensor = hardwareMap.get()
+        //sensor = hardwareMap.get()"Hub2_motor0");
+        //        frontRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor0");
+        //        backLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor2");
+        //        backRightDrive  = hardwareMap.get(DcMotor.class,
 
-        frontLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor0");
-        frontRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor0");
-        backLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor2");
-        backRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor2");
+        frontLeftDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor2");
 
         forearm = hardwareMap.get(DcMotor.class, "Hub2_motor1");
         rotation = hardwareMap.get(DcMotor.class, "Hub1_motor1");
