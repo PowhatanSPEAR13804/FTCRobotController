@@ -14,7 +14,7 @@ public class teleop extends LinearOpMode {
         backLeftMotor = hardwareMap.dcMotor.get("Hub1_Motor2");
         backRightMotor = hardwareMap.dcMotor.get("Hub1_Motor3");
 
-        //declare gamepad axis variables
+        //declare gamepad axes variables
         double x, y, rx;
 
     }
