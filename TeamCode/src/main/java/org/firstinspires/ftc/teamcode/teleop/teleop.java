@@ -9,10 +9,10 @@ public class teleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //declare and set motor variables
         DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
-        frontLeftMotor = hardwareMap.get(DcMotor.class,"Hub1_Motor0");
-        frontRightMotor = hardwareMap.dcMotor.get("Hub1_Motor1");
-        backLeftMotor = hardwareMap.dcMotor.get("Hub1_Motor2");
-        backRightMotor = hardwareMap.dcMotor.get("Hub1_Motor3");
+        frontLeftMotor = hardwareMap.get(DcMotor.class,"Hub1_Motor1");
+        frontRightMotor = hardwareMap.dcMotor.get("Hub1_Motor0");
+        backLeftMotor = hardwareMap.dcMotor.get("Hub1_Motor3");
+        backRightMotor = hardwareMap.dcMotor.get("Hub1_Motor2");
 
         //declare gamepad axes variables
         double x, y, rx;
