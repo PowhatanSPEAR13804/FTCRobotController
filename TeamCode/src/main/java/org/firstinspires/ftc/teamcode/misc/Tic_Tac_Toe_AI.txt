@@ -1,10 +1,10 @@
 
 package org.firstinspires.ftc.teamcode.misc;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+// com.qualcomm.robotcore.hardware.DcMotor;
 
 /*
     TEST
@@ -12,12 +12,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 
-@Disabled
-@Autonomous(name="Tic_Tac_Toe_AI", group="Robot")
+//@Disabled
+//@Autonomous(name="Tic_Tac_Toe_AI", group="Robot")
 
-public class Tic_Tac_Toe_AI extends LinearOpMode
-{
-
+public class Tic_Tac_Toe_AI/* extends LinearOpMode */ { }
+/*
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -52,13 +51,14 @@ public class Tic_Tac_Toe_AI extends LinearOpMode
     int[] d1 = {0, 4, 8};
     int[] d2 = {2, 4, 6};
     */
-
+    /*
     //list of values for each space
     int[] boardValues = {0, 0, 0,
             0, 0, 0,
             0, 0, 0};
 
     //0-8 for each space on the board with top left being 0 and bottom right being 8
+    /*
     int bestMove = 0;
 
     int newPlayerPosition = 0;
@@ -332,4 +332,4 @@ public class Tic_Tac_Toe_AI extends LinearOpMode
     }
 
 }
- // : \ Fredricka - Fredricks girlfrie- sister.........              both?
+ // : \ Fredricka - Fredricks girlfrie- sister.........              both? */

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 //@Disabled
 
 @TeleOp
-public class powhatanSPEARTeleop extends LinearOpMode {
+public class SPEARTeleop2023_24 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -21,10 +20,10 @@ public class powhatanSPEARTeleop extends LinearOpMode {
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
-        motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
         waitForStart();
 
@@ -48,6 +47,7 @@ public class powhatanSPEARTeleop extends LinearOpMode {
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
+
         }
     }
 }
