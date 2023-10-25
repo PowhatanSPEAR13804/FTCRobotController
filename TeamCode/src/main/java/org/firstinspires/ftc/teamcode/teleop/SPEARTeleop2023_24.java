@@ -20,9 +20,17 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub1_Motor0");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub1_Motor3");
 
+
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
 
         CRServo throughput = (CRServo) hardwareMap.servo.get("Hub2_Servo0");
+
+        DcMotor viper = hardwareMap.dcMotor.get("Hub1_Motor1");
+
+        CRServo intakeLeft = (CRServo) hardwareMap.servo.get("Hub1_Servo0");
+        CRServo intakeRight = (CRServo) hardwareMap.servo.get("Hub1_Servo1");
+        // Work in progress CRServo output = (CRServo) hardwareMap.servo.get("Hub1_Servo3");
+
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -54,11 +62,13 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
-            double power = 0;
+            double fourBarPower = 0;
             if (gamepad1.dpad_up || gamepad2.dpad_up)
-                fourBar.setPower(Math.min(1,(power += 0.001)));
+                fourBar.setPower(Math.min(1,(fourBarPower += 0.001)));
             if(gamepad1.dpad_down||gamepad2.dpad_down)
-                fourBar.setPower(Math.max(0, (power -=0.001)));
+                fourBar.setPower(Math.max(0, (fourBarPower -=0.001)));
+
+
 
             boolean forward = false;
             //throughput forward (into the robot)
@@ -81,10 +91,30 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
                 backward = false;
                 throughput.setPower(0);
 
-
             }
 
+            double viperPower = 0;
+            if (gamepad1.left_trigger>0)
+                viper.setPower(Math.min(1,(viperPower += 0.001)));
+            if(gamepad1.right_trigger>0)
+                viper.setPower(Math.max(0, (viperPower -=0.001)));
+
+
+
+
             telemetry.addData("I see" ,gamepad2.dpad_up);
+
+
+            if(gamepad1.x)
+            {
+                intakeLeft.setPower(1);
+                intakeRight.setPower(1);
+            }
+            else{
+                intakeLeft.setPower(0);
+                intakeRight.setPower(0);
+            }
+
 
 
         }
