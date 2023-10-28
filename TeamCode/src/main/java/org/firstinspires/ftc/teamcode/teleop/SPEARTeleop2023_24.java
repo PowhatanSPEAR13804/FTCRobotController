@@ -66,7 +66,7 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
             if (gamepad1.dpad_up || gamepad2.dpad_up)
                 fourBar.setPower(Math.min(1,(fourBarPower += 0.001)));
             if(gamepad1.dpad_down||gamepad2.dpad_down)
-                fourBar.setPower(Math.max(0, (fourBarPower -=0.001)));
+                fourBar.setPower(Math.max(0, (fourBarPower -= 0.001)));
 
 
 
@@ -97,7 +97,7 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
             if (gamepad1.left_trigger>0)
                 viper.setPower(Math.min(1,(viperPower += 0.001)));
             if(gamepad1.right_trigger>0)
-                viper.setPower(Math.max(0, (viperPower -=0.001)));
+                viper.setPower(Math.max(0, (viperPower -= 0.001)));
 
 
 
