@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 //@Disabled
 
+//safety :)
+
 @TeleOp
 public class SPEARTeleop2023_24 extends LinearOpMode {
     @Override
