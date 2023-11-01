@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 //@Disabled
 
@@ -16,20 +17,21 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub2_Motor3");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub2_Motor0");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub1_Motor0");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub1_Motor3");
+        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+        DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+        DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+        DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
 
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
 
-        CRServo throughput = (CRServo) hardwareMap.servo.get("Hub1_Servo4");
-
+        Servo throughput = /*(CRServo)*/ hardwareMap.servo.get("Hub1_Servo4");
         DcMotor viper = hardwareMap.dcMotor.get("Hub1_Motor1");
 
-        CRServo intakeLeft = (CRServo) hardwareMap.servo.get("Hub1_Servo0");
-        CRServo intakeRight = (CRServo) hardwareMap.servo.get("Hub1_Servo1");
+        Servo intakeLeft = hardwareMap.servo.get("Hub1_Servo0");
+        Servo intakeRight = hardwareMap.servo.get("Hub1_Servo1");
         // Work in progress CRServo output = (CRServo) hardwareMap.servo.get("Hub1_Servo3");
+
+        Servo droneLaunch = hardwareMap.servo.get("Hub2_Servo0");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -37,6 +39,14 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        double fourBarPower = 0;
+
+        double throughputPower = 0.5;
+        boolean forward = false;
+        boolean backward = false;
+
+        double viperPower = 0;
 
         waitForStart();
 
@@ -62,43 +72,55 @@ public class SPEARTeleop2023_24 extends LinearOpMode {
             motorBackRight.setPower(backRightPower);
 
             //four bar
-            double fourBarPower = 0;
-            if (gamepad1.dpad_up || gamepad2.dpad_up)
-                fourBar.setPower(Math.min(1,(fourBarPower += 0.001)));
+            if(gamepad1.dpad_up || gamepad2.dpad_up)
+                fourBarPower = Math.min(1, fourBarPower + 0.001);
             if(gamepad1.dpad_down||gamepad2.dpad_down)
-                fourBar.setPower(Math.max(0, (fourBarPower -= 0.001)));
+                fourBarPower = Math.max(1, fourBarPower - 0.001);
+            fourBar.setPower(fourBarPower);
 
             //throughput
-            double tpPower = 0;
-            boolean on = false;
-            if(gamepad2.dpad_left && !on)
-                on = true;
-            if(on)
-                tpPower = Math.min(1, tpPower += 0.02);
-            if(gamepad2.dpad_right && on)
-                on = false;
-            if(!on)
-                tpPower = Math.max(0, tpPower -= 0.02);
-            throughput.setPower(tpPower);
+            if(gamepad2.dpad_right && !forward)
+                forward = true;
+            if(gamepad2.dpad_right && forward && !backward)
+                forward = false;
+            if(gamepad2.dpad_left && !backward)
+                backward = true;
+            if(gamepad2.dpad_left && backward && !forward)
+                backward = false;
+
+            if(forward)
+                throughputPower = 1;
+            if(backward)
+                throughputPower = 0;
+            if(!forward && !backward)
+                throughputPower = 0.5;
+            throughput.setPosition(throughputPower);
 
             //viper slide
-            double viperPower = 0;
-            if (gamepad1.left_trigger>0)
-                viper.setPower(Math.min(1,(viperPower += 0.001)));
+            if(gamepad1.left_trigger>0)
+                viperPower = Math.min(1, viperPower + 0.001);
             if(gamepad1.right_trigger>0)
-                viper.setPower(Math.max(0, (viperPower -= 0.001)));
+                viperPower = Math.max(1, viperPower - 0.001);
+            viper.setPower(viperPower);
 
-            telemetry.addData("I see" ,gamepad2.dpad_up);
+            //telemetry.addData("I see" ,gamepad2.dpad_up);
 
             //intake
             if(gamepad1.x)
             {
-                intakeLeft.setPower(1);
-                intakeRight.setPower(1);
+                intakeLeft.setPosition(1);
+                intakeRight.setPosition(1);
             }
             else{
-                intakeLeft.setPower(0);
-                intakeRight.setPower(0);
+                intakeLeft.setPosition(0.5);
+                intakeRight.setPosition(0.5);
+            }
+
+            //droneLaunch
+            if(gamepad1.a || gamepad2.a){
+                droneLaunch.setPosition(1);
+                Thread.sleep(1000);
+                droneLaunch.setPosition(-1);
             }
 
         }
