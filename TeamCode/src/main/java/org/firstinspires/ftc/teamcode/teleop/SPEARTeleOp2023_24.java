@@ -27,17 +27,17 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
         DcMotor viper = hardwareMap.dcMotor.get("Hub1_Motor1");
 
         Servo intakeLeft = hardwareMap.servo.get("Hub1_Servo0");
-        Servo intakeRight = hardwareMap.servo.get("Hub1_Servo1");
+        Servo intakeRight = hardwareMap.servo.get("Hub1_Servo2");
         // Work in progress CRServo output = (CRServo) hardwareMap.servo.get("Hub1_Servo3");
 
-        Servo droneLaunch = hardwareMap.servo.get("Hub2_Servo0");
+        //Servo droneLaunch = hardwareMap.servo.get("Hub2_Servo0");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
-        motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         double fourBarPower = 0;
 
@@ -105,21 +105,23 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
             //telemetry.addData("I see" ,gamepad2.dpad_up);
 
             //intake
+            double intakePosition = 0.5;
             if (gamepad1.x) {
-                intakeLeft.setPosition(1);
-                intakeRight.setPosition(1);
+                intakePosition = 1;
             }
-            else {
-                intakeLeft.setPosition(0.5);
-                intakeRight.setPosition(0.5);
+            if (gamepad1.y){
+                intakePosition = 0;
             }
+            intakeLeft.setPosition(intakePosition);
+            intakeRight.setPosition(intakePosition);
 
             //droneLaunch
+            /*
             if (gamepad1.a || gamepad2.a) {
                 droneLaunch.setPosition(1);
                 Thread.sleep(1000);
                 droneLaunch.setPosition(-1);
-            }
+            }*/
         }
     }
 }
