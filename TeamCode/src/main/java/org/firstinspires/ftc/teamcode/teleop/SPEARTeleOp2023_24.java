@@ -24,10 +24,10 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
 
         Servo throughput = /*(CRServo)*/ hardwareMap.servo.get("Hub1_Servo4");
-        DcMotor viper = hardwareMap.dcMotor.get("Hub1_Motor1");
+        DcMotor viper = /*(CRServo)*/ hardwareMap.dcMotor.get("Hub1_Motor1");
 
-        Servo intakeLeft = hardwareMap.servo.get("Hub1_Servo0");
-        Servo intakeRight = hardwareMap.servo.get("Hub1_Servo2");
+        Servo intakeLeft = /*(CRServo)*/ hardwareMap.servo.get("Hub1_Servo0");
+        Servo intakeRight = /*(CRServo)*/ hardwareMap.servo.get("Hub1_Servo2");
         // Work in progress CRServo output = (CRServo) hardwareMap.servo.get("Hub1_Servo3");
 
         //Servo droneLaunch = hardwareMap.servo.get("Hub2_Servo0");
