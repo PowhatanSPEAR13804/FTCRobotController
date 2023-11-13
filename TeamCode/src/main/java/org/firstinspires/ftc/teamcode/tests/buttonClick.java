@@ -12,7 +12,7 @@ public class buttonClick {
         pressTime = 1;
     }
 
-    public void sample(boolean buttonState) {
+    public void checkButton(boolean buttonState) {
         if(buttonState && !pressed) {
             pressed = true;
             startTime = System.currentTimeMillis();

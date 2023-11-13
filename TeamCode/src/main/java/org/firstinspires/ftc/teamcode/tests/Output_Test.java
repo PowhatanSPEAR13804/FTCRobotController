@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //@Disabled
@@ -14,36 +13,34 @@ public class Output_Test extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
-        DcMotor motorFL = hardwareMap.dcMotor.get("H2M0");
-        DcMotor motorBL = hardwareMap.dcMotor.get("H2M1");
-        DcMotor motorFR = hardwareMap.dcMotor.get("H2M2");
+        //motors
+        DcMotor motorFR = hardwareMap.dcMotor.get("H2M0");
+        DcMotor motorFL = hardwareMap.dcMotor.get("H1M3");
         DcMotor motorBR = hardwareMap.dcMotor.get("H2M3");
-        DcMotor motorFB = hardwareMap.dcMotor.get("H2M2");
-        DcMotor motorV = hardwareMap.dcMotor.get("H2M1");
-        DcMotor motorH = hardwareMap.dcMotor.get("H2M0");
+        DcMotor motorBL = hardwareMap.dcMotor.get("H1M0");
+        DcMotor motorFourBar = hardwareMap.dcMotor.get("H2M2");
+        DcMotor motorV = hardwareMap.dcMotor.get("H1M1");
+        DcMotor motorH = hardwareMap.dcMotor.get("H2M1");
 
-        //motorFL.setDirection(DcMotorSimple.Direction.FORWARD);
-        //motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
-        //motorFR.setDirection(DcMotorSimple.Direction.FORWARD);
-        //motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        //continuous servos
+        Servo servoIntakeLeft = hardwareMap.servo.get("H1S0");
+        Servo servoIntakeRight =  hardwareMap.servo.get("H2S0");
+        Servo servoThroughput =  hardwareMap.servo.get("H2S4");
 
-        //continuous servo
-        Servo throughput =  hardwareMap.servo.get("H2S0");
-        Servo intakeLeft = hardwareMap.servo.get("H2S0");
-        Servo intakeRight =  hardwareMap.servo.get("H2S1");
+        //position servos
+        Servo servoLaunch =  hardwareMap.servo.get("H2S3");
+        Servo servoOutput =  hardwareMap.servo.get("H2S5");
+        Servo servoHanging =  hardwareMap.servo.get("H2S2");
 
-        Servo launch =  hardwareMap.servo.get("H2S3");
-        Servo outputS =  hardwareMap.servo.get("H2S0");
-        Servo outputL =  hardwareMap.servo.get("H2S1");
-
-        //position servo
-        Servo hangingS =  hardwareMap.servo.get("H2S0");
+        //linear servo
+        Servo linearServoOutput = hardwareMap.servo.get("H1S4");
 
 
         final int minTest = 0;
-        final int maxTest = 11;
+        final int maxTest = 14;
         int test = 0;
 
+        //create a button click object that will check the button state
         buttonClick b = new buttonClick();
         buttonClick a = new buttonClick();
 
@@ -53,14 +50,14 @@ public class Output_Test extends LinearOpMode{
 
         while (opModeIsActive()){
 
-            b.sample(gamepad1.b);
+            b.checkButton(gamepad1.b);
 
             if(b.getClickCount() > 0) {
                 test--;
                 b.resetClickCount();
             }
 
-            a.sample(gamepad1.a);
+            a.checkButton(gamepad1.a);
 
             if(a.getClickCount() > 0) {
                 test++;
@@ -77,23 +74,23 @@ public class Output_Test extends LinearOpMode{
             switch (test) {
                 case 0:
                     telemetry.addLine("testing front left motor.");
-                    testMotor(motorFL);
+                    testMotor(motorFR);
                     break;
                 case 1:
                     telemetry.addLine("testing back left motor.");
-                    testMotor(motorBL);
+                    testMotor(motorFL);
                     break;
                 case 2:
                     telemetry.addLine("testing front right motor.");
-                    testMotor(motorFR);
+                    testMotor(motorBR);
                     break;
                 case 3:
                     telemetry.addLine("testing back right motor.");
-                    testMotor(motorBR);
+                    testMotor(motorBL);
                     break;
                 case 4:
                     telemetry.addLine("testing four Bar motor.");
-                    testMotor(motorFB);
+                    testMotor(motorFourBar);
                     break;
                 case 5:
                     telemetry.addLine("testing viper motor.");
@@ -104,19 +101,32 @@ public class Output_Test extends LinearOpMode{
                     testMotor(motorH);
                     break;
                 case 7:
-                    telemetry.addLine("test: " + test);
+                    telemetry.addLine("testing left intake servo.");
+                    continuousTest(servoIntakeLeft);
                     break;
                 case 8:
-                    telemetry.addLine("test: " + test);
+                    telemetry.addLine("testing right intake servo.");
+                    continuousTest(servoIntakeRight);
                     break;
                 case 9:
-                    telemetry.addLine("test: " + test);
+                    telemetry.addLine("testing throughput servo.");
+                    continuousTest(servoThroughput);
                     break;
                 case 10:
-                    telemetry.addLine("test: " + test);
+                    telemetry.addLine("testing the drone launch servo.");
+                    positionalTest(servoLaunch);
                     break;
                 case 11:
-                    telemetry.addLine("test: " + test);
+                    telemetry.addLine("testing the output servo");
+                    positionalTest(servoOutput);
+                    break;
+                case 12:
+                    telemetry.addLine("testing the hanging servo");
+                    positionalTest(servoHanging);
+                    break;
+                case 13:
+                    telemetry.addLine("testing the output linear servo.");
+                    linearServoTest(linearServoOutput);
                     break;
                 default:
                     telemetry.addLine("test unknown");
@@ -127,6 +137,30 @@ public class Output_Test extends LinearOpMode{
     }
 
     public void testMotor(DcMotor motor) {
+        //set motor power to a value that is from -1 to 1 depending on the trigger positions
         motor.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+    }
+
+    public void continuousTest(Servo servo) {
+        //get the combined values of the triggers (-1 to 1)
+        double triggerValue = gamepad1.right_trigger - gamepad1.left_trigger;
+        //turn that value into a double with the range 0 to 1 with 0.5 being nothing pressed
+        double position = (triggerValue + 1)/2;
+        //continuous servos will go backwards if position is below 0.5, forwards if position is above 0.5, and stop if position is 0.5
+        servo.setPosition(position);
+    }
+
+    public void positionalTest(Servo servo) {
+        double position = 90;
+        if (gamepad1.left_trigger > 0.5) {
+            position = 180;
+        } else if (gamepad1.right_trigger > 0.5) {
+            position = 0;
+        }
+        servo.setPosition(position);
+    }
+
+    public void linearServoTest(Servo servo) {
+        servo.setPosition(gamepad1.left_trigger);
     }
 }
