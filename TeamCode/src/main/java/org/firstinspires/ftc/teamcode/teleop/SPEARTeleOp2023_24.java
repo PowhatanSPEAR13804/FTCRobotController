@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //@Disabled
-
 //safety :)
 
 @TeleOp
@@ -84,21 +83,20 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
 
             //need to make throughput and intake inputs more reliable
             //throughput
-            if(gamepad1.dpad_right && !forward && !backward && !gamepadLeftPressedLastTime){
+            if (gamepad1.dpad_right && !forward && !backward && !gamepadLeftPressedLastTime) {
                 forward = true;
-            }else if(gamepad1.dpad_right && forward){
+            } else if (gamepad1.dpad_right && forward) {
                 forward = false;
             }
-            if(gamepad1.dpad_left && !backward && !forward && !gamepadRightPressedLastTime){
+            if (gamepad1.dpad_left && !backward && !forward && !gamepadRightPressedLastTime) {
                 backward = true;
-            }else if(gamepad1.dpad_left && backward){
+            } else if (gamepad1.dpad_left && backward) {
                 backward = false;
             }
 
-
-
             gamepadLeftPressedLastTime = gamepad1.dpad_left;
             gamepadRightPressedLastTime = gamepad1.dpad_right;
+
 
             if (forward)
                 throughputPosition = 1;
@@ -108,47 +106,43 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
                 throughputPosition = 0.5;
             throughput.setPosition(throughputPosition);
 
-            telemetry.addLine("\nThroughput position: "+throughputPosition);
+            telemetry.addLine("\nThroughput position: " + throughputPosition);
 
 
             //intake
-            if (gamepad1.x && intakePosition == 0.5){
+            if (gamepad1.x && intakePosition == 0.5) {
                 intakePosition = 1;
-            }else if(gamepad1.x && intakePosition != 0.5){
+            } else if (gamepad1.x && intakePosition != 0.5) {
                 intakePosition = 0.5;
             }
-            if (gamepad1.b && intakePosition == 0.5){
+            if (gamepad1.b && intakePosition == 0.5) {
                 intakePosition = 0;
-            }else if(gamepad1.b && intakePosition != 0.5){
+            } else if (gamepad1.b && intakePosition != 0.5) {
                 intakePosition = 0.5;
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
 
+            telemetry.addLine("\nIntake position: " + intakePosition);
 
 
-            telemetry.addLine("\nIntake position: "+intakePosition);
-
-
-
-            if (gamepad1.dpad_up || gamepad2.dpad_up)
+            if (gamepad1.dpad_up || gamepad2.dpad_up) {
                 fourBarPower = Math.min(1, fourBarPower + 0.001);
-            else if (gamepad1.dpad_down||gamepad2.dpad_down)
+            } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
                 fourBarPower = Math.max(-1, fourBarPower - 0.001);
-            else{
+            } else {
                 fourBarPower = 0;
             }
             fourBar.setPower(fourBarPower);
 
-            telemetry.addLine("\nFour Bar Power: "+fourBarPower);
+            telemetry.addLine("\nFour Bar Power: " + fourBarPower);
 
 
-
-            if (gamepad1.left_trigger > 0)
+            if (gamepad1.left_trigger > 0) {
                 viperPower = Math.min(1, viperPower + 0.001);
-            else if (gamepad1.right_trigger > 0)
+            } else if (gamepad1.right_trigger > 0) {
                 viperPower = Math.max(-1, viperPower - 0.001);
-            else{
+            } else {
                 viperPower = 0;
             }
             viper.setPower(viperPower);
@@ -156,10 +150,9 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
             telemetry.addLine("\nViper Power: "+viperPower);
 
 
-
-            if (gamepad1.y)
-                launchPosition =1;
-            else{
+            if (gamepad1.y) {
+                launchPosition = 1;
+            } else {
                 launchPosition = 0.5;
             }
             launch.setPosition(launchPosition);
@@ -167,11 +160,10 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
             telemetry.addLine("\nlaunch Position: "+launchPosition);
 
 
-
-            if(gamepad1.left_bumper){
+            if (gamepad1.left_bumper) {
                 outputL.setPosition(1);
             }
-            if(gamepad1.right_bumper&&!outputDropIsTrigger){
+            if (gamepad1.right_bumper && !outputDropIsTrigger) {
                 outputDropIsTrigger = true;
                 outputS.setPosition(1);
                 Thread.sleep(5000);
@@ -183,18 +175,15 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
             }
 
 
-
             hangingS.setPosition(gamepad1.left_stick_y+0.5);
 
-            if(gamepad1.a){
+
+            if (gamepad1.a) {
                 hangingM.setPower(1);
-            }
-            else{
+            } else {
                 hangingM.setPower(0);
             }
             telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
-
-
 
 
             telemetry.update();
