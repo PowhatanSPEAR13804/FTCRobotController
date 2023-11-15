@@ -27,54 +27,46 @@ public class Controller_Test extends LinearOpMode {
         while (opModeIsActive()) {
 
             telemetry.addLine("Press mode button to swap dpad and left stick directional inputs, and up on a stick is negative.");
-            telemetry.addLine();
             sDpad = String.format(Locale.US, "dpad: up(%d), down(%d), left(%d), right(%d)",
                     gamepad1.dpad_up ? 1 : 0,
                     gamepad1.dpad_down ? 1 : 0,
                     gamepad1.dpad_left ? 1 : 0,
                     gamepad1.dpad_right ? 1 : 0);
-            telemetry.addLine(sDpad);
+            telemetry.addLine("\n"+sDpad);
 
-            telemetry.addLine();
             sLeftStick = String.format(Locale.US, "left stick: button(%d), xAxis(%.1f), yAxis(%.1f)",
                     gamepad1.left_stick_button ? 1 : 0,
                     gamepad1.left_stick_x,
                     gamepad1.left_stick_y);
-            telemetry.addLine(sLeftStick);
+            telemetry.addLine("\n"+sLeftStick);
 
-            telemetry.addLine();
             sRightStick = String.format(Locale.US, "right stick: button(%d), xAxis(%.1f), yAxis(%.1f)",
                     gamepad1.right_stick_button ? 1 : 0,
                     gamepad1.right_stick_x,
                     gamepad1.right_stick_y);
-            telemetry.addLine(sRightStick);
+            telemetry.addLine("\n"+sRightStick);
 
-            telemetry.addLine();
             sFaceButtons = String.format(Locale.US, "face buttons: a(%d), b(%d), x(%d), y(%d)",
                     gamepad1.a ? 1 : 0,
                     gamepad1.b ? 1 : 0,
                     gamepad1.x ? 1 : 0,
                     gamepad1.y ? 1 : 0);
-            telemetry.addLine(sFaceButtons);
+            telemetry.addLine("\n"+sFaceButtons);
 
-            telemetry.addLine();
             sSB = String.format(Locale.US, "start(%d), back(%d)",
                     gamepad1.start ? 1 : 0,
                     gamepad1.back ? 1 : 0);
-            telemetry.addLine(sSB);
+            telemetry.addLine("\n"+sSB);
 
-            telemetry.addLine();
             sBumpers = String.format(Locale.US, "bumpers: lb(%d), rb(%d)",
                     gamepad1.left_bumper ? 1 : 0,
                     gamepad1.right_bumper ? 1 : 0);
-            telemetry.addLine(sBumpers);
+            telemetry.addLine("\n"+sBumpers);
 
-            telemetry.addLine();
             sTriggers = String.format(Locale.US, "triggers: lt(%.1f), rt(%.1f)",
                     gamepad1.left_trigger,
                     gamepad1.right_trigger);
-            telemetry.addLine(sTriggers);
-
+            telemetry.addLine("\n"+sTriggers);
             telemetry.update();
         }
     }
