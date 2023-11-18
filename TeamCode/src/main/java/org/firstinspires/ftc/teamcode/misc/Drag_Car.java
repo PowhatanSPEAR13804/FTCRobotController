@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 
-@TeleOp(name = "Drag_Car", group = "Motor")
+@TeleOp(name = "Drag_Car", group = "Misc")
 
 
 public class Drag_Car extends LinearOpMode {

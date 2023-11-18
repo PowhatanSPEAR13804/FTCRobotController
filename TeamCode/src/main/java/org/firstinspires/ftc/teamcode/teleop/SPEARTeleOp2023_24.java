@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 //@Disabled
 //safety :)
 
-@TeleOp
+@TeleOp(name="TeleOp2023_24", group="TeleOp")
 public class SPEARTeleOp2023_24 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

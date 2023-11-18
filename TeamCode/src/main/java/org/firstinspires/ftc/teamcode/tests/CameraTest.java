@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.tests;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -14,20 +15,27 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+@TeleOp(name="CameraTest", group="Tests")
 
 public class CameraTest extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 0;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
-    @Override public void runOpMode() {
+    @Override
+    public void runOpMode() {
 
         boolean targetFound = false;    // Set to true when an AprilTag target is detected
         telemetry.addData("Camera preview on/off", "3 dots, Camera Stream");
         telemetry.addData(">", "Touch Play to start OpMode");
         telemetry.update();
+
+        initAprilTag();
+
+        waitForStart();
+
         while (opModeIsActive()){
 
             targetFound = false;
@@ -67,7 +75,7 @@ public class CameraTest extends LinearOpMode {
         // Create the vision portal by using a builder.
         if (USE_WEBCAM) {
             visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
                     .addProcessor(aprilTag)
                     .build();
         } else {

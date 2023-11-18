@@ -8,7 +8,7 @@ import java.util.Locale;
 //@Disabled
 //safety :)
 
-@TeleOp
+@TeleOp(name="ControllerTest", group="Tests")
 public class Controller_Test extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

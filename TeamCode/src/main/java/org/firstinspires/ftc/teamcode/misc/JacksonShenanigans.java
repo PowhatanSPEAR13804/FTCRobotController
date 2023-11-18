@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Disabled
-@TeleOp
+@TeleOp(name = "JacksonShenanigans", group = "Misc")
 
 
 public class JacksonShenanigans extends LinearOpMode {

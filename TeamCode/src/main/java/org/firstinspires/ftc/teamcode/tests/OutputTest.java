@@ -5,11 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//@Disabled
-//safety :)
-
-@TeleOp
-public class Output_Test extends LinearOpMode{
+@TeleOp(name="OutputTest", group="Tests")
+public class OutputTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
