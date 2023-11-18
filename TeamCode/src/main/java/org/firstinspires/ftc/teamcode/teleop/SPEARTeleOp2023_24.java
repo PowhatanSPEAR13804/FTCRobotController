@@ -22,19 +22,20 @@ public class SPEARTeleOp2023_24 extends LinearOpMode {
 
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
 
-        Servo throughput =  hardwareMap.servo.get("Hub1_Servo4");
+        Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
+
         DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
 
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
-        Servo intakeRight =  hardwareMap.servo.get("Hub1_Servo2");
+        Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
 
         Servo launch =  hardwareMap.servo.get("Hub2_Servo3");
 
-        Servo outputS =  hardwareMap.servo.get("Hub2_Servo0");
-        Servo outputL =  hardwareMap.servo.get("Hub2_Servo1");
+        Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
+        Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
-        Servo hangingS =  hardwareMap.servo.get("Hub2_Servo0");
-        DcMotor hangingM = hardwareMap.dcMotor.get("Hub2_Motor0");
+        Servo hangingS =  hardwareMap.servo.get("Hub1_Servo2");
+        DcMotor hangingM = hardwareMap.dcMotor.get("Hub1_Motor2");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
