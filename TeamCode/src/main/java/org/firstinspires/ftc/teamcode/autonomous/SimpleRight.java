@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="SimpleForward", group="Autonomous")
+@Autonomous(name="SimpleRight", group="Autonomous")
 
 public class SimpleRight extends LinearOpMode{
     private DcMotor frontRightDrive;
