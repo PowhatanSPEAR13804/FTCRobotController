@@ -9,8 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 // Expects the 4 drive motors connected to omni directional wheels
 // See OmniDirectionWheels.jpg for how these work.
 // TODO - recreate the JPG in ASCII and paste here.
-// TODO - make this a singleton or static member so there
-//        can be only one set of drive motor objects.
+// TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
 public class robotMove {
     private DcMotor motorFR = null;
