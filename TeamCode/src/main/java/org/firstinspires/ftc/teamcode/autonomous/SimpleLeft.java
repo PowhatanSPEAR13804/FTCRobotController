@@ -39,4 +39,3 @@ public class SimpleLeft extends LinearOpMode{
         robot.stop();
     }
 }
-
