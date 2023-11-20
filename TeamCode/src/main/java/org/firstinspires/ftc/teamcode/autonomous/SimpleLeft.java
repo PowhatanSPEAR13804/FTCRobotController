@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="SimpleRight", group="Autonomous")
+@Autonomous(name="SimpleLeft", group="Autonomous")
 
 public class SimpleLeft extends LinearOpMode{
     private robotMove robot = null;
