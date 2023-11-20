@@ -35,8 +35,6 @@ public class SimpleRight extends LinearOpMode{
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
-
-        
     }
 }
 
