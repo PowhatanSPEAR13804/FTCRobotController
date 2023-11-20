@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 //@Disabled
 //safety :)
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp2023_24", group="TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp", group="TeleOp")
 public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -19,22 +19,22 @@ public class TeleOp extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
 
-        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
-
-        Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
-
+        DcMotor fourBar = hardwareMap.dcMotor.get("Hub2_Motor2");
         DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
+        DcMotor hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
 
+        //continuous servos
+        Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
 
+        //Positional servos
         Servo launch =  hardwareMap.servo.get("Hub2_Servo3");
-
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
-        Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
+        Servo hangingS =  hardwareMap.servo.get("Hub1_Servo1");
 
-        Servo hangingS =  hardwareMap.servo.get("Hub1_Servo2");
-        DcMotor hangingM = hardwareMap.dcMotor.get("Hub1_Motor2");
+        //linear servo
+        //Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -161,7 +161,7 @@ public class TeleOp extends LinearOpMode {
 
 
             if (gamepad1.left_bumper) {
-                outputL.setPosition(1);
+                //outputL.setPosition(1);
             }
             if (gamepad1.right_bumper && !outputDropIsTrigger) {
                 outputDropIsTrigger = true;
@@ -170,7 +170,7 @@ public class TeleOp extends LinearOpMode {
                 outputS.setPosition(0);
                 Thread.sleep(5000);
                 outputS.setPosition(0.5);
-                outputL.setPosition(0);
+                //outputL.setPosition(0);
                 outputDropIsTrigger=false;
             }
 
