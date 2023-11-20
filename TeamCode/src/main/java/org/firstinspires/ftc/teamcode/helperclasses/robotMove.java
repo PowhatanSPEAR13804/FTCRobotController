@@ -21,12 +21,12 @@ public class robotMove {
     // this function gets called when you make a new object.
     public robotMove() {
         // Create the motor devices
-        // TODO - this is setup to the 2023 robot map
         // Change this mapping to however your robot is setup.
-        motorFR = hardwareMap.dcMotor.get("H2M0");
-        motorFL = hardwareMap.dcMotor.get("H1M3");
-        motorBR = hardwareMap.dcMotor.get("H2M3");
-        motorBL = hardwareMap.dcMotor.get("H1M0");
+        // TODO - this is setup to the 2023 robot map
+        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
 
         // Setup the motors to turn in the correct
         // direction to default to forward motion

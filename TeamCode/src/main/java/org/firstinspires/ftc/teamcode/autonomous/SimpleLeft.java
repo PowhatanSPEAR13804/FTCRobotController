@@ -6,9 +6,9 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="SimpleRight", group="Autonomous")
+@Autonomous(name="SimpleLeft", group="Autonomous")
 
-public class SimpleRight extends LinearOpMode{
+public class SimpleLeft extends LinearOpMode{
     private robotMove robot = null;
 
     @Override
@@ -18,7 +18,7 @@ public class SimpleRight extends LinearOpMode{
         robot.stop();
         waitForStart();
 
-        robot.right(0.5);
+        robot.left(0.5);
 
         long startTime = System.currentTimeMillis();
         long stopTime = startTime + 500;

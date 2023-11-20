@@ -30,4 +30,3 @@ public class SimpleForward extends LinearOpMode{
         robot.stop();
     }
 }
-
