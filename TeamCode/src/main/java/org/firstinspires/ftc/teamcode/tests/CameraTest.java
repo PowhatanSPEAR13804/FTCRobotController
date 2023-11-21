@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainCon
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.teamcode.tests.CameraTest;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,8 +20,14 @@ import java.util.concurrent.TimeUnit;
 public class CameraTest extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
     private static final int DESIRED_TAG_ID = 1;     // Choose the tag you want to approach or set to -1 for ANY tag.
-    private VisionPortal visionPortal;               // Used to manage the video source.
-    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    private VisionPortal visionPortal;
+
+
+    private VisionPortal visionPortal1;
+    private VisionPortal visionPortal2;  // Used to manage the video source.
+    private AprilTagProcessor aprilTag;
+    private AprilTagProcessor aprilTag1;
+    private AprilTagProcessor aprilTag2; // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 private   List<AprilTagDetection> currentDetections;
     @Override public void runOpMode() {
@@ -65,6 +72,38 @@ private   List<AprilTagDetection> currentDetections;
                   //  telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
                 }
             }
+            currentDetections = aprilTag1.getDetections();
+            for (AprilTagDetection detection : currentDetections) {
+                if ((detection.metadata != null) &&
+                        ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID))  ){
+                    targetFound = true;
+                    desiredTag = detection;
+                    telemetry.addLine("\nHi");
+                    telemetry.addLine("\nx = " +  detection.rawPose.x);
+                    telemetry.addLine("\ny = " +  detection.rawPose.y);
+                    telemetry.addLine("\nz = " +  detection.rawPose.z);
+
+                    break;  // don't look any further.
+                } else {
+                    //  telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
+                }
+            }
+            currentDetections = aprilTag2.getDetections();
+            for (AprilTagDetection detection : currentDetections) {
+                if ((detection.metadata != null) &&
+                        ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID))  ){
+                    targetFound = true;
+                    desiredTag = detection;
+                    telemetry.addLine("\nHi");
+                    telemetry.addLine("\nx = " +  detection.rawPose.x);
+                    telemetry.addLine("\ny = " +  detection.rawPose.y);
+                    telemetry.addLine("\nz = " +  detection.rawPose.z);
+
+                    break;  // don't look any further.
+                } else {
+                    //  telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
+                }
+            }
             // Tell the driver what we see, and what to do.
             if (targetFound) {
              /*   telemetry.addData(">","HOLD Left-Bumper to Drive to Target\n");
@@ -88,6 +127,8 @@ private   List<AprilTagDetection> currentDetections;
     private void initAprilTag() {
         // Create the AprilTag processor by using a builder.
         aprilTag = new AprilTagProcessor.Builder().build();
+        aprilTag1 = new AprilTagProcessor.Builder().build();
+        aprilTag2 = new AprilTagProcessor.Builder().build();
 
         // Create the vision portal by using a builder.
         if (USE_WEBCAM) {
@@ -95,6 +136,15 @@ private   List<AprilTagDetection> currentDetections;
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                     .addProcessor(aprilTag)
                     .build();
+            visionPortal1 = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .addProcessor(aprilTag1)
+                    .build();
+            visionPortal2 = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
+                    .addProcessor(aprilTag2)
+                    .build();
+
         } else {
             visionPortal = new VisionPortal.Builder()
                     .setCamera(BuiltinCameraDirection.BACK)
@@ -131,6 +181,67 @@ private   List<AprilTagDetection> currentDetections;
             exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
             sleep(20);
             GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
+        }
+
+        if (visionPortal1 == null) {
+            return;
+        }
+
+        // Make sure camera is streaming before we try to set the exposure controls
+        if (visionPortal1.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting1");
+            telemetry.update();/*
+            while (!isStopRequested() && (visionPortal1.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            */
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!isStopRequested())
+        {
+            ExposureControl exposureControl = visionPortal1.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+            GainControl gainControl = visionPortal1.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
+        }
+        if (visionPortal2 == null) {
+            return;
+        }
+
+        // Make sure camera is streaming before we try to set the exposure controls
+        if (visionPortal2.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting2");
+            telemetry.update();/*
+            while (!isStopRequested() && (visionPortal2.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            */
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!isStopRequested())
+        {
+            ExposureControl exposureControl = visionPortal2.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+            GainControl gainControl = visionPortal2.getCameraControl(GainControl.class);
             gainControl.setGain(gain);
             sleep(20);
         }
