@@ -9,11 +9,10 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 @Autonomous(name="SimpleForward", group="Autonomous")
 
 public class SimpleForward extends LinearOpMode{
-    private robotMove robot = null;
 
     @Override
     public void runOpMode() {
-        robot = new robotMove();
+        robotMove robot = new robotMove();
 
         robot.stop();
         waitForStart();
