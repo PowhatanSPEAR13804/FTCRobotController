@@ -91,10 +91,15 @@ private   List<AprilTagDetection> currentDetections;
 
         // Create the vision portal by using a builder.
         if (USE_WEBCAM) {
+
+
             visionPortal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                     .addProcessor(aprilTag)
                     .build();
+
+
         } else {
             visionPortal = new VisionPortal.Builder()
                     .setCamera(BuiltinCameraDirection.BACK)

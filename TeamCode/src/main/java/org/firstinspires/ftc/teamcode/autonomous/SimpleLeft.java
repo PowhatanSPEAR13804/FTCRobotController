@@ -9,11 +9,9 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 @Autonomous(name="SimpleLeft", group="Autonomous")
 
 public class SimpleLeft extends LinearOpMode{
-    private robotMove robot = null;
-
     @Override
     public void runOpMode() {
-        robot = new robotMove();
+        robotMove robot = new robotMove();
 
         robot.stop();
         waitForStart();
