@@ -12,10 +12,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 // TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
 public class robotMove {
-    private DcMotor motorFR = null;
-    private DcMotor motorFL = null;
-    private DcMotor motorBR = null;
-    private DcMotor motorBL = null;
+    private DcMotor motorFR;
+    private DcMotor motorFL;
+    private DcMotor motorBR;
+    private DcMotor motorBL;
 
     // Constructor - does all the initialization of the motors
     // this function gets called when you make a new object.
