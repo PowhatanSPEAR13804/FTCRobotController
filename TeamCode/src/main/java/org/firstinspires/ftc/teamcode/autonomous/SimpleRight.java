@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 public class SimpleRight extends LinearOpMode{
     @Override
     public void runOpMode() {
-        robotMove robot = new robotMove();
+        robotMove robot = new robotMove(hardwareMap);
 
         robot.stop();
         waitForStart();
