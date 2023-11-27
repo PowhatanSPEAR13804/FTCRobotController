@@ -73,6 +73,15 @@ public class robotMove {
         motorBL.setPower(BLS);
     }
 
+    public void wait(int milliseconds){
+        long startTime = System.currentTimeMillis();
+        long stopTime = startTime + milliseconds;
+        long currentTime = System.currentTimeMillis();
+
+        while(currentTime < stopTime)
+            currentTime = System.currentTimeMillis();
+    }
+
     // Stop the robot
     // TODO -there is a breaking mode and floating mode
     // or something like that.  the breaking action

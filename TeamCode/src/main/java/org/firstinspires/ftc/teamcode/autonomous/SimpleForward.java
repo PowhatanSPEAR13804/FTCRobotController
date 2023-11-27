@@ -16,7 +16,8 @@ public class SimpleForward extends LinearOpMode{
 
         waitForStart();
 
-        robot.forward(0.5);
+        robot.forward(0.25);
+        robot.wait(3000);
         robot.stop();
     }
 }
