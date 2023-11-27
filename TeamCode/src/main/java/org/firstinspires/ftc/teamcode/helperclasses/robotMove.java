@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.helperclasses;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 // Object for controlling the 4 drive motors
 // Expects the 4 drive motors connected to omni directional wheels
@@ -12,32 +10,46 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 // TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
 public class robotMove {
-    private DcMotor motorFR;
-    private DcMotor motorFL;
-    private DcMotor motorBR;
-    private DcMotor motorBL;
+
+    private DcMotor motorFR = null;
+    private DcMotor motorFL = null;
+    private DcMotor motorBR = null;
+    private DcMotor motorBL = null;
 
     // Constructor - does all the initialization of the motors
     // this function gets called when you make a new object.
-    public robotMove() {
+    public robotMove(HardwareMap hardwareMap) {
         // Create the motor devices
-        // Change this mapping to however your robot is setup.
         // TODO - this is setup to the 2023 robot map
-        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        // Change this mapping to however your robot is setup.
+
         motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
         motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
         // Setup the motors to turn in the correct
         // direction to default to forward motion
         // Always set all 4 just in case their default
         // is NOT FORWARD.
-        motorFR.setDirection(DcMotor.Direction.REVERSE);
-        motorFL.setDirection(DcMotor.Direction.FORWARD);
-        motorBR.setDirection(DcMotor.Direction.REVERSE);
-        motorBL.setDirection(DcMotor.Direction.FORWARD);
+        motorFR.setDirection(DcMotor.Direction.FORWARD);
+        motorFL.setDirection(DcMotor.Direction.REVERSE);
+        motorBR.setDirection(DcMotor.Direction.FORWARD);
+        motorBL.setDirection(DcMotor.Direction.REVERSE);
+
+        // Setup the motors so that they are speed and not
+        // power based...  it uses the encoders to control the speed.
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         // Make sure we are stopped
         stop();
+    }
+
+    public void setMode(DcMotor.RunMode mode) {
+        motorFR.setMode(mode);
+        motorFL.setMode(mode);
+        motorBR.setMode(mode);
+        motorBL.setMode(mode);
     }
 
     // Set the power individually on each motor as a group
@@ -53,6 +65,8 @@ public class robotMove {
         // This can help make all motors turn their wheels in the direction
         // you want them to and then the speed is the same for all 4 motors.
         // See the constructor for the directions the motors are set to.
+        // note:  the order we set the power in does not matter for
+        // steering offsets.  the bot always veers off in the same direction.
         motorFR.setPower(FRS);
         motorFL.setPower(FLS);
         motorBR.setPower(BRS);
@@ -60,11 +74,11 @@ public class robotMove {
     }
 
     // Stop the robot
+    // TODO -there is a breaking mode and floating mode
     // or something like that.  the breaking action
     // should stop the motors really quickly and
     // the non breaking mode will allow the motors
     // to coast a little.  What do we want?
-    // TODO -there is a breaking mode and floating mode
     public void stop() {
         // Set all 4 motors to 0.0 speed
         setMotors(0.0, 0.0, 0.0, 0.0);
@@ -90,22 +104,24 @@ public class robotMove {
     public void right(double speed) {
         // In order to move right we have to set the motors
         // to different directions because we have omni directional wheels.
-        // FR = forward
-        // FL = reverse
-        // BR = reverse
-        // BL = forward
-        setMotors(speed,speed * -1.0,speed * -1.0, speed);
+        // note:  this looks different than the chart
+        // FR = reverse
+        // FL = forward
+        // BR = forward
+        // BL = reverse
+        setMotors(speed * -1.0,speed,speed, speed * -1.0);
     }
 
     // Set the robot to move in the left direction
     public void left(double speed) {
         // In order to move left we have to set the motors
         // to different directions because we have omni directional wheels.
-        // FR = reverse
-        // FL = forward
-        // BR = forward
-        // BL = reverse
-        setMotors(speed * -1.0,speed,speed, speed * -1.0);
+        // note:  this looks different than the chart
+        // FR = forward
+        // FL = reverse
+        // BR = reverse
+        // BL = forward
+        setMotors(speed,speed * -1.0,speed * -1.0, speed);
     }
 
     // Set the robot to turn in the ClockWise direction
@@ -120,6 +136,6 @@ public class robotMove {
         // Turning is eaiser to think about with omni direction wheels.
         // To turn anticlockwise (left) we must reverse the left side motors
         // OR in other words just turn clockwise in reverse
-        clockwise(-1.0);
+        clockwise(speed * -1.0);
     }
 }
