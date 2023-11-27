@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+
 //@Disabled
 //safety :)
 
@@ -19,7 +21,7 @@ public class TeleOp extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
 
-        DcMotor fourBar = hardwareMap.dcMotor.get("Hub2_Motor2");
+        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
         DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
         DcMotor hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
 
@@ -29,12 +31,13 @@ public class TeleOp extends LinearOpMode {
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
 
         //Positional servos
-        Servo launch =  hardwareMap.servo.get("Hub2_Servo3");
+        Servo launch =  hardwareMap.servo.get("Hub1_Servo3");
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
-        Servo hangingS =  hardwareMap.servo.get("Hub1_Servo1");
+        Servo hangingS =  hardwareMap.servo.get("Hub2_Servo1");
+        Servo hook = hardwareMap.servo.get("Hub2_Servo2");
 
         //linear servo
-        //Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
+        Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -57,6 +60,11 @@ public class TeleOp extends LinearOpMode {
         double outputSPosition = 0.5;
         double outputLPosition = 0;
         boolean outputDropIsTrigger = false;
+
+        buttonClick dPadLeft = new buttonClick();
+        buttonClick dPadRight = new buttonClick();
+        buttonClick gamepadX = new buttonClick();
+        buttonClick gamepadB = new buttonClick();
 
         waitForStart();
 
@@ -82,43 +90,58 @@ public class TeleOp extends LinearOpMode {
             motorBackRight.setPower(backRightPower);
 
             //need to make throughput and intake inputs more reliable
-            //throughput
-            if (gamepad1.dpad_right && !forward && !backward && !gamepadLeftPressedLastTime) {
-                forward = true;
-            } else if (gamepad1.dpad_right && forward) {
-                forward = false;
-            }
-            if (gamepad1.dpad_left && !backward && !forward && !gamepadRightPressedLastTime) {
-                backward = true;
-            } else if (gamepad1.dpad_left && backward) {
-                backward = false;
-            }
 
-            gamepadLeftPressedLastTime = gamepad1.dpad_left;
-            gamepadRightPressedLastTime = gamepad1.dpad_right;
+
+            //throughput
+            dPadRight.checkButton(gamepad1.dpad_right);
+            dPadLeft.checkButton(gamepad1.dpad_left);
+            if (dPadRight.getClickCount() > 0 && !forward && !backward) {
+                forward = true;
+                dPadRight.resetClickCount();
+            } else if (dPadRight.getClickCount() > 0 && forward) {
+                forward = false;
+                dPadRight.resetClickCount();
+            }
+            if (dPadLeft.getClickCount() > 0 && !backward && !forward) {
+                backward = true;
+                dPadLeft.resetClickCount();
+            } else if (dPadLeft.getClickCount() > 0 && backward) {
+                backward = false;
+                dPadLeft.resetClickCount();
+            }
 
 
             if (forward)
                 throughputPosition = 1;
+                dPadRight.resetClickCount();
             if (backward)
                 throughputPosition = 0;
+                dPadLeft.resetClickCount();
             if (!forward && !backward)
                 throughputPosition = 0.5;
+                dPadLeft.resetClickCount();
+                dPadRight.resetClickCount();
             throughput.setPosition(throughputPosition);
 
             telemetry.addLine("\nThroughput position: " + throughputPosition);
 
 
             //intake
-            if (gamepad1.x && intakePosition == 0.5) {
+            gamepadX.checkButton(gamepad1.x);
+            gamepadB.checkButton(gamepad1.b);
+            if (gamepadX.getClickCount() > 0 && intakePosition == 0.5) {
                 intakePosition = 1;
-            } else if (gamepad1.x && intakePosition != 0.5) {
+                gamepadX.resetClickCount();
+            } else if (gamepadX.getClickCount() > 0 && intakePosition != 0.5) {
                 intakePosition = 0.5;
+                gamepadX.resetClickCount();
             }
-            if (gamepad1.b && intakePosition == 0.5) {
+            if (gamepadB.getClickCount() > 0 && intakePosition == 0.5) {
                 intakePosition = 0;
-            } else if (gamepad1.b && intakePosition != 0.5) {
+                gamepadB.resetClickCount();
+            } else if (gamepadB.getClickCount() > 0 && intakePosition != 0.5) {
                 intakePosition = 0.5;
+                gamepadB.resetClickCount();
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
@@ -131,7 +154,7 @@ public class TeleOp extends LinearOpMode {
             } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
                 fourBarPower = Math.max(-1, fourBarPower - 0.001);
             } else {
-                fourBarPower = 0;
+              //  fourBarPower = 0;
             }
             fourBar.setPower(fourBarPower);
 
@@ -161,21 +184,21 @@ public class TeleOp extends LinearOpMode {
 
 
             if (gamepad1.left_bumper) {
-                //outputL.setPosition(1);
+                outputL.setPosition(1);
             }
             if (gamepad1.right_bumper && !outputDropIsTrigger) {
                 outputDropIsTrigger = true;
                 outputS.setPosition(1);
-                Thread.sleep(5000);
+                Thread.sleep(4000);
                 outputS.setPosition(0);
-                Thread.sleep(5000);
+                Thread.sleep(4000);
                 outputS.setPosition(0.5);
-                //outputL.setPosition(0);
+                outputL.setPosition(0);
                 outputDropIsTrigger=false;
             }
 
 
-            hangingS.setPosition(gamepad1.left_stick_y+0.5);
+            hangingS.setPosition(gamepad2.left_stick_x + 0.5);
 
 
             if (gamepad1.a) {
