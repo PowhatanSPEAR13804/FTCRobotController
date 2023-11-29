@@ -63,16 +63,21 @@ public class TeleOp extends LinearOpMode {
 
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
-        buttonClick gamepadX = new buttonClick();
+        buttonClick gamepadA = new buttonClick();
         buttonClick gamepadB = new buttonClick();
+        buttonClick gamepadX = new buttonClick();
+        buttonClick gamepadY = new buttonClick();
+
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            //x and y were switched :)
+            double x = -gamepad1.left_stick_x; // Remember, this is reversed!
+            double y = gamepad1.left_stick_y * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -88,9 +93,6 @@ public class TeleOp extends LinearOpMode {
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
-
-            //need to make throughput and intake inputs more reliable
-
 
             //throughput
             dPadRight.checkButton(gamepad1.dpad_right);
@@ -150,20 +152,21 @@ public class TeleOp extends LinearOpMode {
 
 
             if (gamepad1.dpad_up || gamepad2.dpad_up) {
-                fourBarPower = Math.min(1, fourBarPower + 0.001);
+                fourBarPower = 1;
             } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
-                fourBarPower = Math.max(-1, fourBarPower - 0.001);
+                fourBarPower = -1;
             } else {
-              //  fourBarPower = 0;
+                fourBarPower = 0;
             }
             fourBar.setPower(fourBarPower);
 
             telemetry.addLine("\nFour Bar Power: " + fourBarPower);
+            telemetry.addLine("\nFour Bar Position: " + fourBar.getCurrentPosition());
 
 
-            if (gamepad1.left_trigger > 0) {
+            if (gamepad1.right_trigger > 0) {
                 viperPower = Math.min(1, viperPower + 0.001);
-            } else if (gamepad1.right_trigger > 0) {
+            } else if (gamepad1.left_trigger > 0) {
                 viperPower = Math.max(-1, viperPower - 0.001);
             } else {
                 viperPower = 0;
@@ -172,9 +175,11 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addLine("\nViper Power: "+viperPower);
 
-
-            if (gamepad1.y) {
+            //need to add button click helper class
+            gamepadY.checkButton(gamepad1.y);
+            if (gamepadY.getClickCount() > 0) {
                 launchPosition = 1;
+                gamepadY.resetClickCount();
             } else {
                 launchPosition = 0.5;
             }
@@ -200,9 +205,10 @@ public class TeleOp extends LinearOpMode {
 
             hangingS.setPosition(gamepad2.left_stick_x + 0.5);
 
-
-            if (gamepad1.a) {
+            gamepadA.checkButton(gamepad1.a);
+            if (gamepadA.getClickCount() > 0) {
                 hangingM.setPower(1);
+                gamepadA.resetClickCount();
             } else {
                 hangingM.setPower(0);
             }
