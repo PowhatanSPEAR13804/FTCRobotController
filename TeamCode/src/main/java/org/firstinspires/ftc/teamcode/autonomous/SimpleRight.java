@@ -15,10 +15,8 @@ public class SimpleRight extends LinearOpMode{
 
         waitForStart();
 
-        robot.right(0.5);
-        robot.wait(1000);
-        robot.forward(0.5);
-        robot.wait(3000);
+        robot.right(0.5, 24);
+        robot.forward(1, 80);
         robot.stop();
     }
 }
