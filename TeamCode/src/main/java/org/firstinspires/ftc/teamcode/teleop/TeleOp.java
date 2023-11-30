@@ -249,6 +249,11 @@ public class TeleOp extends LinearOpMode {
             } else {
                 hangingM.setPower(0);
             }
+            if (gamepad2.x) {
+                hangingM.setPower(-1);
+            } else {
+                hangingM.setPower(0);
+            }
             telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
             telemetry.update();
 
