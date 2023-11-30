@@ -209,7 +209,6 @@ public class TeleOp extends LinearOpMode {
             BumperLeft.checkButton(gamepad1.left_bumper);
             BumperRight.checkButton(gamepad1.right_bumper);
             boolean linearOpen = false;
-            boolean servoOpen = false;
             if (BumperLeft.getClickCount() > 0) {
                 int outputPosition;
                 if (linearOpen) {
@@ -226,27 +225,22 @@ public class TeleOp extends LinearOpMode {
 
                 outputL.setPosition(outputPosition);
             }
+            boolean servoOpen = false;
             if (BumperRight.getClickCount() > 0) {
                 int outputPosition;
                 if (servoOpen) {
-                    outputPosition = 1;
+                    outputPosition = 45;
                     servoOpen = false;
                     BumperRight.resetClickCount();
-                } else if(!servoOpen) {
-                    outputPosition = 1;
-                    servoOpen = true;
-                    BumperRight.resetClickCount();
-                } /*else {
-                    outputPosition = 1;
+                } else {
+                    outputPosition = 0;
                     servoOpen = true;
                     BumperLeft.resetClickCount();
-                }*/
+                }
                 telemetry.addLine("Servo Open: " + servoOpen);
                 telemetry.addLine("Output Position: " + outputPosition);
                 outputS.setPosition(outputPosition);
             }
-
-
 
             hangingS.setPosition(gamepad2.left_stick_y + 0.5);
             if (gamepad1.a) {
