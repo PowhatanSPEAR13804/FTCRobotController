@@ -1,38 +1,44 @@
 package org.firstinspires.ftc.teamcode.tests;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.teamcode.tests.CameraTest;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.SwitchableCamera;
+import org.openftc.easyopencv.OpenCvSwitchableWebcam;
+
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-@TeleOp(name="CameraTest", group="Tests")
-public class CameraTest extends LinearOpMode {
+
+@TeleOp(name="CameraTest2", group="Tests")
+public class CameraTest2 extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
     private static final int DESIRED_TAG_ID = 1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;
-    private VisionPortal visionPortal1;
-    private VisionPortal visionPortal2;
     private AprilTagProcessor aprilTag;
    private boolean CameraChange =false;
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 private   List<AprilTagDetection> currentDetections;
     @Override public void runOpMode() {
-        int[] portalList = VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL);
-        portalList[0] = 1;
-        portalList[1] = 2;
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        OpenCvSwitchableWebcam switchableWebcam;
+        WebcamName webcam1;
+        WebcamName webcam2;
+        webcam1 = hardwareMap.get(WebcamName.class, "Webcam 1");
+        webcam2 = hardwareMap.get(WebcamName.class, "Webcam 2");
+        webcam1.isSwitchable();
+        webcam2.isSwitchable();
+        switchableWebcam = OpenCvCameraFactory.getInstance().createSwitchableWebcam(cameraMonitorViewId, webcam1, webcam2);
+
 
         initAprilTag();
 
@@ -48,17 +54,15 @@ private   List<AprilTagDetection> currentDetections;
 
             if(CameraChange){
 
-                visionPortal = new VisionPortal.Builder()
-                        .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                        .build();
+
+                switchableWebcam.setActiveCamera(webcam1);
+
 
                 CameraChange = false;
             }
             else{
 
-                visionPortal = new VisionPortal.Builder()
-                        .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
-                        .build();
+                switchableWebcam.setActiveCamera(webcam2);
 
                 CameraChange = true;
             }
@@ -117,18 +121,10 @@ private   List<AprilTagDetection> currentDetections;
     }
     private void initAprilTag() {
         // Create the AprilTag processor by using a builder.
-        //aprilTag = new AprilTagProcessor.Builder().build();
-        //Initializes AprilTag for the cameras
-        AprilTagProcessor.Builder aprilTag;
-        aprilTag = new AprilTagProcessor.Builder();
-
-        //Creates april tag references for the cameras
-        Object aprilTagCamOne = aprilTag.build();
-        Object aprilTagCamTwo = aprilTag.build();
-
+        aprilTag = new AprilTagProcessor.Builder().build();
 
         // Create the vision portal by using a builder.
-        /*if (USE_WEBCAM) {
+        if (USE_WEBCAM) {
             visionPortal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                     .addProcessor(aprilTag)
@@ -138,8 +134,13 @@ private   List<AprilTagDetection> currentDetections;
                     .setCamera(BuiltinCameraDirection.BACK)
                     .addProcessor(aprilTag)
                     .build();
-        }*/
+        }
     }
+
+    /*
+     Manually set the camera gain and exposure.
+     This can only be called AFTER calling initAprilTag(), and only works for Webcams;
+    */
     private void    setManualExposure(int exposureMS, int gain) {
         // Wait for the camera to be open, then use the controls
 
@@ -172,8 +173,6 @@ private   List<AprilTagDetection> currentDetections;
             gainControl.setGain(gain);
             sleep(20);
         }
-
-
     }/*
     private void MakeCamOne() {
         VisionPortal.Builder CamPort;

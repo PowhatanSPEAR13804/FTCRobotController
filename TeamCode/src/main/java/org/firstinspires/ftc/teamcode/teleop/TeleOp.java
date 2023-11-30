@@ -199,16 +199,17 @@ public class TeleOp extends LinearOpMode {
 
 
             hangingS.setPosition(gamepad2.left_stick_x + 0.5);
-
-
             if (gamepad1.a) {
                 hangingM.setPower(1);
             } else {
                 hangingM.setPower(0);
             }
+            if (gamepad2.x) {
+                hangingM.setPower(-1);
+            } else {
+                hangingM.setPower(0);
+            }
             telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
-
-
             telemetry.update();
         }
     }
