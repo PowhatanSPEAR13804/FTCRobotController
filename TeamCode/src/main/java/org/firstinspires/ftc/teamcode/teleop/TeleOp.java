@@ -66,6 +66,11 @@ public class TeleOp extends LinearOpMode {
         buttonClick gamepadY = new buttonClick();
         buttonClick BumperLeft = new buttonClick();
         buttonClick BumperRight = new buttonClick();
+        buttonClick littleBroB = new buttonClick();
+        buttonClick littleBroY = new buttonClick();
+        buttonClick littleBroA = new buttonClick();
+        buttonClick littleBroDL = new buttonClick();
+        buttonClick littleBroDR = new buttonClick();
         int position = 0;
 
 
@@ -112,16 +117,17 @@ public class TeleOp extends LinearOpMode {
             }
 
 
-            if (forward)
+            if (forward) {
                 throughputPosition = 1;
                 dPadRight.resetClickCount();
-            if (backward)
+            } else if (backward) {
                 throughputPosition = 0;
                 dPadLeft.resetClickCount();
-            if (!forward && !backward)
+            } else if (!forward && !backward) {
                 throughputPosition = 0.5;
                 dPadLeft.resetClickCount();
                 dPadRight.resetClickCount();
+            }
             throughput.setPosition(throughputPosition);
 
             telemetry.addLine("\nThroughput position: " + throughputPosition);
@@ -130,6 +136,7 @@ public class TeleOp extends LinearOpMode {
             //intake
             gamepadX.checkButton(gamepad1.x);
             gamepadB.checkButton(gamepad1.b);
+            littleBroB.checkButton(gamepad2.b);
             if (gamepadX.getClickCount() > 0 && intakePosition == 0.5) {
                 intakePosition = 1;
                 gamepadX.resetClickCount();
@@ -137,12 +144,14 @@ public class TeleOp extends LinearOpMode {
                 intakePosition = 0.5;
                 gamepadX.resetClickCount();
             }
-            if (gamepadB.getClickCount() > 0 && intakePosition == 0.5) {
+            if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition == 0.5) {
                 intakePosition = 0;
                 gamepadB.resetClickCount();
-            } else if (gamepadB.getClickCount() > 0 && intakePosition != 0.5) {
+                littleBroB.resetClickCount();
+            } else if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition != 0.5) {
                 intakePosition = 0.5;
                 gamepadB.resetClickCount();
+                littleBroB.resetClickCount();
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
@@ -171,7 +180,7 @@ public class TeleOp extends LinearOpMode {
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
                 viperPower = 0.5;
-                on = false;    
+                on = false;
             }
             if(!on) {
                 viper.setTargetPosition(position);
@@ -234,7 +243,7 @@ public class TeleOp extends LinearOpMode {
             }
 
 
-            hangingS.setPosition(gamepad2.left_stick_x + 0.5);
+            hangingS.setPosition(gamepad2.left_stick_y + 0.5);
             if (gamepad1.a) {
                 hangingM.setPower(1);
             } else {
@@ -242,6 +251,7 @@ public class TeleOp extends LinearOpMode {
             }
             telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
             telemetry.update();
+
         }
     }
 }
