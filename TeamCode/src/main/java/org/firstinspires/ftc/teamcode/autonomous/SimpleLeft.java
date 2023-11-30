@@ -11,29 +11,12 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 public class SimpleLeft extends LinearOpMode{
     @Override
     public void runOpMode() {
-        robotMove robot = new robotMove();
+        robotMove robot = new robotMove(hardwareMap);
 
-        robot.stop();
         waitForStart();
 
-        robot.left(0.5);
-
-        long startTime = System.currentTimeMillis();
-        long stopTime = startTime + 500;
-        long currentTime = System.currentTimeMillis();
-
-        while(currentTime < stopTime)
-            currentTime = System.currentTimeMillis();
-
-        robot.forward(0.5);
-
-        startTime = System.currentTimeMillis();
-        stopTime = startTime + 500;
-        currentTime = System.currentTimeMillis();
-
-        while(currentTime < stopTime)
-            currentTime = System.currentTimeMillis();
-
+        robot.left(0.5, 24);
+        robot.forward(1, 80);
         robot.stop();
     }
 }

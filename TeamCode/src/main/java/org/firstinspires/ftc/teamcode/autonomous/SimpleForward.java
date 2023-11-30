@@ -12,20 +12,11 @@ public class SimpleForward extends LinearOpMode{
 
     @Override
     public void runOpMode() {
-        robotMove robot = new robotMove();
+        robotMove robot = new robotMove(hardwareMap);
 
-        robot.stop();
         waitForStart();
 
-        robot.forward(0.5);
-
-        long startTime = System.currentTimeMillis();
-        long stopTime = startTime + 3000;
-        long currentTime = System.currentTimeMillis();
-
-        while(currentTime < stopTime)
-            currentTime = System.currentTimeMillis();
-
+        robot.forward(0.5, 60);
         robot.stop();
     }
 }

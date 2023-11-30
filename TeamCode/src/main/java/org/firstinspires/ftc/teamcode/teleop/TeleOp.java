@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
 
 //@Disabled
@@ -51,28 +52,36 @@ public class TeleOp extends LinearOpMode {
         double throughputPosition = 0.5;
         boolean forward = false;
         boolean backward = false;
-        boolean gamepadLeftPressedLastTime = false;
-        boolean gamepadRightPressedLastTime = false;
         double intakePosition = 0.5;
         double fourBarPower = 0;
         double viperPower = 0;
         double launchPosition = 0.5;
         double outputSPosition = 0.5;
         double outputLPosition = 0;
-        boolean outputDropIsTrigger = false;
-
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
-        buttonClick gamepadX = new buttonClick();
+        buttonClick gamepadA = new buttonClick();
         buttonClick gamepadB = new buttonClick();
+        buttonClick gamepadX = new buttonClick();
+        buttonClick gamepadY = new buttonClick();
+        buttonClick BumperLeft = new buttonClick();
+        buttonClick BumperRight = new buttonClick();
+        buttonClick littleBroB = new buttonClick();
+        buttonClick littleBroY = new buttonClick();
+        buttonClick littleBroA = new buttonClick();
+        buttonClick littleBroDL = new buttonClick();
+        buttonClick littleBroDR = new buttonClick();
+        int position = 0;
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            //x and y were switched :)
+            double x = -gamepad1.left_stick_x; // Remember, this is reversed!
+            double y = gamepad1.left_stick_y * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -88,9 +97,6 @@ public class TeleOp extends LinearOpMode {
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
-
-            //need to make throughput and intake inputs more reliable
-
 
             //throughput
             dPadRight.checkButton(gamepad1.dpad_right);
@@ -111,16 +117,17 @@ public class TeleOp extends LinearOpMode {
             }
 
 
-            if (forward)
+            if (forward) {
                 throughputPosition = 1;
                 dPadRight.resetClickCount();
-            if (backward)
+            } else if (backward) {
                 throughputPosition = 0;
                 dPadLeft.resetClickCount();
-            if (!forward && !backward)
+            } else if (!forward && !backward) {
                 throughputPosition = 0.5;
                 dPadLeft.resetClickCount();
                 dPadRight.resetClickCount();
+            }
             throughput.setPosition(throughputPosition);
 
             telemetry.addLine("\nThroughput position: " + throughputPosition);
@@ -129,6 +136,7 @@ public class TeleOp extends LinearOpMode {
             //intake
             gamepadX.checkButton(gamepad1.x);
             gamepadB.checkButton(gamepad1.b);
+            littleBroB.checkButton(gamepad2.b);
             if (gamepadX.getClickCount() > 0 && intakePosition == 0.5) {
                 intakePosition = 1;
                 gamepadX.resetClickCount();
@@ -136,12 +144,14 @@ public class TeleOp extends LinearOpMode {
                 intakePosition = 0.5;
                 gamepadX.resetClickCount();
             }
-            if (gamepadB.getClickCount() > 0 && intakePosition == 0.5) {
+            if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition == 0.5) {
                 intakePosition = 0;
                 gamepadB.resetClickCount();
-            } else if (gamepadB.getClickCount() > 0 && intakePosition != 0.5) {
+                littleBroB.resetClickCount();
+            } else if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition != 0.5) {
                 intakePosition = 0.5;
                 gamepadB.resetClickCount();
+                littleBroB.resetClickCount();
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
@@ -150,31 +160,44 @@ public class TeleOp extends LinearOpMode {
 
 
             if (gamepad1.dpad_up || gamepad2.dpad_up) {
-                fourBarPower = Math.min(1, fourBarPower + 0.001);
+                fourBarPower = 1;
             } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
-                fourBarPower = Math.max(-1, fourBarPower - 0.001);
+                fourBarPower = -1;
             } else {
-              //  fourBarPower = 0;
+                fourBarPower = 0;
             }
             fourBar.setPower(fourBarPower);
 
             telemetry.addLine("\nFour Bar Power: " + fourBarPower);
+            telemetry.addLine("\nFour Bar Position: " + fourBar.getCurrentPosition());
 
-
-            if (gamepad1.left_trigger > 0) {
-                viperPower = Math.min(1, viperPower + 0.001);
-            } else if (gamepad1.right_trigger > 0) {
-                viperPower = Math.max(-1, viperPower - 0.001);
+            boolean on;
+            if (gamepad1.right_trigger > 0) {
+                on = true;
+                viperPower = Math.min(1, viperPower + 0.1);
+            } else if (gamepad1.left_trigger > 0) {
+                on = true;
+                viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                viperPower = 0;
+                viperPower = 0.5;
+                on = false;
+            }
+            if(!on) {
+                viper.setTargetPosition(position);
+                viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            } else {
+                viper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
             viper.setPower(viperPower);
+            position = viper.getCurrentPosition();
 
             telemetry.addLine("\nViper Power: "+viperPower);
 
-
-            if (gamepad1.y) {
+            //need to add button click helper class
+            gamepadY.checkButton(gamepad1.y);
+            if (gamepadY.getClickCount() > 0) {
                 launchPosition = 1;
+                gamepadY.resetClickCount();
             } else {
                 launchPosition = 0.5;
             }
@@ -183,35 +206,52 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nlaunch Position: "+launchPosition);
 
 
-            if (gamepad1.left_bumper) {
-                outputL.setPosition(1);
+            BumperLeft.checkButton(gamepad1.left_bumper);
+            BumperRight.checkButton(gamepad1.right_bumper);
+            boolean linearOpen = false;
+            boolean servoOpen = false;
+            if (BumperLeft.getClickCount() > 0) {
+                int outputPosition;
+                if (linearOpen) {
+                    outputPosition = 1;
+                    linearOpen = false;
+                    BumperLeft.resetClickCount();
+                } else {
+                    outputPosition = 0;
+                    linearOpen = true;
+                    BumperLeft.resetClickCount();
+                }
+                telemetry.addLine("Linear Open: " + linearOpen);
+                telemetry.addLine("Output Position: " + outputPosition);
+
+                outputL.setPosition(outputPosition);
             }
-            if (gamepad1.right_bumper && !outputDropIsTrigger) {
-                outputDropIsTrigger = true;
-                outputS.setPosition(1);
-                Thread.sleep(4000);
-                outputS.setPosition(0);
-                Thread.sleep(4000);
-                outputS.setPosition(0.5);
-                outputL.setPosition(0);
-                outputDropIsTrigger=false;
+            if (BumperRight.getClickCount() > 0) {
+                int outputPosition;
+                if (servoOpen) {
+                    outputPosition = 0;
+                    servoOpen = false;
+                    BumperRight.resetClickCount();
+                } else {
+                    outputPosition = 1;
+                    servoOpen = true;
+                    BumperLeft.resetClickCount();
+                }
+                telemetry.addLine("Servo Open: " + servoOpen);
+                telemetry.addLine("Output Position: " + outputPosition);
+                outputS.setPosition(outputPosition);
             }
 
 
-            hangingS.setPosition(gamepad2.left_stick_x + 0.5);
+            hangingS.setPosition(gamepad2.left_stick_y + 0.5);
             if (gamepad1.a) {
                 hangingM.setPower(1);
             } else {
                 hangingM.setPower(0);
             }
-            if (gamepad2.x) {
-                hangingM.setPower(-1);
-            } else {
-                hangingM.setPower(0);
-            }
             telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
             telemetry.update();
-            //Hanging Hook
+
         }
     }
 }
