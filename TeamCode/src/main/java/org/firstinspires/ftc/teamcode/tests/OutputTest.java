@@ -13,18 +13,18 @@ public class OutputTest extends LinearOpMode{
     public void runOpMode() throws InterruptedException{
 
         //motors
-        DcMotor motorFR = hardwareMap.dcMotor.get("H2M0");
-        DcMotor motorFL = hardwareMap.dcMotor.get("H1M3");
-        DcMotor motorBR = hardwareMap.dcMotor.get("H2M3");
-        DcMotor motorBL = hardwareMap.dcMotor.get("H1M0");
-        DcMotor motorFourBar = hardwareMap.dcMotor.get("H2M2");
-        DcMotor motorV = hardwareMap.dcMotor.get("H1M1");
-        DcMotor motorH = hardwareMap.dcMotor.get("H2M1");
+        DcMotor motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        DcMotor motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+        DcMotor motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+        DcMotor motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+        DcMotor motorFourBar = hardwareMap.dcMotor.get("Hub2_Motor2");
+        DcMotor motorV = hardwareMap.dcMotor.get("Hub1_Motor1");
+        DcMotor motorH = hardwareMap.dcMotor.get("Hub2_Motor1");
 
         //continuous servos
-        Servo servoIntakeLeft = hardwareMap.servo.get("H1S0");
-        Servo servoIntakeRight =  hardwareMap.servo.get("H2S0");
-        Servo servoThroughput =  hardwareMap.servo.get("H2S4");
+        Servo servoIntakeLeft = hardwareMap.servo.get("Hub1_Servo0");
+        Servo servoIntakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        Servo servoThroughput =  hardwareMap.servo.get("Hub2_Servo4");
 
         //position servos
         Servo servoLaunch =  hardwareMap.servo.get("H2S3");

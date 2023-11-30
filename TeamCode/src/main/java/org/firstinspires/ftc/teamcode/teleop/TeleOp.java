@@ -49,6 +49,8 @@ public class TeleOp extends LinearOpMode {
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
 
+        hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         double throughputPosition = 0.5;
         boolean forward = false;
         boolean backward = false;
@@ -58,6 +60,10 @@ public class TeleOp extends LinearOpMode {
         double launchPosition = 0.5;
         double outputSPosition = 0.5;
         double outputLPosition = 0;
+        boolean linearOpen = false;
+        boolean servoOpen = false;
+        boolean LaunchServoOpen = false;
+
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
         buttonClick gamepadA = new buttonClick();
@@ -193,67 +199,74 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addLine("\nViper Power: "+viperPower);
 
-            //need to add button click helper class
-            gamepadY.checkButton(gamepad1.y);
-            if (gamepadY.getClickCount() > 0) {
-                launchPosition = 1;
-                gamepadY.resetClickCount();
-            } else {
-                launchPosition = 0.5;
+            //Launch Servo Movements
+            {
+                double LaunchoutputPosition = 0;
+                gamepadY.checkButton(gamepad1.y);   // transfer the state of the button to the buttonclick class
+                if (gamepadY.getClickCount() > 0) {
+                    LaunchServoOpen = !LaunchServoOpen;
+                    gamepadY.resetClickCount();
+                }
+                if (LaunchServoOpen) {
+                    LaunchoutputPosition = 90.0/270.0;
+                } else {
+                    LaunchoutputPosition = 0.0;
+                }
+
+                telemetry.addLine("Servo Open: " + LaunchServoOpen);
+                telemetry.addLine("Launch Servo Position: " + LaunchoutputPosition);
+
+                launch.setPosition(LaunchoutputPosition);
             }
-            launch.setPosition(launchPosition);
-
-            telemetry.addLine("\nlaunch Position: "+launchPosition);
-
-
             BumperLeft.checkButton(gamepad1.left_bumper);
             BumperRight.checkButton(gamepad1.right_bumper);
-            boolean linearOpen = false;
-            if (BumperLeft.getClickCount() > 0) {
-                int outputPosition;
+
+            //Linear Servo Movements
+            {
+                int LoutputPosition = 0;
+                if (BumperLeft.getClickCount() > 0) {
+                    linearOpen = !linearOpen;
+                    BumperLeft.resetClickCount();
+                }
                 if (linearOpen) {
-                    outputPosition = 1;
-                    linearOpen = false;
-                    BumperLeft.resetClickCount();
+                    LoutputPosition = 1;
                 } else {
-                    outputPosition = 0;
-                    linearOpen = true;
-                    BumperLeft.resetClickCount();
+                    LoutputPosition = 0;
                 }
+
                 telemetry.addLine("Linear Open: " + linearOpen);
-                telemetry.addLine("Output Position: " + outputPosition);
+                telemetry.addLine("Output Linear Position: " + LoutputPosition);
 
-                outputL.setPosition(outputPosition);
+                outputL.setPosition(LoutputPosition);
             }
-            boolean servoOpen = false;
-            if (BumperRight.getClickCount() > 0) {
-                int outputPosition;
-                if (servoOpen) {
-                    outputPosition = 45;
-                    servoOpen = false;
+            //Output Servo Movements
+            {
+                double SoutputPosition = 0;
+                if (BumperRight.getClickCount() > 0) {
+                    servoOpen = !servoOpen;
                     BumperRight.resetClickCount();
-                } else {
-                    outputPosition = 0;
-                    servoOpen = true;
-                    BumperLeft.resetClickCount();
                 }
-                telemetry.addLine("Servo Open: " + servoOpen);
-                telemetry.addLine("Output Position: " + outputPosition);
-                outputS.setPosition(outputPosition);
-            }
+                if (servoOpen) {
+                    SoutputPosition = 70.0/270.0;
+                } else {
+                    SoutputPosition = 35.0/270.0;
+                }
 
-            hangingS.setPosition(gamepad2.left_stick_y + 0.5);
-            if (gamepad1.a) {
-                hangingM.setPower(1);
-            } else {
-                hangingM.setPower(0);
+                telemetry.addLine("Servo Open: " + servoOpen);
+                telemetry.addLine("Output Servo Position: " + SoutputPosition);
+
+                outputS.setPosition(SoutputPosition);
             }
-            if (gamepad2.x) {
+            hangingS.setPosition(gamepad2.left_stick_y + 0.5);
+            if (gamepad1.a || gamepad2.a) {
+                hangingM.setPower(1);
+            } else if (gamepad2.x) {
                 hangingM.setPower(-1);
             } else {
                 hangingM.setPower(0);
             }
-            telemetry.addLine("Hanging Servo Position: " + hangingS.getPosition());
+            telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
+            telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
             telemetry.update();
 
         }
