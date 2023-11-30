@@ -25,16 +25,16 @@ public class robotMove {
         // Change this mapping to however your robot is setup.
 
         // test bot motors
-        motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+        // motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+        // motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+        // motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        // motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
         // comp bot motors
-        //motorFL = hardwareMap.dcMotor.get("H1:M3");
-        //motorBL = hardwareMap.dcMotor.get("H1:M0");
-        //motorFR = hardwareMap.dcMotor.get("H2:M0");
-        //motorBR = hardwareMap.dcMotor.get("H2:M3");
+        motorFL = hardwareMap.dcMotor.get("H1:M3");
+        motorBL = hardwareMap.dcMotor.get("H1:M0");
+        motorFR = hardwareMap.dcMotor.get("H2:M0");
+        motorBR = hardwareMap.dcMotor.get("H2:M3");
 
         // Setup the motors to turn in the correct
         // direction to default to forward motion
