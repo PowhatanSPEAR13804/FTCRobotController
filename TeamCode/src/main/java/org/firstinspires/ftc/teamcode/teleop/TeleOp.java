@@ -229,18 +229,23 @@ public class TeleOp extends LinearOpMode {
             if (BumperRight.getClickCount() > 0) {
                 int outputPosition;
                 if (servoOpen) {
-                    outputPosition = 0;
+                    outputPosition = 1;
                     servoOpen = false;
                     BumperRight.resetClickCount();
-                } else {
+                } else if(!servoOpen) {
+                    outputPosition = 1;
+                    servoOpen = true;
+                    BumperRight.resetClickCount();
+                } /*else {
                     outputPosition = 1;
                     servoOpen = true;
                     BumperLeft.resetClickCount();
-                }
+                }*/
                 telemetry.addLine("Servo Open: " + servoOpen);
                 telemetry.addLine("Output Position: " + outputPosition);
                 outputS.setPosition(outputPosition);
             }
+
 
 
             hangingS.setPosition(gamepad2.left_stick_y + 0.5);
