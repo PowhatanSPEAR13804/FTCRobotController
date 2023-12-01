@@ -60,9 +60,14 @@ public class TeleOp extends LinearOpMode {
         double launchPosition = 0.5;
         double outputSPosition = 0.5;
         double outputLPosition = 0;
+        double hookDownPosition = hook.getPosition();
+        double hookUpPosition = hookDownPosition + 180.0/270.0;
+        double hookPosition = hookDownPosition;
+        int viperPosition = 0;
         boolean linearOpen = false;
         boolean servoOpen = false;
         boolean LaunchServoOpen = false;
+        boolean hookUp = false;
 
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
@@ -77,7 +82,7 @@ public class TeleOp extends LinearOpMode {
         buttonClick littleBroA = new buttonClick();
         buttonClick littleBroDL = new buttonClick();
         buttonClick littleBroDR = new buttonClick();
-        int position = 0;
+        buttonClick littleBroRB = new buttonClick();
 
 
         waitForStart();
@@ -189,23 +194,26 @@ public class TeleOp extends LinearOpMode {
                 on = false;
             }
             if(!on) {
-                viper.setTargetPosition(position);
+                viper.setTargetPosition(viperPosition);
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             } else {
                 viper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
             viper.setPower(viperPower);
-            position = viper.getCurrentPosition();
+            viperPosition = viper.getCurrentPosition();
 
             telemetry.addLine("\nViper Power: "+viperPower);
 
             //Launch Servo Movements
             {
                 double LaunchoutputPosition = 0;
-                gamepadY.checkButton(gamepad1.y);   // transfer the state of the button to the buttonclick class
-                if (gamepadY.getClickCount() > 0) {
+                gamepadY.checkButton(gamepad1.y);
+                littleBroY.checkButton(gamepad2.y);
+                // transfer the state of the button to the buttonclick class
+                if (gamepadY.getClickCount() > 0 || littleBroY.getClickCount() > 0) {
                     LaunchServoOpen = !LaunchServoOpen;
                     gamepadY.resetClickCount();
+                    littleBroY.resetClickCount();
                 }
                 if (LaunchServoOpen) {
                     LaunchoutputPosition = 90.0/270.0;
@@ -247,9 +255,9 @@ public class TeleOp extends LinearOpMode {
                     BumperRight.resetClickCount();
                 }
                 if (servoOpen) {
-                    SoutputPosition = 70.0/270.0;
+                    SoutputPosition = 135.0/270.0;
                 } else {
-                    SoutputPosition = 35.0/270.0;
+                    SoutputPosition = 100.0/270.0;
                 }
 
                 telemetry.addLine("Servo Open: " + servoOpen);
@@ -257,6 +265,7 @@ public class TeleOp extends LinearOpMode {
 
                 outputS.setPosition(SoutputPosition);
             }
+
             hangingS.setPosition(gamepad2.left_stick_y + 0.5);
             if (gamepad1.a || gamepad2.a) {
                 hangingM.setPower(1);
@@ -265,10 +274,19 @@ public class TeleOp extends LinearOpMode {
             } else {
                 hangingM.setPower(0);
             }
+            littleBroRB.checkButton(gamepad2.right_bumper);
+            if (littleBroRB.getClickCount() > 0 && !hookUp) {
+                hookPosition = hookUpPosition;
+                hookUp = !hookUp;
+            } else if (littleBroRB.getClickCount() > 0 && hookUp) {
+                hookPosition = hookDownPosition;
+                hookUp = !hookUp;
+            }
+            hook.setPosition(hookPosition);
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
+            telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
             telemetry.update();
-
         }
     }
 }
