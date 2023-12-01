@@ -20,9 +20,15 @@ public class SimpleRight extends LinearOpMode{
                 robot.right(0.5, 24);
                 robot.forward(1, 80);
                 robot.stop();
+//<<<<<<< HEAD
                 i++;
             }
         }
 
+//=======
+          //  }
+           // i++;
+        //}
+//>>>>>>> 2068774e92b8a4e8e6cfa36414a2849c8b51c72a
     }
 }
