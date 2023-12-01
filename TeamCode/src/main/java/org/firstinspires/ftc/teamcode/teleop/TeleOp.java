@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
 
 //@Disabled
@@ -57,21 +56,21 @@ public class TeleOp extends LinearOpMode {
         double intakePosition = 0.5;
         double fourBarPower = 0;
         double viperPower = 0;
-        double launchPosition = 0.5;
+        double launchPosition = 0;
         double outputSPosition = 0.5;
         double outputLPosition = 0;
         double hookDownPosition = hook.getPosition();
         double hookUpPosition = hookDownPosition + 180.0/270.0;
-        double hookPosition = hookDownPosition;
+        double hookPosition;
         int viperPosition = 0;
         boolean linearOpen = false;
         boolean servoOpen = false;
-        boolean LaunchServoOpen = false;
+        boolean launchServoOpen = false;
         boolean hookUp = false;
 
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
-        buttonClick gamepadA = new buttonClick();
+        //buttonClick gamepadA = new buttonClick();
         buttonClick gamepadB = new buttonClick();
         buttonClick gamepadX = new buttonClick();
         buttonClick gamepadY = new buttonClick();
@@ -79,9 +78,11 @@ public class TeleOp extends LinearOpMode {
         buttonClick BumperRight = new buttonClick();
         buttonClick littleBroB = new buttonClick();
         buttonClick littleBroY = new buttonClick();
+        /*
         buttonClick littleBroA = new buttonClick();
         buttonClick littleBroDL = new buttonClick();
         buttonClick littleBroDR = new buttonClick();
+        */
         buttonClick littleBroRB = new buttonClick();
 
 
@@ -140,7 +141,8 @@ public class TeleOp extends LinearOpMode {
                 dPadRight.resetClickCount();
             }
             throughput.setPosition(throughputPosition);
-
+            telemetry.addLine("\nBackward: " + backward);
+            telemetry.addLine("\nForward: " + forward);
             telemetry.addLine("\nThroughput position: " + throughputPosition);
 
 
@@ -206,67 +208,64 @@ public class TeleOp extends LinearOpMode {
 
             //Launch Servo Movements
             {
-                double LaunchoutputPosition = 0;
+                launchPosition = 0;
                 gamepadY.checkButton(gamepad1.y);
                 littleBroY.checkButton(gamepad2.y);
                 // transfer the state of the button to the buttonclick class
                 if (gamepadY.getClickCount() > 0 || littleBroY.getClickCount() > 0) {
-                    LaunchServoOpen = !LaunchServoOpen;
+                    launchServoOpen = !launchServoOpen;
                     gamepadY.resetClickCount();
                     littleBroY.resetClickCount();
                 }
-                if (LaunchServoOpen) {
-                    LaunchoutputPosition = 90.0/270.0;
+                if (launchServoOpen) {
+                    launchPosition = 90.0/270.0;
                 } else {
-                    LaunchoutputPosition = 0.0;
+                    launchPosition = 0.0;
                 }
 
-                telemetry.addLine("Servo Open: " + LaunchServoOpen);
-                telemetry.addLine("Launch Servo Position: " + LaunchoutputPosition);
+                telemetry.addLine("Servo Open: " + launchServoOpen);
+                telemetry.addLine("Launch Servo Position: " + launchPosition);
 
-                launch.setPosition(LaunchoutputPosition);
+                launch.setPosition(launchPosition);
             }
             BumperLeft.checkButton(gamepad1.left_bumper);
             BumperRight.checkButton(gamepad1.right_bumper);
 
             //Linear Servo Movements
             {
-                int LoutputPosition = 0;
                 if (BumperLeft.getClickCount() > 0) {
                     linearOpen = !linearOpen;
                     BumperLeft.resetClickCount();
                 }
                 if (linearOpen) {
-                    LoutputPosition = 1;
+                    outputLPosition = 1;
                 } else {
-                    LoutputPosition = 0;
+                    outputLPosition = 0;
                 }
 
                 telemetry.addLine("Linear Open: " + linearOpen);
-                telemetry.addLine("Output Linear Position: " + LoutputPosition);
+                telemetry.addLine("Output Linear Position: " + outputLPosition);
 
-                outputL.setPosition(LoutputPosition);
+                outputL.setPosition(outputLPosition);
             }
             //Output Servo Movements
             {
-                double SoutputPosition = 0;
                 if (BumperRight.getClickCount() > 0) {
                     servoOpen = !servoOpen;
                     BumperRight.resetClickCount();
                 }
                 if (servoOpen) {
-                    SoutputPosition = 135.0/270.0;
+                    outputSPosition = 135.0/270.0;
                 } else {
-                    SoutputPosition = 100.0/270.0;
+                    outputSPosition = 100.0/270.0;
                 }
 
                 telemetry.addLine("Servo Open: " + servoOpen);
-                telemetry.addLine("Output Servo Position: " + SoutputPosition);
+                telemetry.addLine("Output Servo Position: " + outputSPosition);
 
-                outputS.setPosition(SoutputPosition);
+                outputS.setPosition(outputSPosition);
             }
-
-            hangingS.setPosition(gamepad2.left_stick_y + 0.5);
+            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
             if (gamepad1.a || gamepad2.a) {
                 hangingM.setPower(1);
             } else if (gamepad2.x) {
@@ -274,13 +273,19 @@ public class TeleOp extends LinearOpMode {
             } else {
                 hangingM.setPower(0);
             }
-            littleBroRB.checkButton(gamepad2.right_bumper);
-            if (littleBroRB.getClickCount() > 0 && !hookUp) {
-                hookPosition = hookUpPosition;
-                hookUp = !hookUp;
-            } else if (littleBroRB.getClickCount() > 0 && hookUp) {
-                hookPosition = hookDownPosition;
-                hookUp = !hookUp;
+            //Hanging Hook Servo Movements
+            {
+                littleBroRB.checkButton(gamepad2.right_bumper);
+                // transfer the state of the button to the buttonclick class
+                if (littleBroRB.getClickCount() > 0) {
+                    hookUp = !hookUp;
+                    littleBroRB.resetClickCount();
+                }
+                if (hookUp) {
+                    hookPosition = hookUpPosition;
+                } else {
+                    hookPosition = hookDownPosition;
+                }
             }
             hook.setPosition(hookPosition);
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());

@@ -27,12 +27,12 @@ public class OutputTest extends LinearOpMode{
         Servo servoThroughput =  hardwareMap.servo.get("Hub2_Servo4");
 
         //position servos
-        Servo servoLaunch =  hardwareMap.servo.get("H2S3");
-        Servo servoOutput =  hardwareMap.servo.get("H2S5");
-        Servo servoHanging =  hardwareMap.servo.get("H2S2");
+        Servo servoLaunch =  hardwareMap.servo.get("Hub2_Servo3");
+        Servo servoOutput =  hardwareMap.servo.get("Hub2_Servo5");
+        Servo servoHanging =  hardwareMap.servo.get("Hub2_Servo2");
 
         //linear servo
-        Servo linearServoOutput = hardwareMap.servo.get("H1S4");
+        Servo linearServoOutput = hardwareMap.servo.get("Hub1_Servo4");
 
 
         final int minTest = 0;
