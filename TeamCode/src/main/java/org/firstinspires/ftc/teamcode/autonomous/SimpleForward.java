@@ -21,11 +21,12 @@ public class SimpleForward extends LinearOpMode{
 
         waitForStart();
 
+        outputL.setPosition(0);
+
         robot.forward(0.5, 60);
         robot.stop();
 
         // idk if the arm needs to be extended first or something
-        outputL.setPosition(1);
         outputS.setPosition(45);
     }
 }
