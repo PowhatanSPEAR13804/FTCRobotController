@@ -185,10 +185,10 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nFour Bar Position: " + fourBar.getCurrentPosition());
 
             boolean on;
-            if (gamepad1.right_trigger > 0) {
+            if (gamepad1.right_trigger > 0 && viperPosition > -4450) {
                 on = true;
                 viperPower = Math.min(1, viperPower + 0.1);
-            } else if (gamepad1.left_trigger > 0) {
+            } else if (gamepad1.left_trigger > 0 && viperPosition > -4450) {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
@@ -196,15 +196,19 @@ public class TeleOp extends LinearOpMode {
                 on = false;
             }
             if(!on) {
+                if(viperPosition < -4450) {
+                    viperPosition = -4450;
+                }
                 viper.setTargetPosition(viperPosition);
                 viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             } else {
                 viper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
             viper.setPower(viperPower);
-            viperPosition = viper.getCurrentPosition();
+            viperPosition = viper.getCurrentPosition() + 1;
 
-            telemetry.addLine("\nViper Power: "+viperPower);
+            telemetry.addLine("\nViper Position: " + viper.getCurrentPosition());
+            telemetry.addLine("\nViper Power: " + viperPower);
 
             //Launch Servo Movements
             {
@@ -287,7 +291,7 @@ public class TeleOp extends LinearOpMode {
                     hookPosition = hookDownPosition;
                 }
             }
-            hook.setPosition(hookPosition);
+            //hook.setPosition(hookPosition);
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
             telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
