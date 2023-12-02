@@ -72,13 +72,14 @@ public class CameraAutonomusBlueClose extends LinearOpMode{
         }
         robot.left(0.5, 40);
 
-        //turn robot left 90 degrees
+        //turn robot right 90 degrees
+        robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
 
         fourBar.setPower(0.5);
         sleep(1000);
         fourBar.setPower(0);
         viper.setPower(0.5);
-        sleep(1000);
+        sleep(250);
         viper.setPower(0);
 
         if(x>550){
