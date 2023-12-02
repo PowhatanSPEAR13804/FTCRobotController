@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
@@ -9,15 +10,17 @@ import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetectio
 
 // TODO - stuff with pixels
 
-@Autonomous(name="CameraAutonomus", group="Autonomous")
+@Autonomous(name="CameraAutonomusRedFar", group="Autonomous")
 
-public class CameraAutonomus extends LinearOpMode{
+public class CameraAutonomusRedFar extends LinearOpMode{
 
 
     @Override
     public void runOpMode() {
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
+        DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
 
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
@@ -67,6 +70,39 @@ public class CameraAutonomus extends LinearOpMode{
             intakeLeft.setPosition(0.5);
             intakeRight.setPosition(0.5);
         }
+        robot.right(0.5, 80);
+
+        //turn robot left 90 degrees
+
+        fourBar.setPower(0.5);
+        sleep(1000);
+        fourBar.setPower(0);
+        viper.setPower(0.5);
+        sleep(1000);
+        viper.setPower(0);
+
+        if(x>550){
+            //right spike
+
+            robot.left(0.5, 11.5);
+            outputL.setPosition(0);
+            outputS.setPosition(45);
+            sleep(1000);
+            robot.right(0.5, 11.5);
+        }
+        else if(x<150){
+            //left spike
+            robot.right(0.5, 11.5);
+            outputL.setPosition(0);
+            outputS.setPosition(45);
+            sleep(1000);
+            robot.left(0.5, 11.5);
+        }
+        else{
+            outputL.setPosition(0);
+            outputS.setPosition(45);
+        }
+        robot.left(0.5, 23);
 
 
 
@@ -74,12 +110,12 @@ public class CameraAutonomus extends LinearOpMode{
 
 
 
-        outputL.setPosition(0);
+
 
         robot.forward(0.5, 60);
         robot.stop();
 
         // idk if the arm needs to be extended first or something
-        outputS.setPosition(45);
+
     }
 }
