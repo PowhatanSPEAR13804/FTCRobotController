@@ -212,7 +212,6 @@ public class TeleOp extends LinearOpMode {
 
             //Launch Servo Movements
             {
-                launchPosition = 0;
                 gamepadY.checkButton(gamepad1.y);
                 littleBroY.checkButton(gamepad2.y);
                 // transfer the state of the button to the buttonclick class
@@ -224,7 +223,7 @@ public class TeleOp extends LinearOpMode {
                 if (launchServoOpen) {
                     launchPosition = 90.0/270.0;
                 } else {
-                    launchPosition = 0.0;
+                    launchPosition = 180.0/270.0;
                 }
 
                 telemetry.addLine("Servo Open: " + launchServoOpen);

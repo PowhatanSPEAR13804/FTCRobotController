@@ -189,6 +189,62 @@ public class robotMove {
         setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
     }
 
+    public void runMotorsForIndividualDistance(double FRS, double FLS, double BRS, double BLS, double FRD, double FLD, double BRD, double BLD) {
+        // Convert the distance from inches to ticks
+        FRD *= ticksPerInch;
+        FLD *= ticksPerInch;
+        BRD *= ticksPerInch;
+        BLD *= ticksPerInch;
+
+        // Store the starting position of the motor encoder
+        // Use the Front Right motor for right now...
+        double FRstart = motorFR.getCurrentPosition();
+        double FLstart = motorFL.getCurrentPosition();
+        double BRstart = motorBR.getCurrentPosition();
+        double BLstart = motorBL.getCurrentPosition();
+
+        double vMin = 0.15;
+        double vMax = 1.0;
+        double aMax = 1.0;
+
+        // Calculate the starting velocity using the motion profile
+        double FRTicks = Math.abs(motorFR.getCurrentPosition() - FRstart);
+        double FLTicks = Math.abs(motorFL.getCurrentPosition() - FLstart);
+        double BRTicks = Math.abs(motorBR.getCurrentPosition() - BRstart);
+        double BLTicks = Math.abs(motorBL.getCurrentPosition() - BLstart);
+
+        double FRVelMul = triangleMotionProfile(vMin, vMax, FRD, FRTicks);
+        double FLVelMul = triangleMotionProfile(vMin, vMax, FLD, FLTicks);
+        double BRVelMul = triangleMotionProfile(vMin, vMax, BRD, BRTicks);
+        double BLVelMul = triangleMotionProfile(vMin, vMax, BLD, BLTicks);
+
+        // Multiply the vMax for each motor by the starting velocity (scalar)
+        setMotors(FRS * FRVelMul, FLS * FLVelMul, BRS * BRVelMul, BLS * BLVelMul);
+
+        // Wait until the encoder says we have traveled the desired distance
+        // Eventually the ticks will roll over or something like that.
+        // However the autonomous code only needs to run for 30 seconds or so
+        // Use the absolute distance traveled from dStartTicks to currentPosition
+        //double dTicks = Math.abs(motorFR.getCurrentPosition() - dStartTicks);
+        /*
+        while (dTicks < distance)
+        {
+            // Calculate the current velocity scalar using the current distance traveled
+            dVelMul = triangleMotionProfile(vMin, vMax, distance, dTicks);
+            // Multiply the vMax for each motor by the starting velocity (scalar)
+            setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
+
+            dTicks = Math.abs(motorFR.getCurrentPosition() - dStartTicks);
+        }
+
+        // Calculate the final velocity scalar
+        dVelMul = triangleMotionProfile(vMin, vMax, distance, dTicks);
+        // Multiply the vMax for each motor by the starting velocity (scalar)
+        setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
+
+         */
+    }
+
     // Triangle shaped motion profile that gives you velocity depending on the distance traveled
     // vMin and vMax can be normalized values used to scale actual speed inputs to the motors
     double triangleMotionProfile(double vMin, double vMax, double totalDist, double currDist)

@@ -27,15 +27,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.helperclasses;
+package org.firstinspires.ftc.teamcode.autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
+import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -49,8 +52,8 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-
-public class TestTensorFlowObjectDetection{
+@Autonomous(name="TestAuto", group="Autonomous")
+public class TestAuto extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -90,13 +93,140 @@ public class TestTensorFlowObjectDetection{
     // This means they need a constructor which is a function
     // that has the same name as the class.
 
-    public void TestTensorFlowObjectDetection() {
-        //initTfod();
+    public void runOpMode() {
+
+        initTfod();
+
+        Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
+        Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
+        DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
+
+        intakeLeft.setDirection((Servo.Direction.REVERSE));
+        intakeRight.setDirection((Servo.Direction.FORWARD));
+
+        Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
+        Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
+
+        robotMove robot = new robotMove(hardwareMap);
+        waitForStart();
+
+        if (opModeIsActive()) {
+            while (opModeIsActive()) {
+
+                double x = 0;
+                double y;
+                List<Recognition> currentRecognitions = tfod.getRecognitions();
+                telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
+                while(currentRecognitions.size() == 0) {
+                    robot.forward(0.1, 0.1);
+                    currentRecognitions = tfod.getRecognitions();
+                }
+                telemetry.addData("x = ", x);
+//                while(x == 0){
+                    for (Recognition recognition : currentRecognitions) {
+                        x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                        y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                        telemetry.addLine("\nx and y:" + x + " " + y);
+                    }
+//                }
+
+                robot.forward(0.5, 29.5);
+                if(x>550){
+                    //right spike
+                    robot.right(0.5, 11.5);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(1000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                    robot.left(0.5, 11.5);
+
+                }
+                else if(x<150){
+                    //left spike
+                    robot.left(0.5, 11.5);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(1000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                    robot.right(0.5, 11.5);
+                }
+                else{
+                    //center spike
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(1000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                }
+                robot.right(0.5, 40);
+
+                //turn robot left 90 degrees
+                robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
+
+                fourBar.setPower(0.5);
+                sleep(1000);
+                fourBar.setPower(0);
+                viper.setPower(0.5);
+                sleep(250);
+                viper.setPower(0);
+
+                if(x>550){
+                    //right spike
+
+                    robot.left(0.5, 11.5);
+                    outputL.setPosition(0);
+                    outputS.setPosition(45);
+                    sleep(1000);
+                    robot.right(0.5, 11.5);
+                }
+                else if(x<150){
+                    //left spike
+                    robot.right(0.5, 11.5);
+                    outputL.setPosition(0);
+                    outputS.setPosition(45);
+                    sleep(1000);
+                    robot.left(0.5, 11.5);
+                }
+                else{
+                    outputL.setPosition(0);
+                    outputS.setPosition(45);
+                }
+                robot.left(0.5, 23);
+
+                robot.forward(0.5, 60);
+                robot.stop();
+
+                telemetryTfod();
+
+
+                // Push telemetry to the Driver Station.
+                telemetry.update();
+
+                // Save CPU resources; can resume streaming when needed.
+                if (gamepad1.dpad_down) {
+                    visionPortal.stopStreaming();
+                } else if (gamepad1.dpad_up) {
+                    visionPortal.resumeStreaming();
+                }
+
+                // Share the CPU.
+                while (opModeIsActive()) {
+                    sleep(10);
+                }
+            }
+        }
+
+        // Save more CPU resources when camera is no longer needed.
+        visionPortal.close();
+
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
-    private void TestTensor() {
+    private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
@@ -124,7 +254,7 @@ public class TestTensorFlowObjectDetection{
 
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
-            //builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -157,6 +287,26 @@ public class TestTensorFlowObjectDetection{
 
     }   // end method initTfod()
 
+    /**
+     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
+     */
+    private void telemetryTfod() {
+
+        List<Recognition> currentRecognitions = tfod.getRecognitions();
+        telemetry.addData("# Objects Detected", currentRecognitions.size());
+
+        // Step through the list of recognitions and display info for each one.
+        for (Recognition recognition : currentRecognitions) {
+            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+            telemetry.addData(""," ");
+            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+            telemetry.addData("- Position", "%.0f / %.0f", x, y);
+            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+        }   // end for() loop
+
+    }   // end method telemetryTfod()
     public double objectPositionX (double x){
 
 
