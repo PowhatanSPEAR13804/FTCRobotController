@@ -51,7 +51,7 @@ public class robotMove {
         setModeRunUsingEncoder();
 
         // Calculate the encoder ticks per inch
-        double wheelDiameterInches = 100.0 / 25.4; // https://www.gobilda.com/3606-series-mecanum-wheel-set-bearing-supported-rollers-100mm-diameter/
+        double wheelDiameterInches = 96.0 / 25.4; // https://www.gobilda.com/3606-series-mecanum-wheel-set-bearing-supported-rollers-100mm-diameter/
         double wheelCircumference = wheelDiameterInches * Math.PI;
         double ticksPerRevolution = 384.5;  // From https://www.gobilda.com/5202-series-yellow-jacket-planetary-gear-motor-13-7-1-ratio-435-rpm-3-3-5v-encoder/
         ticksPerInch = ticksPerRevolution / wheelCircumference;
