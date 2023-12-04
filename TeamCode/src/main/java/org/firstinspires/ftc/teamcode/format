@@ -1,3 +1,7 @@
+//how to format our code
+
+
+
 Naming:
     * Folders/Files/Classes use pascal case
     * Ex: SimpleName
@@ -25,6 +29,9 @@ Comments:
       this comment has multiple lines blahblahblahblahblah
       blahblahblahblahblahblahblahblahblahblahblahblahblah
       */
+
+    * Add header comments to explain class purposes
+    * Ex: at top of this file
 
 
 
