@@ -37,7 +37,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -97,7 +96,7 @@ public class TestAuto extends LinearOpMode {
 
         initTfod();
 
-        Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
+      /*  Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
         DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
@@ -108,6 +107,8 @@ public class TestAuto extends LinearOpMode {
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
+       */
+
         robotMove robot = new robotMove(hardwareMap);
         waitForStart();
 
@@ -116,103 +117,123 @@ public class TestAuto extends LinearOpMode {
 
                 double x = 0;
                 double y;
+                double distance = 26.5;
+                double adjustment = 0.1;
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
+                telemetry.update();
                 while(currentRecognitions.size() == 0) {
-                    robot.forward(0.1, 0.1);
+                    telemetry.addLine("Can't see nothing");
+                    telemetry.update();
+                    robot.forward(0.01, adjustment);
+                    distance -= adjustment;
                     currentRecognitions = tfod.getRecognitions();
                 }
                 telemetry.addData("x = ", x);
-//                while(x == 0){
-                    for (Recognition recognition : currentRecognitions) {
-                        x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-                        y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-                        telemetry.addLine("\nx and y:" + x + " " + y);
-                    }
-//                }
+                telemetry.update();
+                for (Recognition recognition : currentRecognitions) {
+                    x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                    y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                    telemetry.addLine("\nx and y:" + x + " " + y);
+                    telemetry.update();
+                }
+                String spike = "";
+                if(x > 550) {spike = "right";}
+                else if(x < 150) {spike = "left";}
+                else {spike = "center";}
 
-                robot.forward(0.5, 29.5);
-                if(x>550){
+
+
+                robot.forward(0.5, distance);
+                if(spike.equals("right")){
                     //right spike
+                    telemetry.addLine("Right Spike");
+                    telemetry.update();
                     robot.right(0.5, 11.5);
-                    intakeLeft.setPosition(0);
+                    /*intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                     */
                     robot.left(0.5, 11.5);
 
                 }
                 else if(x<150){
                     //left spike
                     robot.left(0.5, 11.5);
-                    intakeLeft.setPosition(0);
+                    telemetry.addLine("Left Spike");
+                    telemetry.update();
+                   /* intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                    */
                     robot.right(0.5, 11.5);
                 }
                 else{
                     //center spike
-                    intakeLeft.setPosition(0);
+                    telemetry.addLine("Center Spike");
+                    telemetry.update();
+                    /*intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                     */
                 }
-                robot.right(0.5, 40);
+                robot.right(0.5, 80);
 
                 //turn robot left 90 degrees
-                robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
+                robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.7*Math.PI*6.25);
 
-                fourBar.setPower(0.5);
+                /*fourBar.setPower(0.5);
                 sleep(1000);
                 fourBar.setPower(0);
                 viper.setPower(0.5);
                 sleep(250);
                 viper.setPower(0);
 
-                if(x>550){
-                    //right spike
+                 */
 
+                if(spike.equals("right")){
+                    //right spike
                     robot.left(0.5, 11.5);
-                    outputL.setPosition(0);
+                   /* outputL.setPosition(0);
                     outputS.setPosition(45);
                     sleep(1000);
+
+                    */
                     robot.right(0.5, 11.5);
                 }
-                else if(x<150){
+
+                else if(spike.equals("left")){
                     //left spike
                     robot.right(0.5, 11.5);
-                    outputL.setPosition(0);
+                  /*  outputL.setPosition(0);
                     outputS.setPosition(45);
                     sleep(1000);
+
+                   */
                     robot.left(0.5, 11.5);
                 }
                 else{
-                    outputL.setPosition(0);
+                  /*  outputL.setPosition(0);
                     outputS.setPosition(45);
+
+                   */
                 }
                 robot.left(0.5, 23);
 
-                robot.forward(0.5, 60);
+                robot.backward(0.5, 20);
                 robot.stop();
 
                 telemetryTfod();
 
-
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
                 while (opModeIsActive()) {
                     sleep(10);
                 }
