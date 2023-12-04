@@ -54,11 +54,11 @@ public class TeleOp extends LinearOpMode {
         boolean forward = false;
         boolean backward = false;
         double intakePosition = 0.5;
-        double fourBarPower = 0;
+        double fourBarPower; // 0 - old value
         double viperPower = 0;
-        double launchPosition = 0;
-        double outputSPosition = 0.5;
-        double outputLPosition = 0;
+        double launchPosition; // 0 - old value
+        double outputSPosition; // 0.5 - old value
+        double outputLPosition; // 0 - old value
         double hookDownPosition = hook.getPosition();
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
