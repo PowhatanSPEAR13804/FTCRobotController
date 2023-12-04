@@ -1,0 +1,23 @@
+Naming:
+    * Folders/Files/Classes use pascal case
+    * Ex: SimpleName
+
+    * Functions/Variables use camel case
+    * Ex: simpleName
+
+If statements:
+    * Parentheses have no spaces before them
+    * Ex: if(), else if()
+
+    * One line if statements should look like this
+    * Ex: if() {<code here>}
+
+    * else on same line as closing brackets with spaces
+    * Ex: } else {
+    * Same for else ifs
+
+    * "One" line if else statements should look like this
+    * if() {<code here>}
+      else {}
+
+    
