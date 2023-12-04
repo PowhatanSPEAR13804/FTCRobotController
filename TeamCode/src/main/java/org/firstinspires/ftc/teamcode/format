@@ -94,3 +94,5 @@ Complexity:
 Github:
     * Commit after you're done working on something or someone
     else needs to work with the latest changes
+    * Experimental changes should be split into separate branches
+        * Working on a new feature? Make a new branch!!!!!
