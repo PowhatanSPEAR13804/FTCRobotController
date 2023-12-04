@@ -5,17 +5,46 @@ Naming:
     * Functions/Variables use camel case
     * Ex: simpleName
 
+
+
 Comments:
     * Please put them in the code in the proper spaces
     * No space after forward slashes and leave lower case
     * Ex:   //checks to see if x = 2
             if(x == 2)
 
+    * Also explain the basic input, processing, and output of the
+    function or statement(s) in the same comment. Go into more detail
+    if need-be in the function or statement(s).
+    * Ex:   if(x == 2)
+                //add one to x
+                x++;
+
     * Multiline comments should look like this
     * /*
       this comment has multiple lines blahblahblahblahblah
       blahblahblahblahblahblahblahblahblahblahblahblahblah
       */
+
+
+
+Variables:
+    * Have a short, mostly self-explanatory name
+    * Ex: int totalCost = 0;
+
+    * Split up variables into commented groups that share
+    similar purposes
+    * Ex:   //declare motors
+            DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+            DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+            DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+            DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+
+            //misc
+            double sillyVariable = 0.0;
+            int seriousVariable = 0;
+
+
 
 If statements:
     * Parentheses have no spaces before them
@@ -25,7 +54,7 @@ If statements:
     * One line if statements should look like this
     * Ex: if() {<code here>}
 
-    * else on same line as closing brackets with spaces
+    * else statements on same line as closing brackets with spaces
     * Ex: } else {
     * Same for else ifs
 
