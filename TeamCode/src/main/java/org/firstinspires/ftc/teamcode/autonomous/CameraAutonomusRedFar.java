@@ -17,6 +17,7 @@ public class CameraAutonomusRedFar extends LinearOpMode{
 
     @Override
     public void runOpMode() {
+        double forwardDistance=29.5;
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -37,10 +38,12 @@ public class CameraAutonomusRedFar extends LinearOpMode{
         double x = Scanner.objectPositionX(0);
         double y = Scanner.objectPositionY(0);
         while(x==0){
+            robot.forward(0.1,0.5);
+            forwardDistance -=0.5;
             x = Scanner.objectPositionX(0);
             y = Scanner.objectPositionY(0);
         }
-        robot.forward(0.5, 29.5);
+        robot.forward(0.5, forwardDistance);
         if(x>550){
             //right spike
             robot.right(0.5, 11.5);
