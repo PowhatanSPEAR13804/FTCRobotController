@@ -4,7 +4,28 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class ServomotorDeclarations {
+public class ServoMotorDeclarations {
+    
+    public DcMotor motorFrontLeft;
+    public DcMotor motorBackLeft;
+    public DcMotor motorFrontRight;
+    public DcMotor motorBackRight;
+
+    public DcMotor fourBar;
+    public DcMotor viper;
+    public DcMotor hangingM;
+
+    public Servo throughput;
+    public Servo intakeLeft;
+    public Servo intakeRight;
+    
+    public Servo launch;
+    public Servo outputS;
+    public Servo hangingS;
+    public Servo hook;
+    
+    public Servo outputL;
+    
     public void servoMotorDeclaration(HardwareMap hardwareMap) {
         // Declare our motors
         // Make sure your ID's match your configuration
