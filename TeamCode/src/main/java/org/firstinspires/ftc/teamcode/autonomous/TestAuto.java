@@ -39,6 +39,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
@@ -71,11 +72,19 @@ public class TestAuto extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
+    private TfodProcessor tfod2;
+
+    private AprilTagProcessor aprilTag;
+
+
 
     /**
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
+    private VisionPortal visionPortalTensor1;
+    private VisionPortal visionPortalTensor2;
+
+    private VisionPortal visionPortalAprilTag;
 
     /*
     public TestTensorFlowObjectDetection() {
@@ -115,6 +124,7 @@ public class TestAuto extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
+
                 double x = 0;
                 double y;
                 double distance = 26.5;
@@ -129,6 +139,11 @@ public class TestAuto extends LinearOpMode {
                     distance -= adjustment;
                     currentRecognitions = tfod.getRecognitions();
                 }
+                visionPortalTensor1.stopStreaming();
+                visionPortalTensor2.resumeStreaming();
+
+
+                telemetry.addLine("Camera 2 sees an object at x = "+objectPositionX2(0)+ ", y = "+objectPositionY2(0));
                 telemetry.addData("x = ", x);
                 telemetry.update();
                 for (Recognition recognition : currentRecognitions) {
@@ -234,6 +249,8 @@ public class TestAuto extends LinearOpMode {
 
                 telemetryTfod();
 
+
+
                 while (opModeIsActive()) {
                     sleep(10);
                 }
@@ -241,7 +258,7 @@ public class TestAuto extends LinearOpMode {
         }
 
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+       // visionPortal.close();
 
     }   // end runOpMode()
     /**
@@ -276,6 +293,7 @@ public class TestAuto extends LinearOpMode {
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            telemetry.addLine("Camera 1 Built");
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -298,7 +316,7 @@ public class TestAuto extends LinearOpMode {
         builder.addProcessor(tfod);
 
         // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
+        visionPortalTensor1 = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
         //tfod.setMinResultConfidence(0.75f);
@@ -306,6 +324,45 @@ public class TestAuto extends LinearOpMode {
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
 
+        // Create the TensorFlow processor by using a builder.
+        tfod2 = new TfodProcessor.Builder()
+                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelLabels(LABELS)
+                .build();
+
+        VisionPortal.Builder builder2 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder2.setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"));
+            telemetry.addLine("Camera 2 Built");
+        } else {
+            builder2.setCamera(BuiltinCameraDirection.BACK);
+        }
+
+        builder2.addProcessor(tfod2);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalTensor2 = builder2.build();
+
+        aprilTag = new AprilTagProcessor.Builder().build();
+
+
+
+        VisionPortal.Builder builder3 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder3.setCamera(hardwareMap.get(WebcamName.class, "Webcam 3"));
+            telemetry.addLine("Camera 3 Built");
+        } else {
+            builder3.setCamera(BuiltinCameraDirection.BACK);
+        }
+
+        builder3.addProcessor(aprilTag);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalAprilTag = builder3.build();
     }   // end method initTfod()
 
     /**
@@ -357,6 +414,29 @@ public class TestAuto extends LinearOpMode {
         }
 
         return(y);
+    }
+    public double objectPositionX2 (double x){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+        }
+
+        return(x);
+    }
+    public double objectPositionY2 (double y){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+        }
+        return(y);
+    }
+
+    private void intMultiPortals(){
+
     }
 
 }   // end class
