@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 import org.firstinspires.ftc.teamcode.Libraries.buttonClick;
+import org.firstinspires.ftc.teamcode.Libraries.robotMove;
 
 //@Disabled
 //safety :)
@@ -14,6 +17,8 @@ import org.firstinspires.ftc.teamcode.Libraries.buttonClick;
 public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+        ServoMotorDeclarations robot = new  ServoMotorDeclarations(hardwareMap);
+
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
