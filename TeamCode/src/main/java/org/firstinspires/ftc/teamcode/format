@@ -12,12 +12,9 @@ Naming:
 
 
 General:
-    * Put a space after commas
-    * Ex: str.substring(i, i+1);
-
-    * When doing arithmetic, don't put spaces before or after arithmetic operators,
-    excluding whatever is being set or declared
-    * Ex: totalCost += cost*0.5
+    * Put a space after commas and arithmetic operators as well
+    * Ex: str.substring(i, i + 1);
+    * EXCEPTION: x++;
 
 
 
@@ -83,9 +80,9 @@ If statements:
 
     * Comparison operators need to have spaces between what's
     being compared
-    * Ex: if(1+1 == 2)
-    * Ex: if(1+1 == 2 && true)
-    * Ex: if(1+1 == 2 || true)
+    * Ex: if(1 + 1 == 2)
+    * Ex: if(1 + 1 == 2 && true)
+    * Ex: if(1 + 1 == 2 || true)
 
     * If an if-else statement seems to get too large, use a
     switch case instead

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
-import org.firstinspires.ftc.teamcode.Libraries.robotMove;
+import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 
 // TODO - stuff with pixels
 
@@ -28,7 +28,7 @@ public class CameraAutonomusBlueClose extends LinearOpMode{
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
-        robotMove robot = new robotMove(hardwareMap);
+        RobotMove robot = new RobotMove(hardwareMap);
         TestTensorFlowObjectDetection Scanner = new TestTensorFlowObjectDetection();
 
 

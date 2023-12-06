@@ -3,12 +3,10 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 import org.firstinspires.ftc.teamcode.Libraries.buttonClick;
-import org.firstinspires.ftc.teamcode.Libraries.robotMove;
 
 //@Disabled
 //safety :)

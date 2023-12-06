@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Libraries.robotMove;
+import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 
 // TODO - stuff with pixels
 
@@ -21,7 +21,7 @@ public class SimpleForward extends LinearOpMode{
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
 
-        robotMove robot = new robotMove(hardwareMap);
+        RobotMove robot = new RobotMove(hardwareMap);
 
         waitForStart();
 

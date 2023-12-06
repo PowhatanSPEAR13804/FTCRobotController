@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 // TODO - recreate the JPG in ASCII and paste here.
 // TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
-public class robotMove {
+public class RobotMove {
     public DcMotor motorFR = null;
     public DcMotor motorFL = null;
     public DcMotor motorBR = null;
@@ -19,7 +19,7 @@ public class robotMove {
 
     // Constructor - does all the initialization of the motors
     // this function gets called when you make a new object.
-    public robotMove(HardwareMap hardwareMap) {
+    public RobotMove(HardwareMap hardwareMap) {
         // Create the motor devices
         // TODO - this is setup to the 2023 robot map
         // Change this mapping to however your robot is setup.
@@ -116,7 +116,7 @@ public class robotMove {
         ((DcMotorEx)motorBL).setVelocity(BLS);
     }
 
-    public void wait(int milliseconds){
+    public void wait(int milliseconds) {
         long startTime = System.currentTimeMillis();
         long stopTime = startTime + milliseconds;
         long currentTime = System.currentTimeMillis();
@@ -165,8 +165,7 @@ public class robotMove {
         // However the autonomous code only needs to run for 30 seconds or so
         // Use the absolute distance traveled from dStartTicks to currentPosition
         //double dTicks = Math.abs(motorFR.getCurrentPosition() - dStartTicks);
-        while (dTicks < distance)
-        {
+        while (dTicks < distance) {
             // Calculate the current velocity scalar using the current distance traveled
             dVelMul = triangleMotionProfile(vMin, vMax, distance, dTicks);
             // Multiply the vMax for each motor by the starting velocity (scalar)
@@ -183,17 +182,13 @@ public class robotMove {
 
     // Triangle shaped motion profile that gives you velocity depending on the distance traveled
     // vMin and vMax can be normalized values used to scale actual speed inputs to the motors
-    double triangleMotionProfile(double vMin, double vMax, double totalDist, double currDist)
-    {
+    double triangleMotionProfile(double vMin, double vMax, double totalDist, double currDist) {
         double halfDist = totalDist / 2.0;
         double vDiff = vMax - vMin;
         double vCurr = vMin;
-        if (currDist < halfDist)
-        {
+        if (currDist < halfDist) {
             vCurr = (currDist / halfDist)  * vDiff + vMin;
-        }
-        else
-        {
+        } else {
             vCurr = (totalDist - currDist) / halfDist * vDiff + vMin;
         }
 
@@ -201,14 +196,12 @@ public class robotMove {
     }
 
     // TODO - needs to work in encoder ticks and not a relative or normalized 0 to 1
-    double trapezoidalMotionProfile(double vMin, double vMax, double aMax, double totalDist, double currDist)
-    {
+    double trapezoidalMotionProfile(double vMin, double vMax, double aMax, double totalDist, double currDist) {
         double maxAccelTime = vMax / aMax;
         double maxAccelDist = 0.5 * aMax * maxAccelTime * maxAccelTime;
         double halfDist = totalDist / 2.0;
 
-        if (halfDist < maxAccelDist)
-        {
+        if (halfDist < maxAccelDist) {
             // Adjust maxAccelDist because there will be no room for a const velocity period
             maxAccelDist = halfDist;
             // Recalculate maxAccelTime based on the new maxAccelDist
@@ -221,23 +214,16 @@ public class robotMove {
         double vDiff = vMax - vMin;
         double vCurr = vMin;
 
-        if (currDist < maxAccelDist)
-        {
+        if (currDist < maxAccelDist) {
             // We are accelerating
             vCurr = (currDist / maxAccelDist) *  vDiff + vMin;
-        }
-        else if (currDist < (maxAccelDist + cruiseDist))
-        {
+        } else if (currDist < (maxAccelDist + cruiseDist)) {
             // Ware at constant velocity cruising
             vCurr = vMax;
-        }
-        else if (currDist < totalDist)
-        {
+        } else if (currDist < totalDist) {
             // We are decelerating
             vCurr = ((totalDist - currDist) / maxAccelDist) * vDiff + vMin;
-        }
-        else
-        {
+        } else {
             // We should not be here
             // Apparently we overshot out mark
             vCurr = vMin;
@@ -274,7 +260,7 @@ public class robotMove {
         // BR = forward
         // BL = reverse
 
-        runMotorsForDistance(speed * -1.0,speed,speed, speed * -1.0, distance);
+        runMotorsForDistance(speed * -1.0, speed, speed, speed * -1.0, distance);
     }
 
     // Set the robot to move in the left direction
@@ -287,7 +273,7 @@ public class robotMove {
         // BR = reverse
         // BL = forward
 
-        runMotorsForDistance(speed,speed * -1.0,speed * -1.0, speed, distance);
+        runMotorsForDistance(speed, speed * -1.0, speed * -1.0, speed, distance);
     }
 
     // Set the robot to turn in the ClockWise direction

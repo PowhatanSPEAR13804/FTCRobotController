@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.Libraries.robotMove;
+import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 
 // TODO - stuff with pixels
 
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Libraries.robotMove;
 public class SimpleRight extends LinearOpMode{
     @Override
     public void runOpMode() {
-        robotMove robot = new robotMove(hardwareMap);
+        RobotMove robot = new RobotMove(hardwareMap);
 
         waitForStart();
         int i = 0;
