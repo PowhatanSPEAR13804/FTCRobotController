@@ -5,10 +5,16 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //object for controlling the 4 drive motors
-//expects the 4 drive motors connected to omnidirectional wheels
-//see OmniDirectionWheels.jpg for how these work.
-//TODO - recreate the JPG in ASCII and paste here.
-//TODO - make this a singleton or static member so there can be only one set of drive motor objects.
+
+/*
+expects the 4 drive motors connected to omnidirectional wheels; see OmniDirectionWheels.jpg for
+how these work.
+ */
+
+/*
+TODO - recreate the JPG in ASCII and paste here.
+ - make this a singleton or static member so there can be only one set of drive motor objects.
+ */
 
 public class RobotMove {
     public DcMotor motorFR = null;
