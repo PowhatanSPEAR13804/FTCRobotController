@@ -29,27 +29,27 @@ public class ServoMotorDeclarations {
     public void servoMotorDeclaration(HardwareMap hardwareMap) {
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+        motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+        motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+        motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+        motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
 
-        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
-        DcMotor viper = hardwareMap.dcMotor.get("Hub1_Motor1");
-        DcMotor hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
+        fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
+        viper = hardwareMap.dcMotor.get("Hub1_Motor1");
+        hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
 
         //continuous servos
-        Servo throughput = hardwareMap.servo.get("Hub2_Servo4");
-        Servo intakeLeft = hardwareMap.servo.get("Hub1_Servo0");
-        Servo intakeRight = hardwareMap.servo.get("Hub2_Servo0");
+        throughput = hardwareMap.servo.get("Hub2_Servo4");
+        intakeLeft = hardwareMap.servo.get("Hub1_Servo0");
+        intakeRight = hardwareMap.servo.get("Hub2_Servo0");
 
         //Positional servos
-        Servo launch = hardwareMap.servo.get("Hub1_Servo3");
-        Servo outputS = hardwareMap.servo.get("Hub1_Servo5");
-        Servo hangingS = hardwareMap.servo.get("Hub2_Servo1");
-        Servo hook = hardwareMap.servo.get("Hub2_Servo2");
+        launch = hardwareMap.servo.get("Hub1_Servo3");
+        outputS = hardwareMap.servo.get("Hub1_Servo5");
+        hangingS = hardwareMap.servo.get("Hub2_Servo1");
+        hook = hardwareMap.servo.get("Hub2_Servo2");
 
         //linear servo
-        Servo outputL = hardwareMap.servo.get("Hub1_Servo4");
+        outputL = hardwareMap.servo.get("Hub1_Servo4");
     }
 }
