@@ -29,6 +29,7 @@ public class TeleOp extends LinearOpMode {
         Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        Servo intakeRoller = hardwareMap.servo.get("Hub2_Servo3");
 
         //Positional servos
         Servo launch =  hardwareMap.servo.get("Hub1_Servo3");
@@ -168,6 +169,7 @@ public class TeleOp extends LinearOpMode {
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
+            intakeRoller.setPosition(intakePosition);
 
             telemetry.addLine("\nIntake position: " + intakePosition);
 
