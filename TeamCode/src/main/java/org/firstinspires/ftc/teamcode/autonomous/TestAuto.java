@@ -41,6 +41,16 @@ import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import android.util.Size;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import java.util.List;
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
@@ -76,6 +86,10 @@ public class TestAuto extends LinearOpMode {
 
     private AprilTagProcessor aprilTag;
 
+    int Portal_1_View_ID;
+    int Portal_2_View_ID;
+    int Portal_3_View_ID;
+
 
 
     /**
@@ -102,6 +116,7 @@ public class TestAuto extends LinearOpMode {
     // that has the same name as the class.
 
     public void runOpMode() {
+        initMultiPortals();
 
         initTfod();
 
@@ -139,8 +154,7 @@ public class TestAuto extends LinearOpMode {
                     distance -= adjustment;
                     currentRecognitions = tfod.getRecognitions();
                 }
-                visionPortalTensor1.stopStreaming();
-                visionPortalTensor2.resumeStreaming();
+
 
 
                 telemetry.addLine("Camera 2 sees an object at x = "+objectPositionX2(0)+ ", y = "+objectPositionY2(0));
@@ -314,7 +328,7 @@ public class TestAuto extends LinearOpMode {
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
-
+        builder.setLiveViewContainerId(Portal_1_View_ID);
         // Build the Vision Portal, using the above settings.
         visionPortalTensor1 = builder.build();
 
@@ -339,6 +353,7 @@ public class TestAuto extends LinearOpMode {
         } else {
             builder2.setCamera(BuiltinCameraDirection.BACK);
         }
+        builder2.setLiveViewContainerId(Portal_2_View_ID);
 
         builder2.addProcessor(tfod2);
 
@@ -360,6 +375,7 @@ public class TestAuto extends LinearOpMode {
         }
 
         builder3.addProcessor(aprilTag);
+        builder3.setLiveViewContainerId(Portal_3_View_ID);
 
         // Build the Vision Portal, using the above settings.
         visionPortalAprilTag = builder3.build();
@@ -435,8 +451,25 @@ public class TestAuto extends LinearOpMode {
         return(y);
     }
 
-    private void intMultiPortals(){
+    private void initMultiPortals() {
+        List myPortalsList;
+
+        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(3, VisionPortal.MultiPortalLayout.HORIZONTAL));
+        Portal_1_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
+        Portal_2_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
+        Portal_3_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 2, false)).intValue();
+        telemetry.addData("Portal 1 View ID (index 0 of myPortalsList)", Portal_1_View_ID);
+        telemetry.addData("Portal 2 View ID (index 1 of myPortalsList)", Portal_2_View_ID);
+        telemetry.addData("Portal 3 View ID (index 1 of myPortalsList)", Portal_3_View_ID);
+        telemetry.addLine("");
+        telemetry.addLine("Press Y to continue");
+        telemetry.update();
+       while (!gamepad1.y && opModeInInit()) {
+            // Loop until gamepad Y button is pressed.
+        }
+
 
     }
+
 
 }   // end class
