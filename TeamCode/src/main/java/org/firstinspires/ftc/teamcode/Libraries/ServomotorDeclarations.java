@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-//declare all of our motors and servos in one place
+//object containing all our motors and servos
 
 public class ServoMotorDeclarations {
     //drive train motors

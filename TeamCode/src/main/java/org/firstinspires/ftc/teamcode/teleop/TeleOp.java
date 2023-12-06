@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Libraries.buttonClick;
 import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 
+//controls all of our robot's subsystems
+
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp", group="TeleOp")
 
 public class TeleOp extends LinearOpMode {
