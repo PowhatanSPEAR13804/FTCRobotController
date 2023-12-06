@@ -15,7 +15,7 @@ General:
     * Put a space after commas
     * Ex: str.substring(i, i+1);
 
-    * When doing arithmetic, don't put spaces before or after operators,
+    * When doing arithmetic, don't put spaces before or after arithmetic operators,
     excluding whatever is being set or declared
     * Ex: totalCost += cost*0.5
 
