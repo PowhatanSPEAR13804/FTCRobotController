@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.teamcode.Libraries.buttonClick;
+import org.firstinspires.ftc.teamcode.Libraries.ButtonClick;
 import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 
 //controls all of our robot's subsystems
@@ -56,17 +56,17 @@ public class TeleOp extends LinearOpMode {
         double hookPosition;
         boolean hookUp = false;
 
-        //buttonClick variables
-        buttonClick dPadLeft = new buttonClick();
-        buttonClick dPadRight = new buttonClick();
-        buttonClick gamepadB = new buttonClick();
-        buttonClick gamepadX = new buttonClick();
-        buttonClick gamepadY = new buttonClick();
-        buttonClick BumperLeft = new buttonClick();
-        buttonClick BumperRight = new buttonClick();
-        buttonClick littleBroB = new buttonClick();
-        buttonClick littleBroY = new buttonClick();
-        buttonClick littleBroRB = new buttonClick();
+        //ButtonClick variables
+        ButtonClick dPadLeft = new ButtonClick();
+        ButtonClick dPadRight = new ButtonClick();
+        ButtonClick gamepadB = new ButtonClick();
+        ButtonClick gamepadX = new ButtonClick();
+        ButtonClick gamepadY = new ButtonClick();
+        ButtonClick BumperLeft = new ButtonClick();
+        ButtonClick BumperRight = new ButtonClick();
+        ButtonClick littleBroB = new ButtonClick();
+        ButtonClick littleBroY = new ButtonClick();
+        ButtonClick littleBroRB = new ButtonClick();
 
 
 
@@ -214,7 +214,7 @@ public class TeleOp extends LinearOpMode {
             //drone launch subsystem
             gamepadY.checkButton(gamepad1.y);
             littleBroY.checkButton(gamepad2.y);
-            //transfer the state of the button to the buttonclick class
+            //transfer the state of the button to the ButtonClick class
             if (gamepadY.getClickCount() > 0 || littleBroY.getClickCount() > 0) {
                 launchServoOpen = !launchServoOpen;
                 gamepadY.resetClickCount();
@@ -283,7 +283,7 @@ public class TeleOp extends LinearOpMode {
 
             //hanging subsystem hook servo
             littleBroRB.checkButton(gamepad2.right_bumper);
-            //transfer the state of the button to the buttonClick class
+            //transfer the state of the button to the ButtonClick class
             if (littleBroRB.getClickCount() > 0) {
                 hookUp = !hookUp;
                 littleBroRB.resetClickCount();
