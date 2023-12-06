@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.Libraries;
 
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //object for controlling the 4 drive motors
 //expects the 4 drive motors connected to omnidirectional wheels
