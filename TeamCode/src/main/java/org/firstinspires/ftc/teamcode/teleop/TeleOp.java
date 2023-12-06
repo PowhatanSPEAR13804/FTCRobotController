@@ -65,6 +65,7 @@ public class TeleOp extends LinearOpMode {
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
         int viperPosition = 0;
+        int viperStart = viper.getCurrentPosition();
         boolean linearOpen = false;
         boolean servoOpen = false;
         boolean launchServoOpen = false;
@@ -195,7 +196,7 @@ public class TeleOp extends LinearOpMode {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                if(viper.getCurrentPosition() < -100)
+                if(viper.getCurrentPosition() < -1200)
                     viperPower = 0.5;
                 else
                     viperPower = 0;
