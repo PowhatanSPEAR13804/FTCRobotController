@@ -23,14 +23,6 @@ public class robotMove {
         // Create the motor devices
         // TODO - this is setup to the 2023 robot map
         // Change this mapping to however your robot is setup.
-
-        // test bot motors
-        // motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        // motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        // motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        // motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
-
-        // comp bot motors
         motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
         motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
