@@ -37,7 +37,18 @@ Comments:
     * /*
       this comment has multiple lines blahblahblahblahblah
       blahblahblahblahblahblahblahblahblahblahblahblahblah
-      */
+       */
+
+    * Space multiline comments from normal ones like this
+    * //blah
+      //blah2
+
+      /*
+      blahblahblahblahblah
+      blahblahblahblahblah
+       */
+
+      //blah3
 
     * Add header comments to explain class purposes
     * Ex: (at top of this file)
