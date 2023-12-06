@@ -19,41 +19,16 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         ServoMotorDeclarations robot = new  ServoMotorDeclarations(hardwareMap);
 
-        // Declare our motors
-        // Make sure your ID's match your configuration
-        DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
-        DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
-        DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
-        DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
-
-        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
-        DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
-        DcMotor hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
-
-        //continuous servos
-        Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
-        Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
-        Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
-
-        //Positional servos
-        Servo launch =  hardwareMap.servo.get("Hub1_Servo3");
-        Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
-        Servo hangingS =  hardwareMap.servo.get("Hub2_Servo1");
-        Servo hook = hardwareMap.servo.get("Hub2_Servo2");
-
-        //linear servo
-        Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
-
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
-        motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeLeft.setDirection((Servo.Direction.REVERSE));
-        intakeRight.setDirection((Servo.Direction.FORWARD));
+        robot.motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.intakeLeft.setDirection((Servo.Direction.REVERSE));
+        robot.intakeRight.setDirection((Servo.Direction.FORWARD));
 
-        hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         double throughputPosition = 0.5;
         boolean forward = false;
@@ -64,7 +39,7 @@ public class TeleOp extends LinearOpMode {
         double launchPosition = 0;
         double outputSPosition = 0.5;
         double outputLPosition = 0;
-        double hookDownPosition = hook.getPosition();
+        double hookDownPosition = robot.hook.getPosition();
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
         int viperPosition = 0;
@@ -110,10 +85,10 @@ public class TeleOp extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            motorFrontLeft.setPower(frontLeftPower);
-            motorBackLeft.setPower(backLeftPower);
-            motorFrontRight.setPower(frontRightPower);
-            motorBackRight.setPower(backRightPower);
+            robot.motorFrontLeft.setPower(frontLeftPower);
+            robot.motorBackLeft.setPower(backLeftPower);
+            robot.motorFrontRight.setPower(frontRightPower);
+            robot.motorBackRight.setPower(backRightPower);
 
             //throughput
             dPadRight.checkButton(gamepad1.dpad_right);
@@ -145,7 +120,7 @@ public class TeleOp extends LinearOpMode {
                 dPadLeft.resetClickCount();
                 dPadRight.resetClickCount();
             }
-            throughput.setPosition(throughputPosition);
+            robot.throughput.setPosition(throughputPosition);
             telemetry.addLine("\nBackward: " + backward);
             telemetry.addLine("\nForward: " + forward);
             telemetry.addLine("\nThroughput position: " + throughputPosition);
@@ -171,8 +146,8 @@ public class TeleOp extends LinearOpMode {
                 gamepadB.resetClickCount();
                 littleBroB.resetClickCount();
             }
-            intakeLeft.setPosition(intakePosition);
-            intakeRight.setPosition(intakePosition);
+            robot.intakeLeft.setPosition(intakePosition);
+            robot.intakeRight.setPosition(intakePosition);
 
             telemetry.addLine("\nIntake position: " + intakePosition);
 
@@ -184,10 +159,10 @@ public class TeleOp extends LinearOpMode {
             } else {
                 fourBarPower = 0;
             }
-            fourBar.setPower(fourBarPower);
+            robot.fourBar.setPower(fourBarPower);
 
             telemetry.addLine("\nFour Bar Power: " + fourBarPower);
-            telemetry.addLine("\nFour Bar Position: " + fourBar.getCurrentPosition());
+            telemetry.addLine("\nFour Bar Position: " + robot.fourBar.getCurrentPosition());
 
             boolean on;
             if (gamepad1.right_trigger > 0 && viperPosition > -4450) {
@@ -204,15 +179,15 @@ public class TeleOp extends LinearOpMode {
                 if(viperPosition < -4450) {
                     viperPosition = -4450;
                 }
-                viper.setTargetPosition(viperPosition);
-                viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.viper.setTargetPosition(viperPosition);
+                robot.viper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             } else {
-                viper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.viper.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
-            viper.setPower(viperPower);
-            viperPosition = viper.getCurrentPosition() + 1;
+            robot.viper.setPower(viperPower);
+            viperPosition = robot.viper.getCurrentPosition() + 1;
 
-            telemetry.addLine("\nViper Position: " + viper.getCurrentPosition());
+            telemetry.addLine("\nViper Position: " + robot.viper.getCurrentPosition());
             telemetry.addLine("\nViper Power: " + viperPower);
 
             //Launch Servo Movements
@@ -234,7 +209,7 @@ public class TeleOp extends LinearOpMode {
                 telemetry.addLine("Servo Open: " + launchServoOpen);
                 telemetry.addLine("Launch Servo Position: " + launchPosition);
 
-                launch.setPosition(launchPosition);
+                robot.launch.setPosition(launchPosition);
             }
             BumperLeft.checkButton(gamepad1.left_bumper);
             BumperRight.checkButton(gamepad1.right_bumper);
@@ -254,7 +229,7 @@ public class TeleOp extends LinearOpMode {
                 telemetry.addLine("Linear Open: " + linearOpen);
                 telemetry.addLine("Output Linear Position: " + outputLPosition);
 
-                outputL.setPosition(outputLPosition);
+                robot.outputL.setPosition(outputLPosition);
             }
             //Output Servo Movements
             {
@@ -271,15 +246,15 @@ public class TeleOp extends LinearOpMode {
                 telemetry.addLine("Servo Open: " + servoOpen);
                 telemetry.addLine("Output Servo Position: " + outputSPosition);
 
-                outputS.setPosition(outputSPosition);
+                robot.outputS.setPosition(outputSPosition);
             }
-            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
+            robot.hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
             if (gamepad1.a || gamepad2.a) {
-                hangingM.setPower(1);
+                robot.hangingM.setPower(1);
             } else if (gamepad2.x) {
-                hangingM.setPower(-1);
+                robot.hangingM.setPower(-1);
             } else {
-                hangingM.setPower(0);
+                robot.hangingM.setPower(0);
             }
             //Hanging Hook Servo Movements
             {
@@ -296,9 +271,9 @@ public class TeleOp extends LinearOpMode {
                 }
             }
             //hook.setPosition(hookPosition);
-            telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
-            telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
-            telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
+            telemetry.addLine("\nHanging Motor Power: " + robot.hangingM.getPower());
+            telemetry.addLine("\nHanging Servo Position: " + robot.hangingS.getPosition());
+            telemetry.addLine("\nHook Servo Position: " + robot.hook.getPosition());
             telemetry.update();
         }
     }
