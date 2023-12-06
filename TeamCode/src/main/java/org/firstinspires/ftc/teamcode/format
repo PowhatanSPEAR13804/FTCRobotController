@@ -16,7 +16,7 @@ General:
     * Ex: str.substring(i, i+1);
 
     * When doing arithmetic, don't put spaces before or after operators,
-    excluding whatever is being set or declared
+    excluding whatever is being set or declare
     * Ex: totalCost += cost*0.5
 
 
