@@ -240,7 +240,7 @@ public class TeleOp extends LinearOpMode {
             }
             BumperLeft.checkButton(gamepad1.left_bumper);
             BumperRight.checkButton(gamepad1.right_bumper);
-
+            /*
             //Linear Servo Movements
             {
                 if (BumperLeft.getClickCount() > 0) {
@@ -258,6 +258,7 @@ public class TeleOp extends LinearOpMode {
 
                 outputL.setPosition(outputLPosition);
             }
+            */
             //Output Servo Movements
             {
                 if (BumperRight.getClickCount() > 0) {
