@@ -26,16 +26,16 @@ public class TestTeleOp extends LinearOpMode {
         double angleMax = 90.0;
 
         while (opModeIsActive()) {
-            double x = -gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
-            double r = 0.0;//gamepad1.right_stick_x;
+            double r = gamepad1.right_stick_x;
 
-            // Convert the normalized r value to +- 90 degrees for the move function
+            //convert the normalized r value to +- 90 degrees for the move function
             r = (r * angleMax);
-            // Convert the xy normalized velocity values
+            //convert the xy normalized velocity values
             x *= vMax;
             y *= vMax;
-            robot.move(y, x, r);
+            robot.move(y * 5, x * 5, r * 5);
 
             if (isStopRequested()){
                 robot.stop();
