@@ -9,10 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class ServoMotorDeclarations {
     //drive train motors
-    public DcMotor motorFrontLeft;
-    public DcMotor motorBackLeft;
-    public DcMotor motorFrontRight;
-    public DcMotor motorBackRight;
+    public DcMotor motorFL;
+    public DcMotor motorBL;
+    public DcMotor motorFR;
+    public DcMotor motorBR;
 
     //subsystem motors
     public DcMotor fourBar;
@@ -34,11 +34,12 @@ public class ServoMotorDeclarations {
     public Servo outputL;
     
     public ServoMotorDeclarations(HardwareMap hardwareMap) {
-        motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
-        motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
-        motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
-        motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+        motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
+        /*
         fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
         viper = hardwareMap.dcMotor.get("Hub1_Motor1");
         hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
@@ -53,14 +54,6 @@ public class ServoMotorDeclarations {
         hook = hardwareMap.servo.get("Hub2_Servo2");
 
         outputL = hardwareMap.servo.get("Hub1_Servo4");
-
-        motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeLeft.setDirection((Servo.Direction.REVERSE));
-        intakeRight.setDirection((Servo.Direction.FORWARD));
-
-        hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+         */
     }
 }

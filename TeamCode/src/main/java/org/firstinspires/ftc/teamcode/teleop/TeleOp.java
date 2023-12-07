@@ -17,10 +17,10 @@ public class TeleOp extends LinearOpMode {
         ServoMotorDeclarations robot = new  ServoMotorDeclarations(hardwareMap);
 
         //reverse the right side motors; reverse left motors if you are using NeveRests
-        robot.motorFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.motorBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.motorFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.motorFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.motorBR.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //set servo directions
         robot.intakeLeft.setDirection((Servo.Direction.REVERSE));
@@ -91,10 +91,10 @@ public class TeleOp extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            robot.motorFrontLeft.setPower(frontLeftPower);
-            robot.motorBackLeft.setPower(backLeftPower);
-            robot.motorFrontRight.setPower(frontRightPower);
-            robot.motorBackRight.setPower(backRightPower);
+            robot.motorFL.setPower(frontLeftPower);
+            robot.motorBL.setPower(backLeftPower);
+            robot.motorFR.setPower(frontRightPower);
+            robot.motorBR.setPower(backRightPower);
 
 
 
