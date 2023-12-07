@@ -26,8 +26,12 @@ public class SimpleForward extends LinearOpMode{
         waitForStart();
 
         outputL.setPosition(0);
-
-        robot.forward(0.1, 80);
+        robot.forward(0.5, 60);
+        intakeLeft.setPosition(0);
+        intakeRight.setPosition(0);
+        sleep(1000);
+        intakeLeft.setPosition(0.5);
+        intakeRight.setPosition(0.5);
         robot.stop();
 
       /*  intakeLeft.setPosition(0);

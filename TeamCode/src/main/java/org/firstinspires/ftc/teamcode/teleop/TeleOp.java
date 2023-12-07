@@ -29,7 +29,6 @@ public class TeleOp extends LinearOpMode {
         Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
-        Servo intakeRoller = hardwareMap.servo.get("Hub2_Servo3");
 
         //Positional servos
         Servo launch =  hardwareMap.servo.get("Hub1_Servo3");
@@ -48,7 +47,6 @@ public class TeleOp extends LinearOpMode {
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
-        intakeRoller.setDirection((Servo.Direction.FORWARD));
 
         hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -56,16 +54,15 @@ public class TeleOp extends LinearOpMode {
         boolean forward = false;
         boolean backward = false;
         double intakePosition = 0.5;
-        double fourBarPower = 0;
+        double fourBarPower; // 0 - old value
         double viperPower = 0;
-        double launchPosition = 0;
-        double outputSPosition = 0.5;
-        double outputLPosition = 0;
+        double launchPosition; // 0 - old value
+        double outputSPosition; // 0.5 - old value
+        double outputLPosition; // 0 - old value
         double hookDownPosition = hook.getPosition();
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
         int viperPosition = 0;
-        int viperStart = viper.getCurrentPosition();
         boolean linearOpen = false;
         boolean servoOpen = false;
         boolean launchServoOpen = false;
@@ -97,7 +94,7 @@ public class TeleOp extends LinearOpMode {
             //x and y were switched :)
             double x = -gamepad1.left_stick_x; // Remember, this is reversed!
             double y = gamepad1.left_stick_y * 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.right_stick_x;
+            double rx = -gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -171,7 +168,6 @@ public class TeleOp extends LinearOpMode {
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
-            intakeRoller.setPosition(intakePosition);
 
             telemetry.addLine("\nIntake position: " + intakePosition);
 
@@ -196,10 +192,7 @@ public class TeleOp extends LinearOpMode {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                if(viper.getCurrentPosition() < -1200)
-                    viperPower = 0.5;
-                else
-                    viperPower = 0;
+                viperPower = 0.5;
                 on = false;
             }
             if(!on) {
@@ -276,7 +269,7 @@ public class TeleOp extends LinearOpMode {
 
                 outputS.setPosition(outputSPosition);
             }
-            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 0.5));
+            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
             if (gamepad1.a || gamepad2.a) {
                 hangingM.setPower(1);
             } else if (gamepad2.x) {
@@ -298,7 +291,7 @@ public class TeleOp extends LinearOpMode {
                     hookPosition = hookDownPosition;
                 }
             }
-            hook.setPosition(hookPosition);
+            //hook.setPosition(hookPosition);
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
             telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
