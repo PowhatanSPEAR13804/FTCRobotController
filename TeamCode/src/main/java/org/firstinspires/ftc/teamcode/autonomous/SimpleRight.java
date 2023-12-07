@@ -4,6 +4,7 @@ import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+//moves the robot right and then forward
 //TODO - stuff with pixels
 
 @Autonomous(name="SimpleRight", group="Autonomous")
