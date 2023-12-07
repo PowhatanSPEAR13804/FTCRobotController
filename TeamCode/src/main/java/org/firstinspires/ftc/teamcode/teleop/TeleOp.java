@@ -97,7 +97,7 @@ public class TeleOp extends LinearOpMode {
             //x and y were switched :)
             double x = -gamepad1.left_stick_x; // Remember, this is reversed!
             double y = gamepad1.left_stick_y * 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.right_stick_x;
+            double rx = -gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
