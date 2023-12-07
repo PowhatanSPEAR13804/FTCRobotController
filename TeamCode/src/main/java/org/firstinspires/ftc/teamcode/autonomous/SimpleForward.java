@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //moves the robot forward
 //TODO - stuff with pixels
 
-@Autonomous(name="SimpleLeft", group="Autonomous")
+@Autonomous(name="SimpleForward", group="Autonomous")
 
 public class SimpleForward extends LinearOpMode{
     @Override

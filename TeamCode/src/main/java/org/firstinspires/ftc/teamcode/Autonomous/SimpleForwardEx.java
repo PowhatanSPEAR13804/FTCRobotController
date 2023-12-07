@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Libraries.RobotMoveEx;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="SimpleForward", group="Autonomous")
+@Autonomous(name="SimpleForwardEx", group="Autonomous")
 
 public class SimpleForwardEx extends LinearOpMode{
 
@@ -17,13 +17,7 @@ public class SimpleForwardEx extends LinearOpMode{
 
         waitForStart();
 
-        robot.move(20, 0, 0);
-        robot.wait(1000);
-        robot.move(-20, 0, 0);
-        robot.wait(1000);
-        robot.move(0, -20, 0);
-        robot.wait(1000);
-        robot.move(0, 20, 0);
+        robot.moveXYA(0, 20, 0);
         robot.wait(1000);
         robot.stop();
     }

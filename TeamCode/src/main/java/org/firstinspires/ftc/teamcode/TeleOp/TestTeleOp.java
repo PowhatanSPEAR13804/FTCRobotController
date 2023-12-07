@@ -26,7 +26,7 @@ public class TestTeleOp extends LinearOpMode {
         double angleMax = 90.0;
 
         while (opModeIsActive()) {
-            double x = gamepad1.left_stick_x;
+            double x = -gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double r = gamepad1.right_stick_x;
 
