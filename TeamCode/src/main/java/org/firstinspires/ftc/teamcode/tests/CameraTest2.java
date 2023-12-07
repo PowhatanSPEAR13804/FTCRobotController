@@ -25,7 +25,7 @@ public class CameraTest2 extends LinearOpMode {
     private static final int DESIRED_TAG_ID = 1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
-   private boolean usingCameraOne =false;
+   private boolean CameraChange =false;
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 private   List<AprilTagDetection> currentDetections;
     @Override public void runOpMode() {
@@ -52,19 +52,19 @@ private   List<AprilTagDetection> currentDetections;
         waitForStart();
         while (opModeIsActive()){
 
-            if(usingCameraOne){
+            if(CameraChange){
 
-
-                switchableWebcam.setActiveCamera(webcam2);
-
-
-                usingCameraOne = false;
-            }
-            else{
 
                 switchableWebcam.setActiveCamera(webcam1);
 
-                usingCameraOne = true;
+
+                CameraChange = false;
+            }
+            else{
+
+                switchableWebcam.setActiveCamera(webcam2);
+
+                CameraChange = true;
             }
 
 
@@ -125,18 +125,10 @@ private   List<AprilTagDetection> currentDetections;
 
         // Create the vision portal by using a builder.
         if (USE_WEBCAM) {
-            if (usingCameraOne) {
-                visionPortal = new VisionPortal.Builder()
-                        .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                        .addProcessor(aprilTag)
-                        .build();
-            } else {
-                visionPortal = new VisionPortal.Builder()
-                        .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
-                        .addProcessor(aprilTag)
-                        .build();
-            }
-
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .addProcessor(aprilTag)
+                    .build();
         } else {
             visionPortal = new VisionPortal.Builder()
                     .setCamera(BuiltinCameraDirection.BACK)
