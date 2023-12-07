@@ -54,7 +54,7 @@ public class TeleOp extends LinearOpMode {
         double hookDownPosition = robot.hook.getPosition();
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
-        boolean hookUp = false;
+        boolean hookWristRotIn = false;
 
         //ButtonClick variables
         ButtonClick dPadLeft = new ButtonClick();
@@ -285,11 +285,11 @@ public class TeleOp extends LinearOpMode {
             littleBroRB.checkButton(gamepad2.right_bumper);
             //transfer the state of the button to the ButtonClick class
             if (littleBroRB.getClickCount() > 0) {
-                hookUp = !hookUp;
+                hookWristRotIn = !hookWristRotIn;
                 littleBroRB.resetClickCount();
             }
 
-            if (hookUp) {
+            if (hookWristRotIn) {
                 hookPosition = hookUpPosition;
             } else {
                 hookPosition = hookDownPosition;

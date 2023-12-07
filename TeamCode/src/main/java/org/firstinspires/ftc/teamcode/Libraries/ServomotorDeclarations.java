@@ -40,6 +40,8 @@ public class ServoMotorDeclarations {
         motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
         /*
+        Prevents errors when using the test bot when commented out
+
         fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
         viper = hardwareMap.dcMotor.get("Hub1_Motor1");
         hangingM = hardwareMap.dcMotor.get("Hub2_Motor1");
