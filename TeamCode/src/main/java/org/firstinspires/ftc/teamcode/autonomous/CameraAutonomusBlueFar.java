@@ -4,9 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
+import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 
 // TODO - stuff with pixels
 

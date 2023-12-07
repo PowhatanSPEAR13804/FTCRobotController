@@ -30,12 +30,14 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvSwitchableWebcam;
-import org.openftc.easyopencv.OpenCvCamera;
+
 @TeleOp(name="SwitchCameraTest", group="Tests")
+
 public class SwitchableWebcamExample extends LinearOpMode
 {
     WebcamName webcam1;
