@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Libraries.ButtonClick;
 
 @TeleOp(name="OutputTest", group="Tests")
-public class OutputTest extends LinearOpMode{
+public class    OutputTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
@@ -18,8 +18,8 @@ public class OutputTest extends LinearOpMode{
         DcMotor motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
         DcMotor motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         DcMotor motorFourBar = hardwareMap.dcMotor.get("Hub2_Motor2");
-        DcMotor motorV = hardwareMap.dcMotor.get("Hub1_Motor1");
-        DcMotor motorH = hardwareMap.dcMotor.get("Hub2_Motor1");
+        DcMotor motorViper = hardwareMap.dcMotor.get("Hub1_Motor1");
+        DcMotor motorHanging = hardwareMap.dcMotor.get("Hub2_Motor1");
 
         //continuous servos
         Servo servoIntakeLeft = hardwareMap.servo.get("Hub1_Servo0");
@@ -34,7 +34,7 @@ public class OutputTest extends LinearOpMode{
         //linear servo
         Servo linearServoOutput = hardwareMap.servo.get("Hub1_Servo4");
 
-
+        //Sets that maximum and minimum values for testing
         final int minTest = 0;
         final int maxTest = 14;
         int test = 0;
@@ -93,11 +93,11 @@ public class OutputTest extends LinearOpMode{
                     break;
                 case 5:
                     telemetry.addLine("testing viper motor.");
-                    testMotor(motorV);
+                    testMotor(motorViper);
                     break;
                 case 6:
                     telemetry.addLine("testing hanging motor.");
-                    testMotor(motorH);
+                    testMotor(motorHanging);
                     break;
                 case 7:
                     telemetry.addLine("testing left intake servo.");
