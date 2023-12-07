@@ -37,10 +37,20 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import android.util.Size;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import java.util.List;
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
@@ -72,11 +82,23 @@ public class TestAuto extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
+    private TfodProcessor tfod2;
+
+    private AprilTagProcessor aprilTag;
+
+    int Portal_1_View_ID;
+    int Portal_2_View_ID;
+    int Portal_3_View_ID;
+
+
 
     /**
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
+    private VisionPortal visionPortalTensor1;
+    private VisionPortal visionPortalTensor2;
+
+    private VisionPortal visionPortalAprilTag;
 
     /*
     public TestTensorFlowObjectDetection() {
@@ -94,10 +116,11 @@ public class TestAuto extends LinearOpMode {
     // that has the same name as the class.
 
     public void runOpMode() {
+        initMultiPortals();
 
         initTfod();
 
-        Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
+      /*  Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
         DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
@@ -108,111 +131,140 @@ public class TestAuto extends LinearOpMode {
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
+       */
+
         robotMove robot = new robotMove(hardwareMap);
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
+
                 double x = 0;
                 double y;
+                double distance = 26.5;
+                double adjustment = 0.1;
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
+                telemetry.update();
                 while(currentRecognitions.size() == 0) {
-                    robot.forward(0.1, 0.1);
+                    telemetry.addLine("Can't see nothing");
+                    telemetry.update();
+                    robot.forward(0.01, adjustment);
+                    distance -= adjustment;
                     currentRecognitions = tfod.getRecognitions();
                 }
-                telemetry.addData("x = ", x);
-//                while(x == 0){
-                    for (Recognition recognition : currentRecognitions) {
-                        x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-                        y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-                        telemetry.addLine("\nx and y:" + x + " " + y);
-                    }
-//                }
 
-                robot.forward(0.5, 29.5);
-                if(x>550){
+
+
+                telemetry.addLine("Camera 2 sees an object at x = "+objectPositionX2(0)+ ", y = "+objectPositionY2(0));
+                telemetry.addData("x = ", x);
+                telemetry.update();
+                for (Recognition recognition : currentRecognitions) {
+                    x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                    y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                    telemetry.addLine("\nx and y:" + x + " " + y);
+                    telemetry.update();
+                }
+                String spike = "";
+                if(x > 550) {spike = "right";}
+                else if(x < 150) {spike = "left";}
+                else {spike = "center";}
+
+
+
+                robot.forward(0.5, distance);
+                if(spike.equals("right")){
                     //right spike
+                    telemetry.addLine("Right Spike");
+                    telemetry.update();
                     robot.right(0.5, 11.5);
-                    intakeLeft.setPosition(0);
+                    /*intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                     */
                     robot.left(0.5, 11.5);
 
                 }
                 else if(x<150){
                     //left spike
                     robot.left(0.5, 11.5);
-                    intakeLeft.setPosition(0);
+                    telemetry.addLine("Left Spike");
+                    telemetry.update();
+                   /* intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                    */
                     robot.right(0.5, 11.5);
                 }
                 else{
                     //center spike
-                    intakeLeft.setPosition(0);
+                    telemetry.addLine("Center Spike");
+                    telemetry.update();
+                    /*intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+
+                     */
                 }
-                robot.right(0.5, 40);
+                robot.right(0.5, 80);
 
                 //turn robot left 90 degrees
-                robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
+                robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.7*Math.PI*6.25);
 
-                fourBar.setPower(0.5);
+                /*fourBar.setPower(0.5);
                 sleep(1000);
                 fourBar.setPower(0);
                 viper.setPower(0.5);
                 sleep(250);
                 viper.setPower(0);
 
-                if(x>550){
-                    //right spike
+                 */
 
+                if(spike.equals("right")){
+                    //right spike
                     robot.left(0.5, 11.5);
-                    outputL.setPosition(0);
+                   /* outputL.setPosition(0);
                     outputS.setPosition(45);
                     sleep(1000);
+
+                    */
                     robot.right(0.5, 11.5);
                 }
-                else if(x<150){
+
+                else if(spike.equals("left")){
                     //left spike
                     robot.right(0.5, 11.5);
-                    outputL.setPosition(0);
+                  /*  outputL.setPosition(0);
                     outputS.setPosition(45);
                     sleep(1000);
+
+                   */
                     robot.left(0.5, 11.5);
                 }
                 else{
-                    outputL.setPosition(0);
+                  /*  outputL.setPosition(0);
                     outputS.setPosition(45);
+
+                   */
                 }
                 robot.left(0.5, 23);
 
-                robot.forward(0.5, 60);
+                robot.backward(0.5, 20);
                 robot.stop();
 
                 telemetryTfod();
 
 
-                // Push telemetry to the Driver Station.
-                telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
                 while (opModeIsActive()) {
                     sleep(10);
                 }
@@ -220,7 +272,7 @@ public class TestAuto extends LinearOpMode {
         }
 
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+       // visionPortal.close();
 
     }   // end runOpMode()
     /**
@@ -255,6 +307,7 @@ public class TestAuto extends LinearOpMode {
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            telemetry.addLine("Camera 1 Built");
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -275,9 +328,9 @@ public class TestAuto extends LinearOpMode {
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
-
+        builder.setLiveViewContainerId(Portal_1_View_ID);
         // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
+        visionPortalTensor1 = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
         //tfod.setMinResultConfidence(0.75f);
@@ -285,6 +338,47 @@ public class TestAuto extends LinearOpMode {
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
 
+        // Create the TensorFlow processor by using a builder.
+        tfod2 = new TfodProcessor.Builder()
+                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelLabels(LABELS)
+                .build();
+
+        VisionPortal.Builder builder2 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder2.setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"));
+            telemetry.addLine("Camera 2 Built");
+        } else {
+            builder2.setCamera(BuiltinCameraDirection.BACK);
+        }
+        builder2.setLiveViewContainerId(Portal_2_View_ID);
+
+        builder2.addProcessor(tfod2);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalTensor2 = builder2.build();
+
+        aprilTag = new AprilTagProcessor.Builder().build();
+
+
+
+        VisionPortal.Builder builder3 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder3.setCamera(hardwareMap.get(WebcamName.class, "Webcam 3"));
+            telemetry.addLine("Camera 3 Built");
+        } else {
+            builder3.setCamera(BuiltinCameraDirection.BACK);
+        }
+
+        builder3.addProcessor(aprilTag);
+        builder3.setLiveViewContainerId(Portal_3_View_ID);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalAprilTag = builder3.build();
     }   // end method initTfod()
 
     /**
@@ -337,5 +431,45 @@ public class TestAuto extends LinearOpMode {
 
         return(y);
     }
+    public double objectPositionX2 (double x){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+        }
+
+        return(x);
+    }
+    public double objectPositionY2 (double y){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+        }
+        return(y);
+    }
+
+    private void initMultiPortals() {
+        List myPortalsList;
+
+        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(3, VisionPortal.MultiPortalLayout.HORIZONTAL));
+        Portal_1_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
+        Portal_2_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
+        Portal_3_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 2, false)).intValue();
+        telemetry.addData("Portal 1 View ID (index 0 of myPortalsList)", Portal_1_View_ID);
+        telemetry.addData("Portal 2 View ID (index 1 of myPortalsList)", Portal_2_View_ID);
+        telemetry.addData("Portal 3 View ID (index 1 of myPortalsList)", Portal_3_View_ID);
+        telemetry.addLine("");
+        telemetry.addLine("Press Y to continue");
+        telemetry.update();
+       while (!gamepad1.y && opModeInInit()) {
+            // Loop until gamepad Y button is pressed.
+        }
+
+
+    }
+
 
 }   // end class

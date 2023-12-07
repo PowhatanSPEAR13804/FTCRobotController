@@ -29,6 +29,7 @@ public class TeleOp extends LinearOpMode {
         Servo throughput =  hardwareMap.servo.get("Hub2_Servo4");
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        Servo intakeRoller = hardwareMap.servo.get("Hub2_Servo3");
 
         //Positional servos
         Servo launch =  hardwareMap.servo.get("Hub1_Servo3");
@@ -47,6 +48,7 @@ public class TeleOp extends LinearOpMode {
         motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
+        intakeRoller.setDirection((Servo.Direction.FORWARD));
 
         hangingM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -63,6 +65,7 @@ public class TeleOp extends LinearOpMode {
         double hookUpPosition = hookDownPosition + 180.0/270.0;
         double hookPosition;
         int viperPosition = 0;
+        int viperStart = viper.getCurrentPosition();
         boolean linearOpen = false;
         boolean servoOpen = false;
         boolean launchServoOpen = false;
@@ -168,6 +171,7 @@ public class TeleOp extends LinearOpMode {
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
+            intakeRoller.setPosition(intakePosition);
 
             telemetry.addLine("\nIntake position: " + intakePosition);
 
@@ -192,7 +196,10 @@ public class TeleOp extends LinearOpMode {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                viperPower = 0.5;
+                if(viper.getCurrentPosition() < -1200)
+                    viperPower = 0.5;
+                else
+                    viperPower = 0;
                 on = false;
             }
             if(!on) {
@@ -268,7 +275,7 @@ public class TeleOp extends LinearOpMode {
 
                 outputS.setPosition(outputSPosition);
             }
-            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
+            hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 0.5));
             if (gamepad1.a || gamepad2.a) {
                 hangingM.setPower(1);
             } else if (gamepad2.x) {
@@ -290,7 +297,7 @@ public class TeleOp extends LinearOpMode {
                     hookPosition = hookDownPosition;
                 }
             }
-            //hook.setPosition(hookPosition);
+            hook.setPosition(hookPosition);
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
             telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
