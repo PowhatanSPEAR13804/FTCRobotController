@@ -52,6 +52,8 @@ public class ServoMotorDeclarations {
 
         //Extra objective subsystem servos
         launch = hardwareMap.servo.get("Hub1_Servo3");
+        launch = hardwareMap.servo.get("Hub2_Servo5");
+        outputS = hardwareMap.servo.get("Hub1_Servo5");
         hangingS = hardwareMap.servo.get("Hub2_Servo1");
         hook = hardwareMap.servo.get("Hub2_Servo2");
 
