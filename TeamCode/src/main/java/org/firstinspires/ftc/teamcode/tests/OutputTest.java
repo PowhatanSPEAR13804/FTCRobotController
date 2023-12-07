@@ -6,37 +6,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Libraries.ButtonClick;
+import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 
 @TeleOp(name="OutputTest", group="Tests")
 public class    OutputTest extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
 
-        //motors
-        DcMotor motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        DcMotor motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        DcMotor motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
-        DcMotor motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        DcMotor motorFourBar = hardwareMap.dcMotor.get("Hub2_Motor2");
-        DcMotor motorViper = hardwareMap.dcMotor.get("Hub1_Motor1");
-        DcMotor motorHanging = hardwareMap.dcMotor.get("Hub2_Motor1");
-
-        //continuous servos
-        Servo servoIntakeLeft = hardwareMap.servo.get("Hub1_Servo0");
-        Servo servoIntakeRight =  hardwareMap.servo.get("Hub2_Servo0");
-        Servo servoThroughput =  hardwareMap.servo.get("Hub2_Servo4");
-
-        //position servos
-        Servo servoLaunch =  hardwareMap.servo.get("Hub2_Servo3");
-        Servo servoOutput =  hardwareMap.servo.get("Hub2_Servo5");
-        Servo servoHanging =  hardwareMap.servo.get("Hub2_Servo2");
-
-        //linear servo
-        Servo linearServoOutput = hardwareMap.servo.get("Hub1_Servo4");
+        ServoMotorDeclarations servoMotors = new ServoMotorDeclarations(hardwareMap);
 
         //Sets that maximum and minimum values for testing
         final int minTest = 0;
         final int maxTest = 14;
+        //Intermediate variable to set motors or servos
         int test = 0;
 
         //create a button click object that will check the button state
@@ -63,6 +45,7 @@ public class    OutputTest extends LinearOpMode{
                 a.resetClickCount();
             }
 
+            //Makes values loop from min to max or max to min
             if (test > maxTest) {
                 test = minTest;
             }
@@ -73,59 +56,59 @@ public class    OutputTest extends LinearOpMode{
             switch (test) {
                 case 0:
                     telemetry.addLine("testing front left motor.");
-                    testMotor(motorFR);
+                    testMotor(servoMotors.motorFR);
                     break;
                 case 1:
                     telemetry.addLine("testing back left motor.");
-                    testMotor(motorFL);
+                    testMotor(servoMotors.motorFL);
                     break;
                 case 2:
                     telemetry.addLine("testing front right motor.");
-                    testMotor(motorBR);
+                    testMotor(servoMotors.motorBR);
                     break;
                 case 3:
                     telemetry.addLine("testing back right motor.");
-                    testMotor(motorBL);
+                    testMotor(servoMotors.motorBL);
                     break;
                 case 4:
                     telemetry.addLine("testing four Bar motor.");
-                    testMotor(motorFourBar);
+                    testMotor(servoMotors.fourBar);
                     break;
                 case 5:
                     telemetry.addLine("testing viper motor.");
-                    testMotor(motorViper);
+                    testMotor(servoMotors.viper);
                     break;
                 case 6:
                     telemetry.addLine("testing hanging motor.");
-                    testMotor(motorHanging);
+                    testMotor(servoMotors.hangingM);
                     break;
                 case 7:
                     telemetry.addLine("testing left intake servo.");
-                    continuousTest(servoIntakeLeft);
+                    continuousTest(servoMotors.intakeLeft);
                     break;
                 case 8:
                     telemetry.addLine("testing right intake servo.");
-                    continuousTest(servoIntakeRight);
+                    continuousTest(servoMotors.intakeRight);
                     break;
                 case 9:
                     telemetry.addLine("testing throughput servo.");
-                    continuousTest(servoThroughput);
+                    continuousTest(servoMotors.throughput);
                     break;
                 case 10:
                     telemetry.addLine("testing the drone launch servo.");
-                    positionalTest(servoLaunch);
+                    positionalTest(servoMotors.launch);
                     break;
                 case 11:
                     telemetry.addLine("testing the output servo");
-                    positionalTest(servoOutput);
+                    positionalTest(servoMotors.outputS);
                     break;
                 case 12:
                     telemetry.addLine("testing the hanging servo");
-                    positionalTest(servoHanging);
+                    positionalTest(servoMotors.hangingS);
                     break;
                 case 13:
                     telemetry.addLine("testing the output linear servo.");
-                    linearServoTest(linearServoOutput);
+                    linearServoTest(servoMotors.outputL);
                     break;
                 default:
                     telemetry.addLine("test unknown");
