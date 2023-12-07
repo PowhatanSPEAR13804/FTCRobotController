@@ -18,16 +18,28 @@ public class SimpleForward extends LinearOpMode{
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+<<<<<<< Updated upstream
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
 
+=======
+>>>>>>> Stashed changes
         robotMove robot = new robotMove(hardwareMap);
 
         waitForStart();
 
         outputL.setPosition(0);
 
+<<<<<<< Updated upstream
         robot.forward(0.1, 80);
+=======
+        robot.forward(0.5, 60);
+        intakeLeft.setPosition(0);
+        intakeRight.setPosition(0);
+        sleep(1000);
+        intakeLeft.setPosition(0.5);
+        intakeRight.setPosition(0.5);
+>>>>>>> Stashed changes
         robot.stop();
 
       /*  intakeLeft.setPosition(0);
