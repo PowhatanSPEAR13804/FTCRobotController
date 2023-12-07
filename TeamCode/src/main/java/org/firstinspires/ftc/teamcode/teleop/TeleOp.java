@@ -192,8 +192,14 @@ public class TeleOp extends LinearOpMode {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                viperPower = 0.5;
-                on = false;
+                if(viperPosition < -1200) {
+                    viperPower = 0.5;
+                    on = false;
+                } else {
+                    viperPower = 0;
+                    on = false;
+                }
+
             }
             if(!on) {
                 if(viperPosition < -4450) {
