@@ -1,30 +1,21 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Libraries.RobotMoveEx;
+//TODO - stuff with pixels
 
-// TODO - stuff with pixels
-
-@Autonomous(name="SimpleForward", group="Autonomous")
+@Autonomous(name="SimpleLeft", group="Autonomous")
 
 public class SimpleForward extends LinearOpMode{
-
     @Override
     public void runOpMode() {
-        RobotMoveEx robot = new RobotMoveEx(hardwareMap);
+        RobotMove robot = new RobotMove(hardwareMap);
 
         waitForStart();
 
-        robot.move(20, 0, 0);
-        robot.wait(1000);
-        robot.move(-20, 0, 0);
-        robot.wait(1000);
-        robot.move(0, -20, 0);
-        robot.wait(1000);
-        robot.move(0, 20, 0);
-        robot.wait(1000);
+        robot.forward(1, 80);
         robot.stop();
     }
 }

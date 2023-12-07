@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 
-// TODO - stuff with pixels
+//TODO - stuff with pixels
 
 @Autonomous(name="SimpleRight", group="Autonomous")
 
@@ -14,21 +14,9 @@ public class SimpleRight extends LinearOpMode{
         RobotMove robot = new RobotMove(hardwareMap);
 
         waitForStart();
-        int i = 0;
-        while(opModeIsActive()) {
-            if(i < 1) {
-                robot.right(0.5, 24);
-                robot.forward(1, 80);
-                robot.stop();
-//<<<<<<< HEAD
-                i++;
-            }
-        }
 
-//=======
-          //  }
-           // i++;
-        //}
-//>>>>>>> 2068774e92b8a4e8e6cfa36414a2849c8b51c72a
+        robot.right(0.5, 24);
+        robot.forward(1, 80);
+        robot.stop();
     }
 }
