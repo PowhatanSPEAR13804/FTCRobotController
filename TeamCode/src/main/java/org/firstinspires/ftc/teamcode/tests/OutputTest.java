@@ -34,10 +34,11 @@ public class OutputTest extends LinearOpMode{
         //linear servo
         Servo linearServoOutput = hardwareMap.servo.get("Hub1_Servo4");
 
-
+        //maximum and minimum index of the motors and servos.
         final int minTest = 0;
         final int maxTest = 14;
-        int test = 0;
+
+        int test = 0; //index of each motor
 
         //create a button click object that will check the button state
         buttonClick b = new buttonClick();
@@ -49,20 +50,24 @@ public class OutputTest extends LinearOpMode{
 
         while (opModeIsActive()){
 
-            b.checkButton(gamepad1.b);
+            b.checkButton(gamepad1.b); //check the state of the B button
 
-            if(b.getClickCount() > 0) {
-                test--;
-                b.resetClickCount();
+            if(b.getClickCount() > 0) /*get the amount of times the B button has been pressed*/{
+                test--; //decrement the test variable
+                b.resetClickCount(); //reset the B button's click count
             }
 
-            a.checkButton(gamepad1.a);
+            a.checkButton(gamepad1.a); //check the state of the A button
 
-            if(a.getClickCount() > 0) {
-                test++;
-                a.resetClickCount();
+            if(a.getClickCount() > 0) /*get the amount of times the A button has been pressed*/{
+                test++; //increment the test variable
+                a.resetClickCount(); // reset the A button's click count
             }
 
+            /*
+            if the test variable is too high, set it to the minimum value,
+            or if it is too low, set it to the maximum value
+            */
             if (test > maxTest) {
                 test = minTest;
             }
@@ -70,12 +75,13 @@ public class OutputTest extends LinearOpMode{
                 test = maxTest;
             }
 
+            //check the value of test and use it to decide which motor to test
             switch (test) {
-                case 0:
+                case 0: /*if test == 0*/
                     telemetry.addLine("testing front left motor.");
-                    testMotor(motorFR);
+                    testMotor(motorFR); //call motor testing function
                     break;
-                case 1:
+                case 1: /*same as the first one*/
                     telemetry.addLine("testing back left motor.");
                     testMotor(motorFL);
                     break;
@@ -135,31 +141,40 @@ public class OutputTest extends LinearOpMode{
         }
     }
 
+    //test motors
     public void testMotor(DcMotor motor) {
         //set motor power to a value that is from -1 to 1 depending on the trigger positions
         motor.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
     }
 
+    //test continuous servos
     public void continuousTest(Servo servo) {
         //get the combined values of the triggers (-1 to 1)
         double triggerValue = gamepad1.right_trigger - gamepad1.left_trigger;
         //turn that value into a double with the range 0 to 1 with 0.5 being nothing pressed
         double position = (triggerValue + 1)/2;
-        //continuous servos will go backwards if position is below 0.5, forwards if position is above 0.5, and stop if position is 0.5
+        //continuous servos will go backwards if position is below 0.5 forwards if position is above 0.5, and stop if position is 0.5
         servo.setPosition(position);
     }
 
+    //test positional servos
     public void positionalTest(Servo servo) {
-        double position = 90;
-        if (gamepad1.left_trigger > 0.5) {
-            position = 180;
-        } else if (gamepad1.right_trigger > 0.5) {
-            position = 0;
+        //set default position
+        double position = 90.0/270.0;
+        if (gamepad1.left_trigger > 0.5)  /*if gamepad 1 left trigger is down enough, change position*/{
+            position = 180.0/270.0;
+        } else if (gamepad1.right_trigger > 0.5) /*if gamepad 1 right trigger is down enough, change position*/{
+            position = 0.0;
         }
+        //set servo position (has to be between 0 and 1, 1 = max angle of 270 and 0 = min angle of 0)
         servo.setPosition(position);
     }
 
+    //test linear servo
     public void linearServoTest(Servo servo) {
+        //set linear servo position
+        //for linear servos 0 is all the way in and 1 is all the way out
+        //set linear servo position to the value of the left trigger (also 0-1 value)
         servo.setPosition(gamepad1.left_trigger);
     }
 }
