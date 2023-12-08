@@ -218,6 +218,7 @@ public class RobotMove {
         double halfDist = totalDist / 2.0;
         double vDiff = vMax - vMin;
         double vCurr = vMin;
+
         if (currDist < halfDist) {
             vCurr = (currDist / halfDist)  * vDiff + vMin;
         } else {

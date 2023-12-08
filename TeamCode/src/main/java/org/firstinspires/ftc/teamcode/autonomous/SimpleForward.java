@@ -12,10 +12,12 @@ import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 public class SimpleForward extends LinearOpMode{
     @Override
     public void runOpMode() {
+        //store an instance of the RobotMove class in the robot object
         RobotMove robot = new RobotMove(hardwareMap);
 
         waitForStart();
 
+        //move forward at full speed 80 inches, then stop
         robot.forward(1, 80);
         robot.stop();
     }
