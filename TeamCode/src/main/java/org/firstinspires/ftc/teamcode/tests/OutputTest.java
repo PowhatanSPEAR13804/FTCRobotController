@@ -64,6 +64,10 @@ public class OutputTest extends LinearOpMode{
                 a.resetClickCount(); // reset the A button's click count
             }
 
+            /**
+            *if the test variable is too high, set it to the minimum value,
+            *or if it is too low, set it to the maximum value
+             **/
             if (test > maxTest) {
                 test = minTest;
             }
