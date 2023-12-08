@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -68,11 +69,24 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
+    private TfodProcessor tfod2;
+
+    // private AprilTagProcessor aprilTag;
+
+    int Portal_1_View_ID;
+    int Portal_2_View_ID;
+    //int Portal_3_View_ID;
+
+
 
     /**
      * The variable to store our instance of the vision portal.
      */
-    private VisionPortal visionPortal;
+    private VisionPortal visionPortalTensor1;
+    private VisionPortal visionPortalTensor2;
+
+    private VisionPortal visionPortalAprilTag;
+
 
     @Override
     public void runOpMode() {
@@ -107,12 +121,23 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
+                 currentRecognitions = tfod2.getRecognitions();
+                telemetry.addData("# Objects Detected", currentRecognitions.size());
+
+                // Step through the list of recognitions and display info for each one.
+                for (Recognition recognition : currentRecognitions) {
+                    double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                    double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+                    telemetry.addLine("x = "+x);
+                    telemetry.addLine("y = "+y);
+
                 }
+
+                // Push telemetry to the Driver Station.
+                telemetry.update();
+                // Save CPU resources; can resume streaming when needed.
+
 
                 // Share the CPU.
                 sleep(20);
@@ -120,7 +145,8 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         }
 
         // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+        visionPortalTensor1.close();
+        visionPortalTensor2.close();
 
     }   // end runOpMode()
 
@@ -132,23 +158,23 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
 
-            // With the following lines commented out, the default TfodProcessor Builder
-            // will load the default model for the season. To define a custom model to load, 
-            // choose one of the following:
-            //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
-            //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-            .setModelAssetName(TFOD_MODEL_ASSET)
-           // .setModelFileName(TFOD_MODEL_FILE)
+                // With the following lines commented out, the default TfodProcessor Builder
+                // will load the default model for the season. To define a custom model to load,
+                // choose one of the following:
+                //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
+                //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
+                .setModelAssetName(TFOD_MODEL_ASSET)
+                // .setModelFileName(TFOD_MODEL_FILE)
 
-            // The following default settings are available to un-comment and edit as needed to 
-            // set parameters for custom models.
-            .setModelLabels(LABELS)
-            //.setIsModelTensorFlow2(true)
-            //.setIsModelQuantized(true)
-            //.setModelInputSize(300)
-            //.setModelAspectRatio(16.0 / 9.0)
+                // The following default settings are available to un-comment and edit as needed to
+                // set parameters for custom models.
+                .setModelLabels(LABELS)
+                //.setIsModelTensorFlow2(true)
+                //.setIsModelQuantized(true)
+                //.setModelInputSize(300)
+                //.setModelAspectRatio(16.0 / 9.0)
 
-            .build();
+                .build();
 
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
@@ -156,6 +182,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         // Set the camera (webcam vs. built-in RC phone camera).
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            telemetry.addLine("Camera 1 Built");
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
@@ -176,9 +203,9 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
-
+        builder.setLiveViewContainerId(Portal_1_View_ID);
         // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
+        visionPortalTensor1 = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
         //tfod.setMinResultConfidence(0.75f);
@@ -186,6 +213,51 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
 
+        // Create the TensorFlow processor by using a builder.
+        tfod2 = new TfodProcessor.Builder()
+                .setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelLabels(LABELS)
+                .build();
+
+        VisionPortal.Builder builder2 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder2.setCamera(hardwareMap.get(WebcamName.class, "Webcam 3"));
+            telemetry.addLine("Camera 2 Built");
+        } else {
+            builder2.setCamera(BuiltinCameraDirection.BACK);
+        }
+        builder2.setLiveViewContainerId(Portal_2_View_ID);
+
+        builder2.addProcessor(tfod2);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalTensor2 = builder2.build();
+
+        /*
+
+        aprilTag = new AprilTagProcessor.Builder().build();
+
+
+
+        VisionPortal.Builder builder3 = new VisionPortal.Builder();
+
+        // Set the camera (webcam vs. built-in RC phone camera).
+        if (USE_WEBCAM) {
+            builder3.setCamera(hardwareMap.get(WebcamName.class, "Webcam 3"));
+            telemetry.addLine("Camera 3 Built");
+        } else {
+            builder3.setCamera(BuiltinCameraDirection.BACK);
+        }
+
+        builder3.addProcessor(aprilTag);
+        builder3.setLiveViewContainerId(Portal_3_View_ID);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortalAprilTag = builder3.build();
+
+         */
     }   // end method initTfod()
 
     /**
@@ -213,7 +285,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         for (Recognition recognition : currentRecognitions) {
-             x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            x = (recognition.getLeft() + recognition.getRight()) / 2 ;
 
             //telemetry.addData(""," ");
             //telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
@@ -237,6 +309,45 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
         }
 
         return(y);
+    }
+    public double objectPositionX2 (double x){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+        }
+
+        return(x);
+    }
+    public double objectPositionY2 (double y){
+
+
+        List<Recognition> currentRecognitions = tfod2.getRecognitions();
+        for (Recognition recognition : currentRecognitions) {
+            y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+        }
+        return(y);
+    }
+
+    private void initMultiPortals() {
+        List myPortalsList;
+
+        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
+        Portal_1_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
+        Portal_2_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
+        // Portal_3_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 2, false)).intValue();
+        telemetry.addData("Portal 1 View ID (index 0 of myPortalsList)", Portal_1_View_ID);
+        telemetry.addData("Portal 2 View ID (index 1 of myPortalsList)", Portal_2_View_ID);
+        //telemetry.addData("Portal 3 View ID (index 1 of myPortalsList)", Portal_3_View_ID);
+        telemetry.addLine("");
+        telemetry.addLine("Press Y to continue");
+        telemetry.update();
+        while (!gamepad1.y && opModeInInit()) {
+            // Loop until gamepad Y button is pressed.
+        }
+
+
     }
 
 }   // end class
