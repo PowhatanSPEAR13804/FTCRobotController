@@ -54,48 +54,33 @@ import java.util.List;
  */
 
 
-//<<<<<<< Updated upstream
-/*public class TestTensorFlowObjectDetection {
-    //=======
-    public class TestTensorFlowObjectDetection {
-//>>>>>>> Stashed changes
+public class TestTensorFlowObjectDetection{
 
-        private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-        // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
-        // this is only used for Android Studio when using models in Assets.
-        private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
-        // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-        // this is used when uploading models directly to the RC using the model upload interface.
-        private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
-        // Define the labels recognized in the model for TFOD (must be in training order!)
-        private static final String[] LABELS = {
-                "Red Cube", "Blue Cube"
-        };
 
-        /**
-         * The variable to store our instance of the TensorFlow Object Detection processor.
-         */
-   //     private TfodProcessor tfod;
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-        /**
-         * The variable to store our instance of the vision portal.
-         */
-    //    private VisionPortal visionPortal;
+    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
+    // this is only used for Android Studio when using models in Assets.
+    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
+    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
+    // this is used when uploading models directly to the RC using the model upload interface.
+    private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
+    // Define the labels recognized in the model for TFOD (must be in training order!)
+    private static final String[] LABELS = {
+       "Red Cube","Blue Cube"
+    };
 
-//<<<<<<< Updated upstream
-    /*
-    public TestTensorFlowObjectDetection() {
-=======
-
-    public void runOpMode() {
-
->>>>>>> Stashed changes
-        initTfod();
-    }
+    /**
+     * The variable to store our instance of the TensorFlow Object Detection processor.
      */
+    private TfodProcessor tfod;
 
-//<<<<<<< Updated upstream
+    /**
+     * The variable to store our instance of the vision portal.
+     */
+    private VisionPortal visionPortal;
+
         //@Override
         // runOpMode will never ever run using new!
         // linearopmode is a "special" java class
@@ -107,7 +92,6 @@ import java.util.List;
 
         /*   public void TestTensorFlowObjectDetection() {
                //initTfod();
-       //=======
                // Wait for the DS start button to be touched.
        //        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
        //        telemetry.addData(">", "Touch Play to start OpMode");
@@ -139,7 +123,6 @@ import java.util.List;
 
                       */
 /*
->>>>>>> Stashed changes
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
@@ -205,29 +188,6 @@ import java.util.List;
 
     }   // end method initTfod()
 
-<<<<<<< Updated upstream
-=======
-    /**
-     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
-     */
-  /*      private void telemetryTfod() {
-/*
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-//        telemetry.addData("# Objects Detected", currentRecognitions.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-
-//            telemetry.addData(""," ");
-//            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-//            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-//            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
-
-    }   // end method telemetryTfod()
->>>>>>> Stashed changes
     public double objectPositionX (double x){
 
 

@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import android.util.Size;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -54,17 +56,15 @@ import java.util.List;
  */
 
 @Autonomous(name="TestAuto", group="Autonomous")
-public class TestAuto extends LinearOpMode {
+public class
+TestAuto extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
     private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
-    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-    // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
-    // Define the labels recognized in the model for TFOD (must be in training order!)
+     // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
        "Red Cube","Blue Cube"
     };
@@ -72,14 +72,16 @@ public class TestAuto extends LinearOpMode {
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
+
+    //the variable that stores the image reconiection program
     private TfodProcessor tfod;
 
-    private TfodProcessor tfod2;
+   // private TfodProcessor tfod2;
 
    // private AprilTagProcessor aprilTag;
 
-    int Portal_1_View_ID;
-    int Portal_2_View_ID;
+   // int Portal_1_View_ID;
+  //  int Portal_2_View_ID;
     //int Portal_3_View_ID;
 
 
@@ -88,8 +90,9 @@ public class TestAuto extends LinearOpMode {
     /**
      * The variable to store our instance of the vision portal.
      */
+    //the screen that displays the video
     private VisionPortal visionPortal;
-    private VisionPortal visionPortal2;
+    //private VisionPortal visionPortal2;
 
     /*
     public TestTensorFlowObjectDetection() {
@@ -112,8 +115,8 @@ public class TestAuto extends LinearOpMode {
 
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
-        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
-        DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
+      //  DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
+      //  DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
 
         intakeLeft.setDirection((Servo.Direction.REVERSE));
         intakeRight.setDirection((Servo.Direction.FORWARD));
@@ -124,78 +127,106 @@ public class TestAuto extends LinearOpMode {
         robotMove robot = new robotMove(hardwareMap);
         waitForStart();
 
+        double distanceMove = 27.5;
+
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
                 double x = 0;
                 double y;
+                //Checks the list of recognitions and moves the robot forward slightly until it detects an object
+                //or it has moved forward enough to rule out the other spots
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
-                while(currentRecognitions.size() == 0) {
+                while(currentRecognitions.size() == 0&& distanceMove>10) {
+                    distanceMove-=0.1;
                     robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();
+                    x=-1;
+                    telemetry.addLine("\ndistanceMove:" + distanceMove);
+                    telemetry.update();
+
                 }
+
+                //Gets the central "x" corodinate of the object
                 telemetry.addData("x = ", x);
-//                while(x == 0){
-                    for (Recognition recognition : currentRecognitions) {
-                        x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-                        y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-                        telemetry.addLine("\nx and y:" + x + " " + y);
-                    }
-//                }
-
-                robot.forward(0.5, 29.5);
-                if(x>550){
-                    //right spike
-                    robot.right(0.5, 11.5);
-                    intakeLeft.setPosition(0);
-                    intakeRight.setPosition(0);
-                    sleep(1000);
-                    intakeLeft.setPosition(0.5);
-                    intakeRight.setPosition(0.5);
-                    robot.left(0.5, 11.5);
-
+                /*
+                for (Recognition recognition : currentRecognitions) {
+                    x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                    y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                    telemetry.addLine("\nx and y:" + x + " " + y);
+                    telemetry.update();
                 }
-                else if(x<150){
-                    //left spike
-                    robot.left(0.5, 11.5);
-                    intakeLeft.setPosition(0);
-                    intakeRight.setPosition(0);
-                    sleep(1000);
-                    intakeLeft.setPosition(0.5);
-                    intakeRight.setPosition(0.5);
-                    robot.right(0.5, 11.5);
-                }
-                else{
+                */
+
+
+                //moves the robot forward the remaining amount
+                robot.forward(0.5, distanceMove);
+
+                //if the object is on the right side of the screen the robot moves to the center spike
+                if(x>300){
                     //center spike
+                    telemetry.addLine("\ncenter spike");
+                    telemetry.update();
                     intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
                 }
-                robot.right(0.5, 40);
+                else if(x>=0){ //if the object is on the left side of the screen the robot moves to the left spike
 
-                //turn robot left 90 degrees
+
+                    //left spike
+                    telemetry.addLine("\nleft spike");
+                    telemetry.update();
+                    robot.left(0.5, 11.5);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(10000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                    robot.right(0.5, 11.5);
+                }
+                else{ //if the object is not found it is assumed to be on the right spike, see line 144
+
+                    //right spike
+                    telemetry.addLine("\nright spike");
+                    telemetry.update();
+                    robot.right(0.5, 11.5);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(1000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                    robot.left(0.5, 11.5);
+                }
+
+                //makes the robot strafe right
+                robot.right(0.5, 80);
+
+                //turns robot left 90 degrees
                 robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
 
-                fourBar.setPower(0.5);
+               /*
+               //puts the the output mechanism up and into position
+               fourBar.setPower(0.5);
                 sleep(1000);
                 fourBar.setPower(0);
                 viper.setPower(0.5);
                 sleep(250);
                 viper.setPower(0);
 
+                //the next three ifs check to see where on the screen the object was then moves to the correct apriltag and then outputs the pixel
                 if(x>550){
-                    //right spike
-
-                    robot.left(0.5, 11.5);
+                    //center spike
                     outputL.setPosition(0);
                     outputS.setPosition(45);
-                    sleep(1000);
-                    robot.right(0.5, 11.5);
+
                 }
-                else if(x<150){
+                else if(x>=0){
+
+
                     //left spike
                     robot.right(0.5, 11.5);
                     outputL.setPosition(0);
@@ -204,26 +235,36 @@ public class TestAuto extends LinearOpMode {
                     robot.left(0.5, 11.5);
                 }
                 else{
+                    //right spike
+
+                    robot.left(0.5, 11.5);
                     outputL.setPosition(0);
                     outputS.setPosition(45);
+                    sleep(1000);
+                    robot.right(0.5, 11.5);
                 }
+
+                */
+                //parks the robot
                 robot.left(0.5, 23);
 
-                robot.forward(0.5, 60);
+                robot.backward(0.5, 20);
                 robot.stop();
 
-                telemetryTfod();
+              //  telemetryTfod();
 
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
+               /* // Save CPU resources; can resume streaming when needed.
                 if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
                 } else if (gamepad1.dpad_up) {
                     visionPortal.resumeStreaming();
                 }
+
+                */
 
                 // Share the CPU.
                 while (opModeIsActive()) {
@@ -273,7 +314,7 @@ public class TestAuto extends LinearOpMode {
         }
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+       // builder.setCameraResolution(new Size(800, 600));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
         //builder.enableLiveView(true);
@@ -400,7 +441,7 @@ public class TestAuto extends LinearOpMode {
 
         return(y);
     }
-
+/*
     public double objectPositionX2 (double x){
 
 
@@ -440,6 +481,8 @@ public class TestAuto extends LinearOpMode {
 
 
     }
+
+ */
 
 
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.helperclasses;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -40,10 +41,10 @@ public class robotMove {
         // direction to default to forward motion
         // Always set all 4 just in case their default
         // is NOT FORWARD.
-        motorFR.setDirection(DcMotor.Direction.FORWARD);
-        motorFL.setDirection(DcMotor.Direction.REVERSE);
-        motorBR.setDirection(DcMotor.Direction.FORWARD);
-        motorBL.setDirection(DcMotor.Direction.REVERSE);
+        motorFR.setDirection(DcMotor.Direction.REVERSE);
+        motorFL.setDirection(DcMotor.Direction.FORWARD);
+        motorBR.setDirection(DcMotor.Direction.REVERSE);
+        motorBL.setDirection(DcMotor.Direction.FORWARD);
 
         // Setup the motors so that they are speed and not
         // power based...  it uses the encoders to control the speed.

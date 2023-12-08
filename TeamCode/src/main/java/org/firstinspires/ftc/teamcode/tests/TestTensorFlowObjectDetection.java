@@ -103,7 +103,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
             while (opModeIsActive()) {
 
 
-                telemetryTfod();
+               // telemetryTfod();
 
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -121,7 +121,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
-                 currentRecognitions = tfod2.getRecognitions();
+                /* currentRecognitions = tfod2.getRecognitions();
                 telemetry.addData("# Objects Detected", currentRecognitions.size());
 
                 // Step through the list of recognitions and display info for each one.
@@ -133,6 +133,8 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
                     telemetry.addLine("y = "+y);
 
                 }
+
+                 */
 
                 // Push telemetry to the Driver Station.
                 telemetry.update();
@@ -212,6 +214,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
+        /*
 
         // Create the TensorFlow processor by using a builder.
         tfod2 = new TfodProcessor.Builder()
