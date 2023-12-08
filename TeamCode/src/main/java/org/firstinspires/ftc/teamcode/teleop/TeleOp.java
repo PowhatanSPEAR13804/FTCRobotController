@@ -156,7 +156,7 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nThroughput position: " + throughputPosition);
 
 
-            //intake
+            //intake - if the x button is pressed and the intake is off it is set on and if the intake is on it is turned off
             gamepadX.checkButton(gamepad1.x);
             gamepadB.checkButton(gamepad1.b);
             littleBroB.checkButton(gamepad2.b);
@@ -167,6 +167,7 @@ public class TeleOp extends LinearOpMode {
                 intakePosition = 0.5;
                 gamepadX.resetClickCount();
             }
+            //if the b button is pressed and the intake is off it is set to reverse and on, and if the intake is not off, it is turned off
             if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition == 0.5) {
                 intakePosition = 0;
                 gamepadB.resetClickCount();
@@ -287,7 +288,11 @@ public class TeleOp extends LinearOpMode {
 
                 outputS.setPosition(outputSPosition);
             }
+            //if the left joystick on the second controller in moved up or down, the hanging servo spins forward or backward.
             //hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
+
+           //when the a button is pressed on either controller, the motor reels in the string
+            // and when the x button is pressed on the second controller the string is let out
             /*if (gamepad1.a || gamepad2.a) {
                 hangingM.setPower(1);
             } else if (gamepad2.x) {

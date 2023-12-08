@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.helperclasses;
+/*package org.firstinspires.ftc.teamcode.helperclasses;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
@@ -44,6 +44,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
+@Disabled
 /*
  * This OpMode illustrates the basics of TensorFlow Object Detection,
  * including Java Builder structures for specifying Vision parameters.
@@ -53,33 +54,36 @@ import java.util.List;
  */
 
 
-public class TestTensorFlowObjectDetection{
+//<<<<<<< Updated upstream
+/*public class TestTensorFlowObjectDetection {
+    //=======
+    public class TestTensorFlowObjectDetection {
+//>>>>>>> Stashed changes
 
+        private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
+        // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
+        // this is only used for Android Studio when using models in Assets.
+        private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
+        // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
+        // this is used when uploading models directly to the RC using the model upload interface.
+        private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
+        // Define the labels recognized in the model for TFOD (must be in training order!)
+        private static final String[] LABELS = {
+                "Red Cube", "Blue Cube"
+        };
 
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+        /**
+         * The variable to store our instance of the TensorFlow Object Detection processor.
+         */
+   //     private TfodProcessor tfod;
 
-    // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
-    // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
-    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-    // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
-    // Define the labels recognized in the model for TFOD (must be in training order!)
-    private static final String[] LABELS = {
-       "Red Cube","Blue Cube"
-    };
+        /**
+         * The variable to store our instance of the vision portal.
+         */
+    //    private VisionPortal visionPortal;
 
-    /**
-     * The variable to store our instance of the TensorFlow Object Detection processor.
-     */
-    private TfodProcessor tfod;
-
-    /**
-     * The variable to store our instance of the vision portal.
-     */
-    private VisionPortal visionPortal;
-
+//<<<<<<< Updated upstream
     /*
     public TestTensorFlowObjectDetection() {
 =======
@@ -91,66 +95,69 @@ public class TestTensorFlowObjectDetection{
     }
      */
 
-    //@Override
-    // runOpMode will never ever run using new!
-    // linearopmode is a "special" java class
-    // you want a regular java class to contain things.
-    // This function is not running and that is why = new TestTensorFlowObjectDetection is NULL!
-    // Make this into a normal java class like the buttonclick or robotMove class
-    // This means they need a constructor which is a function
-    // that has the same name as the class.
+//<<<<<<< Updated upstream
+        //@Override
+        // runOpMode will never ever run using new!
+        // linearopmode is a "special" java class
+        // you want a regular java class to contain things.
+        // This function is not running and that is why = new TestTensorFlowObjectDetection is NULL!
+        // Make this into a normal java class like the buttonclick or robotMove class
+        // This means they need a constructor which is a function
+        // that has the same name as the class.
 
-    public void TestTensorFlowObjectDetection() {
-        //initTfod();
-        // Wait for the DS start button to be touched.
-//        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-//        telemetry.addData(">", "Touch Play to start OpMode");
-//        telemetry.update();
-//        waitForStart();
+        /*   public void TestTensorFlowObjectDetection() {
+               //initTfod();
+       //=======
+               // Wait for the DS start button to be touched.
+       //        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
+       //        telemetry.addData(">", "Touch Play to start OpMode");
+       //        telemetry.update();
+       //        waitForStart();
 
-//        if (opModeIsActive()) {
-//            while (opModeIsActive()) {
+       //        if (opModeIsActive()) {
+       //            while (opModeIsActive()) {
 
-//                telemetryTfod();
+       //                telemetryTfod();
 
-                // Push telemetry to the Driver Station.
-//                telemetry.update();
+                       // Push telemetry to the Driver Station.
+       //                telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-              /*  if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
+                       // Save CPU resources; can resume streaming when needed.
+                     /*  if (gamepad1.dpad_down) {
+                           visionPortal.stopStreaming();
+                       } else if (gamepad1.dpad_up) {
+                           visionPortal.resumeStreaming();
+                       }
 
-                // Share the CPU.
-                sleep(20);
-            }
-        }
+                       // Share the CPU.
+                       sleep(20);
+                   }
+               }
 
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+               // Save more CPU resources when camera is no longer needed.
+               visionPortal.close();
 
-               */
-
+                      */
+/*
+>>>>>>> Stashed changes
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
-    private void TestTensor() {
+ /*   private void TestTensor() {
 
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
 
             // With the following lines commented out, the default TfodProcessor Builder
-            // will load the default model for the season. To define a custom model to load, 
+            // will load the default model for the season. To define a custom model to load,
             // choose one of the following:
             //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
             //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
             .setModelAssetName(TFOD_MODEL_ASSET)
            // .setModelFileName(TFOD_MODEL_FILE)
 
-            // The following default settings are available to un-comment and edit as needed to 
+            // The following default settings are available to un-comment and edit as needed to
             // set parameters for custom models.
             .setModelLabels(LABELS)
             //.setIsModelTensorFlow2(true)
@@ -198,11 +205,13 @@ public class TestTensorFlowObjectDetection{
 
     }   // end method initTfod()
 
+<<<<<<< Updated upstream
+=======
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
-    private void telemetryTfod() {
-
+  /*      private void telemetryTfod() {
+/*
         List<Recognition> currentRecognitions = tfod.getRecognitions();
 //        telemetry.addData("# Objects Detected", currentRecognitions.size());
 
@@ -218,6 +227,7 @@ public class TestTensorFlowObjectDetection{
         }   // end for() loop
 
     }   // end method telemetryTfod()
+>>>>>>> Stashed changes
     public double objectPositionX (double x){
 
 
@@ -247,6 +257,4 @@ public class TestTensorFlowObjectDetection{
         }
 
         return(y);
-    }
-
-}   // end class
+    */
