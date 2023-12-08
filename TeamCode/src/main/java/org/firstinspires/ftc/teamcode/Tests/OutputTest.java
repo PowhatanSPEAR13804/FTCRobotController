@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Libraries.ButtonClick;
 import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 
+//Tests outputs using the controller
 @TeleOp(name="OutputTest", group="Tests")
 public class    OutputTest extends LinearOpMode{
     @Override

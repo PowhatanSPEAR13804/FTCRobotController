@@ -355,7 +355,7 @@ public class RobotMoveEx {
         double m3 = (y + x - robotDim * r) * ticksPerInch;
         double m4 = (y - x + robotDim * r) * ticksPerInch;
 
-        //debugString = String.format("m1(%f) m2(%f) m3(%f) m4(%f)", m1, m2, m3, m4);
+        //debugString = String.StandardFormatStyleInstructions("m1(%f) m2(%f) m3(%f) m4(%f)", m1, m2, m3, m4);
 
         setVelocity(m1, m2, m3, m4);
     }
