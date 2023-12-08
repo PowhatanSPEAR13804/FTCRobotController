@@ -53,11 +53,9 @@ import java.util.List;
  */
 
 
-<<<<<<< Updated upstream
 public class TestTensorFlowObjectDetection{
-=======
-public class TestTensorFlowObjectDetection {
->>>>>>> Stashed changes
+
+
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -82,7 +80,6 @@ public class TestTensorFlowObjectDetection {
      */
     private VisionPortal visionPortal;
 
-<<<<<<< Updated upstream
     /*
     public TestTensorFlowObjectDetection() {
 =======
@@ -94,7 +91,6 @@ public class TestTensorFlowObjectDetection {
     }
      */
 
-<<<<<<< Updated upstream
     //@Override
     // runOpMode will never ever run using new!
     // linearopmode is a "special" java class
@@ -106,7 +102,6 @@ public class TestTensorFlowObjectDetection {
 
     public void TestTensorFlowObjectDetection() {
         //initTfod();
-=======
         // Wait for the DS start button to be touched.
 //        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
 //        telemetry.addData(">", "Touch Play to start OpMode");
@@ -138,7 +133,6 @@ public class TestTensorFlowObjectDetection {
 
                */
 
->>>>>>> Stashed changes
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
@@ -204,8 +198,6 @@ public class TestTensorFlowObjectDetection {
 
     }   // end method initTfod()
 
-<<<<<<< Updated upstream
-=======
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
@@ -226,7 +218,6 @@ public class TestTensorFlowObjectDetection {
         }   // end for() loop
 
     }   // end method telemetryTfod()
->>>>>>> Stashed changes
     public double objectPositionX (double x){
 
 

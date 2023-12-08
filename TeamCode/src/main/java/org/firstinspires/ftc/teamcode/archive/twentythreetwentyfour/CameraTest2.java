@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.archive.twentythreetwentyfour;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -17,7 +18,7 @@ import org.openftc.easyopencv.OpenCvSwitchableWebcam;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+@Disabled
 @TeleOp(name="CameraTest2", group="Tests")
 public class CameraTest2 extends LinearOpMode {
 
