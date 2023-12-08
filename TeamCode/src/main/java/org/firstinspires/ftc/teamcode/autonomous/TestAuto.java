@@ -124,6 +124,8 @@ public class TestAuto extends LinearOpMode {
         robotMove robot = new robotMove(hardwareMap);
         waitForStart();
 
+        double distanceMove = 29.5;
+
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
@@ -131,9 +133,11 @@ public class TestAuto extends LinearOpMode {
                 double y;
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
-                while(currentRecognitions.size() == 0) {
+                while(currentRecognitions.size() == 0||distanceMove<15) {
+                    distanceMove-=0.1;
                     robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();
+                    x=-1;
                 }
                 telemetry.addData("x = ", x);
 //                while(x == 0){
@@ -144,19 +148,8 @@ public class TestAuto extends LinearOpMode {
                     }
 //                }
 
-                robot.forward(0.5, 29.5);
+                robot.forward(0.5, distanceMove);
                 if(x>550){
-                    //right spike
-                    robot.right(0.5, 11.5);
-                    intakeLeft.setPosition(0);
-                    intakeRight.setPosition(0);
-                    sleep(1000);
-                    intakeLeft.setPosition(0.5);
-                    intakeRight.setPosition(0.5);
-                    robot.left(0.5, 11.5);
-
-                }
-                else if(x<150){
                     //left spike
                     robot.left(0.5, 11.5);
                     intakeLeft.setPosition(0);
@@ -166,13 +159,25 @@ public class TestAuto extends LinearOpMode {
                     intakeRight.setPosition(0.5);
                     robot.right(0.5, 11.5);
                 }
-                else{
+                else if(x>=0){
+
                     //center spike
                     intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
+                }
+                else{
+
+                    //right spike
+                    robot.right(0.5, 11.5);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
+                    sleep(1000);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
+                    robot.left(0.5, 11.5);
                 }
                 robot.right(0.5, 40);
 
@@ -187,6 +192,21 @@ public class TestAuto extends LinearOpMode {
                 viper.setPower(0);
 
                 if(x>550){
+                    //left spike
+                    robot.right(0.5, 11.5);
+                    outputL.setPosition(0);
+                    outputS.setPosition(45);
+                    sleep(1000);
+                    robot.left(0.5, 11.5);
+
+                }
+                else if(x>=0){
+
+                    //center spike
+                    outputL.setPosition(0);
+                    outputS.setPosition(45);
+                }
+                else{
                     //right spike
 
                     robot.left(0.5, 11.5);
@@ -194,18 +214,6 @@ public class TestAuto extends LinearOpMode {
                     outputS.setPosition(45);
                     sleep(1000);
                     robot.right(0.5, 11.5);
-                }
-                else if(x<150){
-                    //left spike
-                    robot.right(0.5, 11.5);
-                    outputL.setPosition(0);
-                    outputS.setPosition(45);
-                    sleep(1000);
-                    robot.left(0.5, 11.5);
-                }
-                else{
-                    outputL.setPosition(0);
-                    outputS.setPosition(45);
                 }
                 robot.left(0.5, 23);
 
