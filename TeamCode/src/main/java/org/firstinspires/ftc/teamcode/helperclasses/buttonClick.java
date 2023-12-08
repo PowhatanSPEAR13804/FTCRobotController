@@ -1,3 +1,5 @@
+//check the state of a button
+
 package org.firstinspires.ftc.teamcode.helperclasses;
 
 public class buttonClick {
@@ -13,13 +15,13 @@ public class buttonClick {
     }
 
     public void checkButton(boolean buttonState) {
-        if(buttonState && !pressed) {
+        if(buttonState && !pressed) /* when the button starts being pressed*/ {
             pressed = true;
-            startTime = System.currentTimeMillis();
-        } else if (!buttonState && pressed) {
+            startTime = System.currentTimeMillis(); /*when the button starts to be pressed*/
+        } else if (!buttonState && pressed) /*when the button is released*/ {
             pressed = false;
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            if (elapsedTime > pressTime) {
+            long elapsedTime = System.currentTimeMillis() - startTime; /*figure out how long the button has been pressed */
+            if (elapsedTime > pressTime) /*if the button has been pressed for long enough, increment the count. */ {
                 clickCount++;
             }
         }

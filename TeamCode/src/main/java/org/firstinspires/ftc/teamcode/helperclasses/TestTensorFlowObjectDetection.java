@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.helperclasses;
+/*package org.firstinspires.ftc.teamcode.helperclasses;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
@@ -44,6 +44,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
+@Disabled
 /*
  * This OpMode illustrates the basics of TensorFlow Object Detection,
  * including Java Builder structures for specifying Vision parameters.
@@ -80,73 +81,66 @@ public class TestTensorFlowObjectDetection{
      */
     private VisionPortal visionPortal;
 
+        //@Override
+        // runOpMode will never ever run using new!
+        // linearopmode is a "special" java class
+        // you want a regular java class to contain things.
+        // This function is not running and that is why = new TestTensorFlowObjectDetection is NULL!
+        // Make this into a normal java class like the buttonclick or robotMove class
+        // This means they need a constructor which is a function
+        // that has the same name as the class.
 
+        /*   public void TestTensorFlowObjectDetection() {
+               //initTfod();
+               // Wait for the DS start button to be touched.
+       //        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
+       //        telemetry.addData(">", "Touch Play to start OpMode");
+       //        telemetry.update();
+       //        waitForStart();
 
+       //        if (opModeIsActive()) {
+       //            while (opModeIsActive()) {
 
+       //                telemetryTfod();
 
+                       // Push telemetry to the Driver Station.
+       //                telemetry.update();
 
+                       // Save CPU resources; can resume streaming when needed.
+                     /*  if (gamepad1.dpad_down) {
+                           visionPortal.stopStreaming();
+                       } else if (gamepad1.dpad_up) {
+                           visionPortal.resumeStreaming();
+                       }
 
+                       // Share the CPU.
+                       sleep(20);
+                   }
+               }
 
-    //@Override
-    // runOpMode will never ever run using new!
-    // linearopmode is a "special" java class
-    // you want a regular java class to contain things.
-    // This function is not running and that is why = new TestTensorFlowObjectDetection is NULL!
-    // Make this into a normal java class like the buttonclick or robotMove class
-    // This means they need a constructor which is a function
-    // that has the same name as the class.
+               // Save more CPU resources when camera is no longer needed.
+               visionPortal.close();
 
-    public void TestTensorFlowObjectDetection() {
-        //initTfod();
-        // Wait for the DS start button to be touched.
-//        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-//        telemetry.addData(">", "Touch Play to start OpMode");
-//        telemetry.update();
-//        waitForStart();
-
-//        if (opModeIsActive()) {
-//            while (opModeIsActive()) {
-
-//                telemetryTfod();
-
-                // Push telemetry to the Driver Station.
-//                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-              /*  if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
-                sleep(20);
-            }
-        }
-
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
-
-               */
-
+                      */
+/*
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
-    private void TestTensor() {
+ /*   private void TestTensor() {
 
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder()
 
             // With the following lines commented out, the default TfodProcessor Builder
-            // will load the default model for the season. To define a custom model to load, 
+            // will load the default model for the season. To define a custom model to load,
             // choose one of the following:
             //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
             //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
             .setModelAssetName(TFOD_MODEL_ASSET)
            // .setModelFileName(TFOD_MODEL_FILE)
 
-            // The following default settings are available to un-comment and edit as needed to 
+            // The following default settings are available to un-comment and edit as needed to
             // set parameters for custom models.
             .setModelLabels(LABELS)
             //.setIsModelTensorFlow2(true)
@@ -194,26 +188,6 @@ public class TestTensorFlowObjectDetection{
 
     }   // end method initTfod()
 
-    /**
-     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
-     */
-    private void telemetryTfod() {
-
-        List<Recognition> currentRecognitions = tfod.getRecognitions();
-//        telemetry.addData("# Objects Detected", currentRecognitions.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
-
-//            telemetry.addData(""," ");
-//            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-//            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-//            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
-
-    }   // end method telemetryTfod()
     public double objectPositionX (double x){
 
 
@@ -243,6 +217,4 @@ public class TestTensorFlowObjectDetection{
         }
 
         return(y);
-    }
-
-}   // end class
+    */
