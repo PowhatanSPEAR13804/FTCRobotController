@@ -80,16 +80,12 @@ public class TestTensorFlowObjectDetection{
      */
     private VisionPortal visionPortal;
 
-    /*
-    public TestTensorFlowObjectDetection() {
-=======
 
-    public void runOpMode() {
 
->>>>>>> Stashed changes
-        initTfod();
-    }
-     */
+
+
+
+
 
     //@Override
     // runOpMode will never ever run using new!
