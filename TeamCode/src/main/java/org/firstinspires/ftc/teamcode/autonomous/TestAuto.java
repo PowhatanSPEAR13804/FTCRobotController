@@ -56,7 +56,8 @@ import java.util.List;
  */
 
 @Autonomous(name="TestAuto", group="Autonomous")
-public class TestAuto extends LinearOpMode {
+public class
+TestAuto extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -126,7 +127,7 @@ public class TestAuto extends LinearOpMode {
         robotMove robot = new robotMove(hardwareMap);
         waitForStart();
 
-        double distanceMove = 28.5;
+        double distanceMove = 27.5;
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -137,7 +138,7 @@ public class TestAuto extends LinearOpMode {
                 //or it has moved forward enough to rule out the other spots
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
-                while(currentRecognitions.size() == 0&&distanceMove>10) {
+                while(currentRecognitions.size() == 0&& distanceMove>10) {
                     distanceMove-=0.1;
                     robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();
@@ -149,12 +150,15 @@ public class TestAuto extends LinearOpMode {
 
                 //Gets the central "x" corodinate of the object
                 telemetry.addData("x = ", x);
+                /*
                 for (Recognition recognition : currentRecognitions) {
                     x = (recognition.getLeft() + recognition.getRight()) / 2 ;
                     y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
                     telemetry.addLine("\nx and y:" + x + " " + y);
                     telemetry.update();
                 }
+                */
+
 
                 //moves the robot forward the remaining amount
                 robot.forward(0.5, distanceMove);
