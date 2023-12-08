@@ -34,10 +34,11 @@ public class OutputTest extends LinearOpMode{
         //linear servo
         Servo linearServoOutput = hardwareMap.servo.get("Hub1_Servo4");
 
-
+        //maximum and minimum index of the motors and servos.
         final int minTest = 0;
         final int maxTest = 14;
-        int test = 0;
+
+        int test = 0; //index of each motor
 
         //create a button click object that will check the button state
         buttonClick b = new buttonClick();
@@ -49,18 +50,18 @@ public class OutputTest extends LinearOpMode{
 
         while (opModeIsActive()){
 
-            b.checkButton(gamepad1.b);
+            b.checkButton(gamepad1.b); //check the state of the B button
 
-            if(b.getClickCount() > 0) {
-                test--;
-                b.resetClickCount();
+            if(b.getClickCount() > 0) /*get the amount of times the B button has been pressed*/{
+                test--; //decrement the test variable
+                b.resetClickCount(); //reset the B button's click count
             }
 
-            a.checkButton(gamepad1.a);
+            a.checkButton(gamepad1.a); //check the state of the A button
 
-            if(a.getClickCount() > 0) {
-                test++;
-                a.resetClickCount();
+            if(a.getClickCount() > 0) /*get the amount of times the A button has been pressed*/{
+                test++; //increment the test variable
+                a.resetClickCount(); // reset the A button's click count
             }
 
             if (test > maxTest) {

@@ -114,6 +114,12 @@ public class TeleOp extends LinearOpMode {
             motorFrontRight.setPower(frontRightPower);
             motorBackRight.setPower(backRightPower);
 
+            telemetry.addLine("Front Left: " + frontLeftPower);
+            telemetry.addLine("Back Left: " + backLeftPower);
+            telemetry.addLine("Front Right: " + frontRightPower);
+            telemetry.addLine("Back Right: " + backRightPower);
+
+
             //throughput
             dPadRight.checkButton(gamepad1.dpad_right);
             dPadLeft.checkButton(gamepad1.dpad_left);
