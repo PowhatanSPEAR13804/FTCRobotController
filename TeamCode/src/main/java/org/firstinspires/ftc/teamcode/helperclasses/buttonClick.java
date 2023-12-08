@@ -15,7 +15,7 @@ public class buttonClick {
     }
 
     public void checkButton(boolean buttonState) {
-        if(buttonState && !pressed) /* hen the button starts being pressed*/ {
+        if(buttonState && !pressed) /* when the button starts being pressed*/ {
             pressed = true;
             startTime = System.currentTimeMillis(); /*when the button starts to be pressed*/
         } else if (!buttonState && pressed) /*when the button is released*/ {

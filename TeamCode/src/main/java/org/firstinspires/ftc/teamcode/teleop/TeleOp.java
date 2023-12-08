@@ -182,7 +182,7 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addLine("\nIntake position: " + intakePosition);
 
-
+            //four bar
             if (gamepad1.dpad_up || gamepad2.dpad_up) {
                 fourBarPower = 1;
             } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
@@ -195,6 +195,8 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nFour Bar Power: " + fourBarPower);
             telemetry.addLine("\nFour Bar Position: " + fourBar.getCurrentPosition());
 
+
+            //viper
             boolean on;
             if (gamepad1.right_trigger > 0 && viperPosition > -4450) {
                 on = true;
