@@ -29,18 +29,13 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import android.util.Size;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-//import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -55,9 +50,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@Autonomous(name="TestAutoRed", group="Autonomous")
+@Autonomous(name="TestAutoBlue", group="Autonomous")
 public class
-TestAuto extends LinearOpMode {
+TestAutoBlue extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -232,7 +227,7 @@ TestAuto extends LinearOpMode {
  */
 
                 //makes the robot strafe right
-                robot.right(0.5, 40);
+                robot.left(0.5, 40);
 
                 //turns robot left 90 degrees
                // robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);

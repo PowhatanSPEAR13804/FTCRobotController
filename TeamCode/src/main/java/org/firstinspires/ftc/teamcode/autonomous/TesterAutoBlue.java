@@ -29,18 +29,13 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import android.util.Size;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-//import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -55,9 +50,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@Autonomous(name="TestAutoRed", group="Autonomous")
+@Autonomous(name="TesterAutoBlue", group="Autonomous")
 public class
-TestAuto extends LinearOpMode {
+TesterAutoBlue extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -132,16 +127,22 @@ TestAuto extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-               /* double x = 0;
+                double x = 0;
                 double y;
                 //Checks the list of recognitions and moves the robot forward slightly until it detects an object
                 //or it has moved forward enough to rule out the other spots
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
                 while(currentRecognitions.size() == 0&& distanceMove>10) {
-                    distanceMove-=0.1;
-                    robot.forward(0.1, 0.1);
-                    currentRecognitions = tfod.getRecognitions();
+                    distanceMove-=1;
+                    robot.forward(0.5, 1);
+                    int i =0;
+                    while(currentRecognitions.size() == 0&& i<10){
+                        currentRecognitions = tfod.getRecognitions();
+                        i++;
+                        sleep(10);
+                    }
+
                     x=-1;
                     telemetry.addLine("\ndistanceMove:" + distanceMove);
                     telemetry.update();
@@ -158,7 +159,7 @@ TestAuto extends LinearOpMode {
                     telemetry.update();
                 }
 
-                */
+
 
 
 
@@ -166,7 +167,7 @@ TestAuto extends LinearOpMode {
                 robot.forward(0.5, distanceMove);
 
                 //center spike
-                telemetry.addLine("\ncenter spike");
+                /*telemetry.addLine("\ncenter spike");
                 telemetry.update();
                 intakeLeft.setPosition(0);
                 intakeRight.setPosition(0);
@@ -174,7 +175,9 @@ TestAuto extends LinearOpMode {
                 intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.5);
                 robot.backward(0.5,5);
-/*
+
+                 */
+
                 //if the object is on the right side of the screen the robot moves to the center spike
                 if(x>300){
                     robot.stop();
@@ -195,22 +198,19 @@ TestAuto extends LinearOpMode {
 
                     //left spike
 
-                     //turns robot left 90 degrees
-                     robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
 
 
                     telemetry.addLine("\nleft spike");
                     telemetry.update();
-                    //robot.left(0.5, 11.5);
+                    robot.left(0.5, 6.5);
                     intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
                     robot.backward(0.5,5);
-                    //robot.right(0.5, 11.5);
-                     //turns robot right 90 degrees
-                     // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
+                    robot.right(0.5, 6.5);
+
 
                 }
                 else{ //if the object is not found it is assumed to be on the right spike, see line 144
@@ -229,10 +229,10 @@ TestAuto extends LinearOpMode {
                     robot.left(0.5, 11.5);
                 }
 
- */
+
 
                 //makes the robot strafe right
-                robot.right(0.5, 40);
+                robot.left(0.5, 40);
 
                 //turns robot left 90 degrees
                // robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);

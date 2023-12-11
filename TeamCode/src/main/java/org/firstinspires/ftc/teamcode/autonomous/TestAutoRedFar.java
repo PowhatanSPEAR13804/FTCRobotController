@@ -29,18 +29,13 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import android.util.Size;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-//import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -55,9 +50,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@Autonomous(name="TestAutoRed", group="Autonomous")
+@Autonomous(name="TestAutoRedFar", group="Autonomous")
 public class
-TestAuto extends LinearOpMode {
+TestAutoRedFar extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -173,7 +168,9 @@ TestAuto extends LinearOpMode {
                 sleep(1000);
                 intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.5);
-                robot.backward(0.5,5);
+                robot.backward(0.5,18);
+                robot.stop();
+            //    robot.right(0.5,90);
 /*
                 //if the object is on the right side of the screen the robot moves to the center spike
                 if(x>300){
@@ -232,7 +229,6 @@ TestAuto extends LinearOpMode {
  */
 
                 //makes the robot strafe right
-                robot.right(0.5, 40);
 
                 //turns robot left 90 degrees
                // robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
@@ -278,7 +274,6 @@ TestAuto extends LinearOpMode {
                // robot.left(0.5, 23);
 
               //  robot.backward(0.5, 20);
-                robot.forward(0.5, 22);
                 robot.stop();
 
               //  telemetryTfod();
