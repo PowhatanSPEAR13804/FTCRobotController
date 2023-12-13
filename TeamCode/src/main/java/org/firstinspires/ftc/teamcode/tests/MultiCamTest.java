@@ -7,13 +7,11 @@ import java.util.List;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
-@TeleOp(name="MultiCameraTest", group="Tests")
+@TeleOp(name = "MultiCamTest", group="Tests")
 public class MultiCamTest extends LinearOpMode {
 
     VisionPortal.Builder myVisionPortalBuilder;
@@ -21,33 +19,16 @@ public class MultiCamTest extends LinearOpMode {
     int Portal_1_View_ID;
     boolean USE_WEBCAM_2;
     int Portal_2_View_ID;
-    List myPortalsList = null;
-   // AprilTagProcessor myAprilTagProcessor_1;
-   // AprilTagProcessor myAprilTagProcessor_2;
+    AprilTagProcessor myAprilTagProcessor_1;
+    AprilTagProcessor myAprilTagProcessor_2;
     VisionPortal myVisionPortal_1;
     VisionPortal myVisionPortal_2;
-
-    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
-    // TFOD_MODEL_FILE points to a model file stored onboard the Robot Controller's storage,
-    // this is used when uploading models directly to the RC using the model upload interface.
-    private static final String TFOD_MODEL_FILE = "/Internal shared storage/Download/RedObjectIdentification.tflite";
-    // Define the labels recognized in the model for TFOD (must be in training order!)
-    private static final String[] LABELS = {
-            "Red Cube","Blue Cube"
-    };
-
-    /**
-     * The variable to store our instance of the TensorFlow Object Detection processor.
-     */
-    private TfodProcessor tfod;
-    private TfodProcessor tfod2;
 
     /**
      * Describe this function...
      */
     private void initMultiPortals() {
-
-
+        List myPortalsList;
 
         myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
         Portal_1_View_ID = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
@@ -88,11 +69,6 @@ public class MultiCamTest extends LinearOpMode {
                 AprilTag_telemetry_for_Portal_2();
                 AprilTag_telemetry_legend();
                 Toggle_camera_streams();
-
-                for(int i =0;i<JavaUtil.listLength(myPortalsList);i++){
-                    telemetry.addLine(""+((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue());
-                }
-
                 // Push telemetry to the Driver Station.
                 telemetry.update();
                 // Share the CPU.
@@ -105,29 +81,13 @@ public class MultiCamTest extends LinearOpMode {
      * Initialize AprilTag Detection.
      */
     private void initAprilTag() {
-
-
-      /*  AprilTagProcessor.Builder myAprilTagProcessorBuilder;
+        AprilTagProcessor.Builder myAprilTagProcessorBuilder;
 
         // First, create an AprilTagProcessor.Builder.
         myAprilTagProcessorBuilder = new AprilTagProcessor.Builder();
         // Create each AprilTagProcessor by calling build.
         myAprilTagProcessor_1 = myAprilTagProcessorBuilder.build();
         myAprilTagProcessor_2 = myAprilTagProcessorBuilder.build();
-
-       */
-
-        tfod = new TfodProcessor.Builder()
-                .setModelAssetName(TFOD_MODEL_ASSET)
-                .setModelLabels(LABELS)
-                .build();
-
-        tfod2 = new TfodProcessor.Builder()
-                .setModelAssetName(TFOD_MODEL_ASSET)
-                .setModelLabels(LABELS)
-                .build();
-
-
         Make_first_VisionPortal();
         Make_second_VisionPortal();
     }
@@ -147,12 +107,12 @@ public class MultiCamTest extends LinearOpMode {
         }
         // Manage USB bandwidth of two camera streams, by adjusting resolution from default 640x480.
         // Set the camera resolution.
-        myVisionPortalBuilder.setCameraResolution(new Size(1280, 720));
+        myVisionPortalBuilder.setCameraResolution(new Size(320, 240));
         // Manage USB bandwidth of two camera streams, by selecting Streaming Format.
         // Set the stream format.
         myVisionPortalBuilder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         // Add myAprilTagProcessor to the VisionPortal.Builder.
-        myVisionPortalBuilder.addProcessor(tfod);
+        myVisionPortalBuilder.addProcessor(myAprilTagProcessor_1);
         // Add the Portal View ID to the VisionPortal.Builder
         // Set the camera monitor view id.
         myVisionPortalBuilder.setLiveViewContainerId(Portal_1_View_ID);
@@ -166,19 +126,19 @@ public class MultiCamTest extends LinearOpMode {
     private void Make_second_VisionPortal() {
         if (USE_WEBCAM_2) {
             // Use a webcam.
-            myVisionPortalBuilder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 3"));
+            myVisionPortalBuilder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"));
         } else {
             // Use the device's back camera.
             myVisionPortalBuilder.setCamera(BuiltinCameraDirection.BACK);
         }
         // Manage USB bandwidth of two camera streams, by adjusting resolution from default 640x480.
         // Set the camera resolution.
-        myVisionPortalBuilder.setCameraResolution(new Size(1280, 720));
+        myVisionPortalBuilder.setCameraResolution(new Size(320, 240));
         // Manage USB bandwidth of two camera streams, by selecting Streaming Format.
         // Set the stream format.
         myVisionPortalBuilder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
         // Add myAprilTagProcessor to the VisionPortal.Builder.
-        myVisionPortalBuilder.addProcessor(tfod2);
+        myVisionPortalBuilder.addProcessor(myAprilTagProcessor_2);
         // Add the Portal View ID to the VisionPortal.Builder
         // Set the camera monitor view id.
         myVisionPortalBuilder.setLiveViewContainerId(Portal_2_View_ID);
@@ -213,7 +173,7 @@ public class MultiCamTest extends LinearOpMode {
      * Display info (using telemetry) for a recognized AprilTag.
      */
     private void AprilTag_telemetry_for_Portal_1() {
-       /* List<AprilTagDetection> myAprilTagDetections_1;
+        List<AprilTagDetection> myAprilTagDetections_1;
         AprilTagDetection thisDetection_1;
 
         // Get a list of AprilTag detections.
@@ -221,7 +181,6 @@ public class MultiCamTest extends LinearOpMode {
         telemetry.addData("Portal 1 - # AprilTags Detected", JavaUtil.listLength(myAprilTagDetections_1));
         // Iterate through list and call a function to
         // display info for each recognized AprilTag.
-
         for (AprilTagDetection thisDetection_1_item : myAprilTagDetections_1) {
             thisDetection_1 = thisDetection_1_item;
             // Display info about the detection.
@@ -236,27 +195,13 @@ public class MultiCamTest extends LinearOpMode {
                 telemetry.addLine("Center " + JavaUtil.formatNumber(thisDetection_1.center.x, 6, 0) + "" + JavaUtil.formatNumber(thisDetection_1.center.y, 6, 0) + " (pixels)");
             }
         }
-
-         */
-        List<Recognition> currentRecognitions1 = tfod.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions1.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition1 : currentRecognitions1) {
-            double x = (recognition1.getLeft() + recognition1.getRight()) / 2 ;
-            double y = (recognition1.getTop()  + recognition1.getBottom()) / 2 ;
-
-            telemetry.addLine("x = "+x);
-            telemetry.addLine("y = "+y);
-
-        }
     }
 
     /**
      * Display info (using telemetry) for a recognized AprilTag.
      */
     private void AprilTag_telemetry_for_Portal_2() {
-       /* List<AprilTagDetection> myAprilTagDetections_2;
+        List<AprilTagDetection> myAprilTagDetections_2;
         AprilTagDetection thisDetection_2;
 
         // Get a list of AprilTag detections.
@@ -279,20 +224,6 @@ public class MultiCamTest extends LinearOpMode {
                 telemetry.addLine("Center " + JavaUtil.formatNumber(thisDetection_2.center.x, 6, 0) + "" + JavaUtil.formatNumber(thisDetection_2.center.y, 6, 0) + " (pixels)");
             }
         }
-
-        */
-        List<Recognition> currentRecognitions2 = tfod2.getRecognitions();
-        telemetry.addData("# Objects Detected", currentRecognitions2.size());
-
-        // Step through the list of recognitions and display info for each one.
-        for (Recognition recognition2 : currentRecognitions2) {
-            double x = (recognition2.getLeft() + recognition2.getRight()) / 2 ;
-            double y = (recognition2.getTop()  + recognition2.getBottom()) / 2 ;
-
-            telemetry.addLine("2x = "+x);
-            telemetry.addLine("2y = "+y);
-
-        }
     }
 
     /**
@@ -306,5 +237,3 @@ public class MultiCamTest extends LinearOpMode {
         telemetry.addLine("RBE = Range, Bearing & Elevation");
     }
 }
-
-
