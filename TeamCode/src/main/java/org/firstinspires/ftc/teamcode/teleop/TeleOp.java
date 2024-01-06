@@ -184,9 +184,9 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nIntake position: " + intakePosition);
 
             //four bar
-            if (gamepad1.dpad_up || gamepad2.dpad_up) {
+            if (gamepad1.dpad_up || gamepad2.right_bumper) {
                 fourBarPower = 1;
-            } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
+            } else if (gamepad1.dpad_down) {
                 fourBarPower = -1;
             } else {
                 fourBarPower = 0;
@@ -285,39 +285,31 @@ public class TeleOp extends LinearOpMode {
                 telemetry.addLine("Servo Open: " + servoOpen);
                 telemetry.addLine("Output Servo Position: " + outputSPosition);
 
-
                 outputS.setPosition(outputSPosition);
             }
-            //if the left joystick on the second controller in moved up or down, the hanging servo spins forward or backward.
-            //hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
 
-           //when the a button is pressed on either controller, the motor reels in the string
-            // and when the x button is pressed on the second controller the string is let out
-            /*if (gamepad1.a || gamepad2.a) {
+            // when a pressed on little brother controller, motor reels in string
+            // when x pressed on little brother controller string is let out
+            if (gamepad2.left_bumper) {
                 hangingM.setPower(1);
             } else if (gamepad2.x) {
                 hangingM.setPower(-1);
             } else {
                 hangingM.setPower(0);
-            }*/
-            //Hanging Hook Servo Movements
-            {
-                littleBroRB.checkButton(gamepad2.right_bumper);
-                // transfer the state of the button to the buttonclick class
-                if (littleBroRB.getClickCount() > 0) {
-                    hookUp = !hookUp;
-                    littleBroRB.resetClickCount();
-                }
-                if (hookUp) {
-                    hookPosition = hookUpPosition;
-                } else {
-                    hookPosition = hookDownPosition;
-                }
             }
-            //hook.setPosition(hookPosition);
+
+            // hanging hook servo (hangingS) movements
+            if(gamepad2.right_trigger > 0.5){
+                hangingS.setPosition(0.5);
+            }else{
+                hangingS.setPosition(0);
+            }
+
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
-            telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
+
+
+
             telemetry.update();
         }
     }
