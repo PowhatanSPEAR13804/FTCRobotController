@@ -184,9 +184,9 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nIntake position: " + intakePosition);
 
             //four bar
-            if (gamepad1.dpad_up || gamepad2.dpad_up) {
+            if (gamepad1.dpad_up || gamepad2.right_bumper) {
                 fourBarPower = 1;
-            } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
+            } else if (gamepad1.dpad_down) {
                 fourBarPower = -1;
             } else {
                 fourBarPower = 0;
@@ -285,9 +285,28 @@ public class TeleOp extends LinearOpMode {
                 telemetry.addLine("Servo Open: " + servoOpen);
                 telemetry.addLine("Output Servo Position: " + outputSPosition);
 
-
                 outputS.setPosition(outputSPosition);
             }
+
+            // when a pressed on little brother controller, motor reels in string
+            // when x pressed on little brother controller string is let out
+            if (gamepad2.left_bumper) {
+                hangingM.setPower(1);
+            } else if (gamepad2.x) {
+                hangingM.setPower(-1);
+            } else {
+                hangingM.setPower(0);
+            }
+
+            // hanging hook servo (hangingS) movements
+            if(gamepad2.right_trigger > 0.5){
+                hangingS.setPosition(0.25);
+            }else{
+                hangingS.setPosition(0);
+            }
+
+            telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
+            telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
 
 
 
