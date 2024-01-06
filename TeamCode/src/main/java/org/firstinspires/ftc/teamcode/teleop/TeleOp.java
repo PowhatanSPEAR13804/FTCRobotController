@@ -288,36 +288,9 @@ public class TeleOp extends LinearOpMode {
 
                 outputS.setPosition(outputSPosition);
             }
-            //if the left joystick on the second controller in moved up or down, the hanging servo spins forward or backward.
-            //hangingS.setPosition((-Math.abs(gamepad2.left_stick_y) + 1));
 
-           //when the a button is pressed on either controller, the motor reels in the string
-            // and when the x button is pressed on the second controller the string is let out
-            /*if (gamepad1.a || gamepad2.a) {
-                hangingM.setPower(1);
-            } else if (gamepad2.x) {
-                hangingM.setPower(-1);
-            } else {
-                hangingM.setPower(0);
-            }*/
-            //Hanging Hook Servo Movements
-            {
-                littleBroRB.checkButton(gamepad2.right_bumper);
-                // transfer the state of the button to the buttonclick class
-                if (littleBroRB.getClickCount() > 0) {
-                    hookUp = !hookUp;
-                    littleBroRB.resetClickCount();
-                }
-                if (hookUp) {
-                    hookPosition = hookUpPosition;
-                } else {
-                    hookPosition = hookDownPosition;
-                }
-            }
-            //hook.setPosition(hookPosition);
-            telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
-            telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
-            telemetry.addLine("\nHook Servo Position: " + hook.getPosition());
+
+
             telemetry.update();
         }
     }
