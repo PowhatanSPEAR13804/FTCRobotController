@@ -300,7 +300,7 @@ public class TeleOp extends LinearOpMode {
 
             // hanging hook servo (hangingS) movements
             if(gamepad2.right_trigger > 0.5){
-                hangingS.setPosition(0.25);
+                hangingS.setPosition(0.5);
             }else{
                 hangingS.setPosition(0);
             }
