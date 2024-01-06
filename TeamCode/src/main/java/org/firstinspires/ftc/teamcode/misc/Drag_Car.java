@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.misc;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 
-@TeleOp(name = "Drag_Car", group = "Motor")
+@TeleOp(name = "Drag_Car", group = "Misc")
 
 
 public class Drag_Car extends LinearOpMode {

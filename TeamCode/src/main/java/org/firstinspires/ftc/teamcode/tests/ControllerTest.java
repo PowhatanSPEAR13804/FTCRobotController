@@ -8,8 +8,8 @@ import java.util.Locale;
 //@Disabled
 //safety :)
 
-@TeleOp
-public class Controller_Test extends LinearOpMode {
+@TeleOp(name="ControllerTest", group="Tests")
+public class ControllerTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         waitForStart();
