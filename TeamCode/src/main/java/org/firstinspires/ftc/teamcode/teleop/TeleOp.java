@@ -307,6 +307,7 @@ public class TeleOp extends LinearOpMode {
 
             telemetry.addLine("\nHanging Motor Power: "+hangingM.getPower());
             telemetry.addLine("\nHanging Servo Position: " + hangingS.getPosition());
+            
 
 
 
