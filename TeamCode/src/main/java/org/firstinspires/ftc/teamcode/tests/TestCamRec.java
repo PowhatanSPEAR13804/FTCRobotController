@@ -29,15 +29,12 @@
 
 package org.firstinspires.ftc.teamcode.tests;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -53,16 +50,16 @@ import java.util.List;
 
 @TeleOp(name="TestBlueCam", group="Test")
 public class
-TestAutoBlueFar extends LinearOpMode {
+TestCamRec extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
+    private static final String TFOD_MODEL_ASSET = "NewRedFinder.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-      "Blue Cube"
+      "Red Cube"
     };
 
     /**

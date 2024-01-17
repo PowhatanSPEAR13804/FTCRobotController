@@ -61,7 +61,7 @@ TesterAutoBlue extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-       "Red Cube","Blue Cube"
+      "Blue Cube"
     };
 
     /**
