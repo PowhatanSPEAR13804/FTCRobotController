@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
@@ -277,20 +278,27 @@ public class TeleOp extends LinearOpMode {
             */
             //Output Servo Movements
             {
-                if (BumperRight.getClickCount() > 0) {
-                    servoOpen = !servoOpen;
+                if (BumperRight.getClickCount() > 0) {//
+                    if(servoOpen){
+                        servoOpen = false;
+                    }
+                    else{
+                        servoOpen = true;
+                    }
+
                     BumperRight.resetClickCount();
                 }
                 if (servoOpen) {
-                    outputSPosition = 135.0/270.0;
+                   outputSPosition =0.4;// 135.0/270.0;
                 } else {
-                    outputSPosition = 100.0/270.0;
+                      outputSPosition =0.6; //100.0/270.0;
                 }
 
-                telemetry.addLine("Servo Open: " + servoOpen);
-                telemetry.addLine("Output Servo Position: " + outputSPosition);
 
-                outputS.setPosition(outputSPosition);
+                telemetry.addLine("Servo Open: " + servoOpen);
+                telemetry.addLine("Output Servo Position: " +  outputS.getPosition());
+
+               outputS.setPosition(outputSPosition);
             }
 
             // when a pressed on little brother controller, motor reels in string

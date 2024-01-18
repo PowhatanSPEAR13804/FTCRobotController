@@ -131,6 +131,7 @@ TestCamAuto extends LinearOpMode {
 
                // robot.stop();
 
+
                 double x = 0;
                 double y;
                 //Checks the list of recognitions and moves the robot forward slightly until it detects an object
@@ -157,7 +158,8 @@ TestCamAuto extends LinearOpMode {
                 }
 
 
-                robot.backward(0.5,28);
+                //robot.backward(0.5,28);
+                 robot.forward(0.5,23);
 
                 if(x>200&&x<400){
                     robot.stop();
@@ -171,7 +173,8 @@ TestCamAuto extends LinearOpMode {
                     sleep(1000);
                     //   intakeLeft.setPosition(0.5);
                     //   intakeRight.setPosition(0.5);
-                    robot.forward(0.5,5);
+                    //robot.forward(0.5,5);
+                    robot.backward(0.5,5);
                     robot.stop();
                 }
                 else if(x<=200){ //if the object is on the left side of the screen the robot moves to the left spike
@@ -183,10 +186,12 @@ TestCamAuto extends LinearOpMode {
                     //turns robot left 90 degrees
 
 
-                    robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
+                    //robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
+                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 12*Math.PI/2.0);
                     robot.stop();
-                    robot.backward(0.5,2);
-                    robot.stop();
+                    //robot.backward(0.5,2);
+                    robot.forward(0.5,1);
+                   robot.stop();
 
                     telemetry.addLine("\nleft spike");
                     telemetry.update();
@@ -200,38 +205,46 @@ TestCamAuto extends LinearOpMode {
                     //robot.right(0.5, 11.5);
                     //turns robot right 90 degrees
                     // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
-                    robot.forward(0.5,2);
+                    //robot.forward(0.5,2);
+                   robot.backward(0.5,2);
 
                     robot.stop();
-                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
+                    //robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
+                     robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 12*Math.PI/2.0);
                     robot.stop();
 
                 }
                 else if(x>=400){ //if the object is not found it is assumed to be on the right spike, see line 144
                     robot.stop();
 
-                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
+                    //robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
+                    robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 12*Math.PI/2.0);
                     robot.stop();
 
                     //right spike
                     telemetry.addLine("\nright spike");
                     telemetry.update();
-                    robot.backward(0.5,1);
-                    robot.stop();
+                    //robot.backward(0.5,1);
+                    // robot.forward(0.5,1);
+                   // robot.stop();
                     //  intakeLeft.setPosition(0);
                     //   intakeRight.setPosition(0);
                     sleep(1000);
                     //  intakeLeft.setPosition(0.5);
                     //  intakeRight.setPosition(0.5);
-                    robot.forward(0.5,1);
+                    //robot.forward(0.5,1);
+                    robot.backward(0.5,1);
 
                     robot.stop();
-                    robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
+                    //robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
+                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 12*Math.PI/2.0);
                     robot.stop();
                 }
-                robot.forward(0.5,20);
+                //robot.forward(0.5,20);
+                 robot.backward(0.5,10);
                 robot.stop();
-                robot.left(0.5,20);
+                //robot.left(0.5,20);
+                robot.right(0.5,50);
                 robot.stop();
 
                 //makes the robot strafe right
