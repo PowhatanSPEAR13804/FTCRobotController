@@ -27,16 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.tests;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -50,18 +48,18 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@Autonomous(name="TestAutoBlueFar", group="Autonomous")
+@TeleOp(name="TestBlueCam", group="Test")
 public class
-TestAutoBlueFar extends LinearOpMode {
+TestCamRec extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
+    private static final String TFOD_MODEL_ASSET = "NewRedFinder.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-       "Blue Cube"
+      "Red Cube"
     };
 
     /**
@@ -103,11 +101,11 @@ TestAutoBlueFar extends LinearOpMode {
     // Make this into a normal java class like the buttonclick or robotMove class
     // This means they need a constructor which is a function
     // that has the same name as the class.
-
+    @Override
     public void runOpMode() {
 
         initTfod();
-
+/*
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
       //  DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -120,26 +118,27 @@ TestAutoBlueFar extends LinearOpMode {
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
         robotMove robot = new robotMove(hardwareMap);
+
+ */
         waitForStart();
 
-        double distanceMove = 21.5;
+       // double distanceMove = 21.5;
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-               /* double x = 0;
+                double x = 0;
                 double y;
                 //Checks the list of recognitions and moves the robot forward slightly until it detects an object
                 //or it has moved forward enough to rule out the other spots
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
-                while(currentRecognitions.size() == 0&& distanceMove>10) {
-                    distanceMove-=0.1;
-                    robot.forward(0.1, 0.1);
+                while(currentRecognitions.size() == 0) {
+                    //distanceMove-=0.1;
+                  //  robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();
                     x=-1;
-                    telemetry.addLine("\ndistanceMove:" + distanceMove);
-                    telemetry.update();
+
 
                 }
 
@@ -153,12 +152,12 @@ TestAutoBlueFar extends LinearOpMode {
                     telemetry.update();
                 }
 
-                */
+
 
 
 
                 //moves the robot forward the remaining amount
-                robot.forward(0.5, distanceMove);
+               /* robot.forward(0.5, distanceMove);
 
                 //center spike
                 telemetry.addLine("\ncenter spike");
@@ -170,9 +169,11 @@ TestAutoBlueFar extends LinearOpMode {
                 intakeRight.setPosition(0.5);
                 robot.backward(0.5,18);
                 robot.stop();
+
+                */
                 /*
                 //if the object is on the right side of the screen the robot moves to the center spike
-                if(x>200&&x<400){
+                if(x>300){
                     robot.stop();
 
                     //center spike
@@ -185,7 +186,7 @@ TestAutoBlueFar extends LinearOpMode {
                     intakeRight.setPosition(0.5);
                     robot.backward(0.5,5);
                 }
-                else if(x<=200){ //if the object is on the left side of the screen the robot moves to the left spike
+                else if(x>=0){ //if the object is on the left side of the screen the robot moves to the left spike
 
                     robot.stop();
 
@@ -209,7 +210,7 @@ TestAutoBlueFar extends LinearOpMode {
                      // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
 
                 }
-                else if(x>=400){ //if the object is not found it is assumed to be on the right spike, see line 144
+                else{ //if the object is not found it is assumed to be on the right spike, see line 144
                     robot.stop();
 
                     //right spike
@@ -273,7 +274,7 @@ TestAutoBlueFar extends LinearOpMode {
                // robot.left(0.5, 23);
 
               //  robot.backward(0.5, 20);
-                robot.stop();
+              //  robot.stop();
 
               //  telemetryTfod();
 
