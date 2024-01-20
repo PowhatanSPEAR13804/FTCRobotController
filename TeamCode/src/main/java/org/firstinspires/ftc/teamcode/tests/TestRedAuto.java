@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -52,16 +53,16 @@ import java.util.List;
 
 @Autonomous(name="TestRedAuto", group="Test")
 public class
-TestCamAuto extends LinearOpMode {
+TestRedAuto extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "NewRedFinder.tflite";
+    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-      "Red Cube"
+      "Blue Cube"
     };
 
     /**
@@ -94,7 +95,6 @@ TestCamAuto extends LinearOpMode {
         initTfod();
     }
      */
-
     //@Override
     // runOpMode will never ever run using new!
     // linearopmode is a "special" java class
@@ -106,20 +106,25 @@ TestCamAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+      Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
+         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
+        DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
+        DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
+
+
+
+        Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
+
+        robotMove  robot =  new robotMove(hardwareMap);
+
+
+
+        intakeLeft.setDirection((Servo.Direction.REVERSE));
+        intakeRight.setDirection((Servo.Direction.FORWARD));
+
         initTfod();
 
-      //  Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
-        //Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
-      //  DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
-      //  DcMotor viper =  hardwareMap.dcMotor.get("Hub1_Motor1");
 
-     //   intakeLeft.setDirection((Servo.Direction.REVERSE));
-       // intakeRight.setDirection((Servo.Direction.FORWARD));
-
-       // Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
-        //Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
-
-        robotMove robot = new robotMove(hardwareMap);
 
 
         waitForStart();
@@ -129,8 +134,12 @@ TestCamAuto extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
 
-               // robot.stop();
 
+
+
+
+              //  robot.forward(0.5,24);
+                //robot.stop();
 
                 double x = 0;
                 double y;
@@ -157,9 +166,13 @@ TestCamAuto extends LinearOpMode {
                     telemetry.update();
                 }
 
-
+                telemetry.addLine("\nnew code");
                 //robot.backward(0.5,28);
-                 robot.forward(0.5,23);
+                robot.forward(0.5,24);
+                robot.stop();
+                telemetry.addLine("Distanced Moved = "+robot.getOdomDistance());
+                telemetry.update();
+
 
                 if(x>200&&x<400){
                     robot.stop();
@@ -168,12 +181,12 @@ TestCamAuto extends LinearOpMode {
                     //center spike
                     telemetry.addLine("\ncenter spike");
                     telemetry.update();
-              //      intakeLeft.setPosition(0);
-              //      intakeRight.setPosition(0);
+
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
                     sleep(1000);
-                    //   intakeLeft.setPosition(0.5);
-                    //   intakeRight.setPosition(0.5);
-                    //robot.forward(0.5,5);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);                    //robot.forward(0.5,5);
                     robot.backward(0.5,5);
                     robot.stop();
                 }
@@ -187,7 +200,7 @@ TestCamAuto extends LinearOpMode {
 
 
                     //robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
-                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 12*Math.PI/2.0);
+                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 8);
                     robot.stop();
                     //robot.backward(0.5,2);
                     robot.forward(0.5,1);
@@ -196,21 +209,20 @@ TestCamAuto extends LinearOpMode {
                     telemetry.addLine("\nleft spike");
                     telemetry.update();
                     //robot.left(0.5, 11.5);
-                    //   intakeLeft.setPosition(0);
-                    // intakeRight.setPosition(0);
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
                     sleep(1000);
-                    //   intakeLeft.setPosition(0.5);
-                    //   intakeRight.setPosition(0.5);
-                  //  robot.backward(0.5,5);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);                  //  robot.backward(0.5,5);
                     //robot.right(0.5, 11.5);
                     //turns robot right 90 degrees
                     // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
                     //robot.forward(0.5,2);
-                   robot.backward(0.5,2);
+                   robot.backward(0.5,2.5);
 
                     robot.stop();
                     //robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
-                     robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 12*Math.PI/2.0);
+                     robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 8);
                     robot.stop();
 
                 }
@@ -218,34 +230,74 @@ TestCamAuto extends LinearOpMode {
                     robot.stop();
 
                     //robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 11.314*Math.PI/2.0);
-                    robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 12*Math.PI/2.0);
+                    robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 8);
+                    telemetry.addLine("Distanced Moved = "+robot.getOdomDistance());
+                    telemetry.update();
                     robot.stop();
+
 
                     //right spike
                     telemetry.addLine("\nright spike");
                     telemetry.update();
                     //robot.backward(0.5,1);
-                    // robot.forward(0.5,1);
-                   // robot.stop();
-                    //  intakeLeft.setPosition(0);
-                    //   intakeRight.setPosition(0);
+                    robot.forward(0.5,0.5);
+                    robot.stop();
+                    intakeLeft.setPosition(0);
+                    intakeRight.setPosition(0);
                     sleep(1000);
-                    //  intakeLeft.setPosition(0.5);
-                    //  intakeRight.setPosition(0.5);
+                    intakeLeft.setPosition(0.5);
+                    intakeRight.setPosition(0.5);
                     //robot.forward(0.5,1);
-                    robot.backward(0.5,1);
+                    robot.stop();
+                    robot.backward(0.5,2.5);
 
                     robot.stop();
                     //robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 11.314*Math.PI/2.0);
-                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 12*Math.PI/2.0);
+                    robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5,8 );
+                    telemetry.addLine("Distanced Moved = "+robot.getOdomDistance());
+                    telemetry.update();
                     robot.stop();
                 }
                 //robot.forward(0.5,20);
                  robot.backward(0.5,10);
                 robot.stop();
-                //robot.left(0.5,20);
-                robot.right(0.5,50);
+                robot.right(0.5,37);/*
+                //robot.left(0.5,40);
                 robot.stop();
+                robot.forward(0.5,27);
+               // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 12*Math.PI/2.0);
+                robot.stop();
+                robot.left(0.5,20);
+                robot.stop();/*
+
+  fourBar.setPower(1);
+    sleep(1000);
+    fourBar.setPower(0);
+    viper.setPower(-1);
+    sleep(950);
+    viper.setPower(0);
+    fourBar.setPower(1);
+    sleep(1000);
+    fourBar.setPower(0);
+    //  robot.backward(0.5,2);
+    // robot.stop();
+    outputS.setPosition(0.8);
+    sleep(1000);
+    outputS.setPosition(0.65);
+    robot.forward(0.5,4);
+    robot.stop();
+    viper.setPower(1);
+    sleep(2000);
+    viper.setPower(0);
+    fourBar.setPower(-1);
+    sleep(1000);
+    fourBar.setPower(0);
+    viper.setPower(1);
+    sleep(2000);
+    viper.setPower(0);
+    fourBar.setPower(-1);
+    sleep(1000);
+    fourBar.setPower(0);
 
                 //makes the robot strafe right
 
@@ -311,9 +363,9 @@ TestCamAuto extends LinearOpMode {
                 */
 
                 // Share the CPU.
-                while (opModeIsActive()) {
-                    sleep(10);
-                }
+               while (opModeIsActive()) {
+                   sleep(10);
+               }
             }
         }
 
@@ -324,6 +376,9 @@ TestCamAuto extends LinearOpMode {
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
+
+
+
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.

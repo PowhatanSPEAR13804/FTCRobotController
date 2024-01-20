@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.helperclasses;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Object for controlling the 4 drive motors
 // Expects the 4 drive motors connected to omni directional wheels
@@ -16,7 +20,14 @@ public class robotMove {
     public DcMotor motorFL = null;
     public DcMotor motorBR = null;
     public DcMotor motorBL = null;
+
+    public  DcMotor motorX =null ;
+    public  DcMotor motorY = null;
+
     public double ticksPerInch = 0.0;   // Encoder ticks per inch
+
+    public  double ODOM_INCHES_PER_COUNT   = (2*24/25.4*Math.PI)/2000;   //  GoBilda Odometry Pod (1/226.8)
+
 
     // Constructor - does all the initialization of the motors
     // this function gets called when you make a new object.
@@ -37,6 +48,8 @@ public class robotMove {
         motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
         motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
+        motorY = hardwareMap.dcMotor.get("Hub2_Motor2");
+        motorX = hardwareMap.dcMotor.get("Hub2_Motor1");
         // Setup the motors to turn in the correct
         // direction to default to forward motion
         // Always set all 4 just in case their default
@@ -65,7 +78,9 @@ public class robotMove {
         // Make sure we are stopped
         stop();
     }
+public void GetDistance(){
 
+}
     public void setMode(DcMotor.RunMode mode) {
         motorFR.setMode(mode);
         motorFL.setMode(mode);
@@ -84,8 +99,16 @@ public class robotMove {
     public void resetEncoders() {
         setModeStopAndReset();
         setModeRunUsingEncoder();
+      motorX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+public  double getOdomDistance(){
+       double x = motorX.getCurrentPosition();
+    double y =  motorY.getCurrentPosition();
+        double D = Math.sqrt(x*x+y*y);
+        return (D*ODOM_INCHES_PER_COUNT);
 
+}
     // Set the power individually on each motor as a group
     // You can call this by itself or use one of the
     // other functions to call it for you.
@@ -156,6 +179,45 @@ public class robotMove {
     // FRS, FLS, BRS, BLS = speed for each motor 1.0 to -1.0
     // distance = distance in inches to travel
     public void runMotorsForDistance(double FRS, double FLS, double BRS, double BLS, double distance) {
+
+        // Store the starting position of the motor encoder
+        // Use the Front Right motor for right now...
+        double dStartDistance = getOdomDistance();
+
+
+        double vMin = 0.15;
+        double vMax = 1.0;
+        double aMax = 1.0;
+
+        // Calculate the starting velocity using the motion profile
+        double dCurrentDistance = getOdomDistance();
+        double dVelMul = triangleMotionProfile(vMin, vMax, distance, dCurrentDistance);
+
+        // Multiply the vMax for each motor by the starting velocity (scalar)
+        setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
+
+        // Wait until the encoder says we have traveled the desired distance
+        // Eventually the ticks will roll over or something like that.
+        // However the autonomous code only needs to run for 30 seconds or so
+        // Use the absolute distance traveled from dStartTicks to currentPosition
+        //double dTicks = Math.abs(motorFR.getCurrentPosition() - dStartTicks);
+        while (dCurrentDistance < distance)
+        {
+            // Calculate the current velocity scalar using the current distance traveled
+            dVelMul = triangleMotionProfile(vMin, vMax, distance, dCurrentDistance);
+            // Multiply the vMax for each motor by the starting velocity (scalar)
+            setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
+
+            dCurrentDistance = getOdomDistance();
+
+        }
+
+        // Calculate the final velocity scalar
+        dVelMul = triangleMotionProfile(vMin, vMax, distance, dCurrentDistance);
+        // Multiply the vMax for each motor by the starting velocity (scalar)
+        setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
+    }
+    public void runMotorsForDistanceNoOdom(double FRS, double FLS, double BRS, double BLS, double distance) {
         // Convert the distance from inches to ticks
         distance *= ticksPerInch;
 
@@ -194,7 +256,6 @@ public class robotMove {
         // Multiply the vMax for each motor by the starting velocity (scalar)
         setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
     }
-
     // Triangle shaped motion profile that gives you velocity depending on the distance traveled
     // vMin and vMax can be normalized values used to scale actual speed inputs to the motors
     double triangleMotionProfile(double vMin, double vMax, double totalDist, double currDist)

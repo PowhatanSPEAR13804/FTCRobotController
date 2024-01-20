@@ -65,14 +65,15 @@ public class TeleOp extends LinearOpMode {
         double outputSPosition; // 0.5 - old value
         double outputLPosition; // 0 - old value
         double hookDefaultPosition = 0;
-        double hookDownPosition = 0.5;
-        double hookUpPosition = 0.91;
+        double hookDownPosition = 0.25;
+        double hookUpPosition = 0.72;
         double hookPosition;
         int viperPosition = 0;
         boolean linearOpen = false;
         boolean servoOpen = false;
         boolean launchServoOpen = false;
         boolean hookUp = false;
+        boolean viperInUse = false;
 
         buttonClick dPadLeft = new buttonClick();
         buttonClick dPadRight = new buttonClick();
@@ -90,6 +91,7 @@ public class TeleOp extends LinearOpMode {
         buttonClick littleBroDR = new buttonClick();
         */
         buttonClick littleBroRB = new buttonClick();
+        buttonClick littleBroLB = new buttonClick();
 
 
         waitForStart();
@@ -162,22 +164,26 @@ public class TeleOp extends LinearOpMode {
             gamepadX.checkButton(gamepad1.x);
             gamepadB.checkButton(gamepad1.b);
             littleBroB.checkButton(gamepad2.b);
-            if (gamepadX.getClickCount() > 0 && intakePosition == 0.5) {
+            littleBroLB.checkButton(gamepad2.left_bumper);
+            littleBroRB.checkButton(gamepad2.right_bumper);
+            if ((gamepadX.getClickCount() > 0 || littleBroLB.getClickCount() > 0) && intakePosition == 0.5) {
                 intakePosition = 1;
                 gamepadX.resetClickCount();
-            } else if (gamepadX.getClickCount() > 0 && intakePosition != 0.5) {
+                littleBroLB.resetClickCount();
+            } else if ((gamepadX.getClickCount() > 0 || littleBroLB.getClickCount() > 0) && intakePosition != 0.5) {
                 intakePosition = 0.5;
                 gamepadX.resetClickCount();
+                littleBroLB.resetClickCount();
             }
             //if the b button is pressed and the intake is off it is set to reverse and on, and if the intake is not off, it is turned off
-            if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition == 0.5) {
+            if ((gamepadB.getClickCount() > 0 || littleBroRB.getClickCount() > 0) && intakePosition == 0.5) {
                 intakePosition = 0;
                 gamepadB.resetClickCount();
-                littleBroB.resetClickCount();
-            } else if ((gamepadB.getClickCount() > 0 || littleBroB.getClickCount() > 0) && intakePosition != 0.5) {
+                littleBroRB.resetClickCount();
+            } else if ((gamepadB.getClickCount() > 0 || littleBroRB.getClickCount() > 0) && intakePosition != 0.5) {
                 intakePosition = 0.5;
                 gamepadB.resetClickCount();
-                littleBroB.resetClickCount();
+                littleBroRB.resetClickCount();
             }
             intakeLeft.setPosition(intakePosition);
             intakeRight.setPosition(intakePosition);
@@ -186,16 +192,17 @@ public class TeleOp extends LinearOpMode {
             telemetry.addLine("\nIntake position: " + intakePosition);
 
             //four bar
-            if (gamepad1.dpad_up || gamepad2.dpad_up) {
-                hook.setPosition(hookUpPosition);
+            if (gamepad1.dpad_up ||gamepad2.dpad_up) {
+                if(gamepad1.dpad_up&&!viperInUse){hook.setPosition(hookUpPosition);}
                 fourBarPower = 1;
 
-            } else if (gamepad1.dpad_down || gamepad2.dpad_down) {
-                hook.setPosition(hookDownPosition);
+            } else if (gamepad1.dpad_down||gamepad2.dpad_down) {
+               if(gamepad1.dpad_down&&!viperInUse){hook.setPosition(hookDownPosition);}
                 fourBarPower = -1;
             } else {
                 fourBarPower = 0;
             }
+
             fourBar.setPower(fourBarPower);
 
             telemetry.addLine("\nFour Bar Power: " + fourBarPower);
@@ -204,6 +211,7 @@ public class TeleOp extends LinearOpMode {
 
 
             //viper
+
             boolean on;
             if (gamepad1.right_trigger > 0 && viperPosition > -4450) {
                 on = true;
@@ -212,12 +220,14 @@ public class TeleOp extends LinearOpMode {
                 on = true;
                 viperPower = Math.max(-1, viperPower - 0.1);
             } else {
-                if(viperPosition < -1500) {
+                if(viperPosition < -2450) {
                     viperPower = 0.5;
                     on = false;
+                    viperInUse = true;
                 } else {
                     viperPower = 0;
                     on = false;
+                    viperInUse = false;
                 }
 
             }
@@ -289,9 +299,9 @@ public class TeleOp extends LinearOpMode {
                     BumperRight.resetClickCount();
                 }
                 if (servoOpen) {
-                   outputSPosition =0.4;// 135.0/270.0;
+                   outputSPosition =0.8;// 135.0/270.0;
                 } else {
-                      outputSPosition =0.6; //100.0/270.0;
+                      outputSPosition =0.65; //100.0/270.0;
                 }
 
 
