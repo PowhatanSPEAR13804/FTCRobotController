@@ -1,0 +1,77 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+
+//@Disabled
+//safety :)
+
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TicTacToe", group="TeleOp")
+public class TicTacToe extends LinearOpMode {
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        DcMotor xMotor = hardwareMap.dcMotor.get("M0");
+        DcMotor yMotor = hardwareMap.dcMotor.get("M3");
+
+
+        //linear servo
+        Servo pickupLinearServo =  hardwareMap.servo.get("S4");
+
+        // Reverse the right side motors
+        // Reverse left motors if you are using NeveRests
+
+        xMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        yMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        xMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        yMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+
+        while (opModeIsActive()) {
+
+            if(gamepad1.dpad_left){
+                xMotor.setPower(1);
+            } else if (gamepad1.dpad_right) {
+                xMotor.setPower(-1);
+            }
+            else{
+                xMotor.setPower(0);
+            }
+            if(gamepad1.dpad_up){
+                yMotor.setPower(1);
+            } else if (gamepad1.dpad_down) {
+                yMotor.setPower(-1);
+            }
+            else{
+                yMotor.setPower(0);
+            }
+
+            if(gamepad1.x){
+                pickupLinearServo.setPosition(1);
+            } else if (gamepad1.a) {
+                pickupLinearServo.setPosition(0);
+            }
+
+
+            telemetry.addLine("xMotor power: " + xMotor.getPower());
+            telemetry.addLine("yMotor power: " + yMotor.getPower());
+
+            telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
+        telemetry.update();
+        }
+    }
+}
