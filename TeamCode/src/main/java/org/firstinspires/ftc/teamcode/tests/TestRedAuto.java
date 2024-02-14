@@ -59,10 +59,10 @@ TestRedAuto extends LinearOpMode {
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
     // this is only used for Android Studio when using models in Assets.
-    private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
+    private static final String TFOD_MODEL_ASSET = "RedObjectIdentification.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-      "Blue Cube"
+      "Red Cube"
     };
 
     /**
@@ -148,6 +148,7 @@ TestRedAuto extends LinearOpMode {
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
                 while(currentRecognitions.size() == 0) {
+                    if(isStopRequested()) return;
                     //distanceMove-=0.1;
                   //  robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();

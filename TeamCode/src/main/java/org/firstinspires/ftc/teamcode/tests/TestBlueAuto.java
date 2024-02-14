@@ -149,6 +149,7 @@ TestBlueAuto extends LinearOpMode {
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
                 while(currentRecognitions.size() == 0) {
+                    if(isStopRequested()) return;
                     //distanceMove-=0.1;
                   //  robot.forward(0.1, 0.1);
                     currentRecognitions = tfod.getRecognitions();
