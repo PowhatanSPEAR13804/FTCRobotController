@@ -24,6 +24,7 @@ public class TicTacToe extends LinearOpMode {
 
         //linear servo
         Servo pickupLinearServo =  hardwareMap.servo.get("S4");
+        Servo RotationServo =  hardwareMap.servo.get("S5");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -33,6 +34,9 @@ public class TicTacToe extends LinearOpMode {
 
         xMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         yMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        RotationServo.setPosition(0);
+
 
 
 
@@ -66,11 +70,18 @@ public class TicTacToe extends LinearOpMode {
                 pickupLinearServo.setPosition(0);
             }
 
+            if(gamepad1.y){
+                RotationServo.setPosition((90.0/270.0));
+            } else if (gamepad1.b) {
+                RotationServo.setPosition(0);
+            }
+
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
             telemetry.addLine("yMotor power: " + yMotor.getPower());
 
             telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
+            telemetry.addLine("RotServo: " + RotationServo.getPosition());
         telemetry.update();
         }
     }
