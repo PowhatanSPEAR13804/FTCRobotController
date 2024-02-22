@@ -31,7 +31,8 @@ public class TicTacToe extends LinearOpMode {
 
         xMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         yMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        xMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        yMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         xMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         yMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -47,21 +48,23 @@ public class TicTacToe extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if(gamepad1.dpad_left){
+
+
+            if(gamepad1.dpad_left&&yMotor.getCurrentPosition()>=1000){
+                yMotor.setPower(-1);
+            } else if (gamepad1.dpad_right&&yMotor.getCurrentPosition()<=20000) {
+                yMotor.setPower(1);
+            }
+            else{
+                yMotor.setPower(0);
+            }
+            if(gamepad1.dpad_up&&xMotor.getCurrentPosition()<=40000){
                 xMotor.setPower(1);
-            } else if (gamepad1.dpad_right) {
+            } else if (gamepad1.dpad_down&&xMotor.getCurrentPosition()>=1000) {
                 xMotor.setPower(-1);
             }
             else{
                 xMotor.setPower(0);
-            }
-            if(gamepad1.dpad_up){
-                yMotor.setPower(1);
-            } else if (gamepad1.dpad_down) {
-                yMotor.setPower(-1);
-            }
-            else{
-                yMotor.setPower(0);
             }
 
             if(gamepad1.x){
@@ -71,7 +74,7 @@ public class TicTacToe extends LinearOpMode {
             }
 
             if(gamepad1.y){
-                RotationServo.setPosition((90.0/270.0));
+                RotationServo.setPosition((85.0/270.0));
             } else if (gamepad1.b) {
                 RotationServo.setPosition(0);
             }
@@ -79,9 +82,14 @@ public class TicTacToe extends LinearOpMode {
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
             telemetry.addLine("yMotor power: " + yMotor.getPower());
+            telemetry.addLine("xMotor pos: " + xMotor.getCurrentPosition());
+            telemetry.addLine("yMotor pos: " + yMotor.getCurrentPosition());
 
             telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
             telemetry.addLine("RotServo: " + RotationServo.getPosition());
+            telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
+            telemetry.addLine("RotServo: " + RotationServo.getPosition());
+
         telemetry.update();
         }
     }
