@@ -1,17 +1,31 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Size;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 //@Disabled
 //safety :)
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TicTacToe", group="TeleOp")
 public class TicTacToe extends LinearOpMode {
+    VisionPortal myVisionPortal_1;
+    VisionPortal.Builder myVisionPortalBuilder;
+    boolean USE_WEBCAM_1 = true;
+    int Portal_1_View_ID;
+    AprilTagProcessor myAprilTagProcessor_1;
 
     static final char player = 'o';
     static final char opponent = 'x';
@@ -19,6 +33,15 @@ public class TicTacToe extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        //AnalogInput HomeSenorX = hardwareMap.analogInput.get("HomeSp0");
+      //  DigitalChannel HomeSenorX = hardwareMap.digitalChannel.get("HomeSp0");
+
+        TouchSensor HomeSenorX = hardwareMap.get(TouchSensor.class, "HomeSp0");
+
+
+        TouchSensor HomeSenorY = hardwareMap.get(TouchSensor.class, "HomeSp1");
+
+        initAprilTag();
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor xMotor = hardwareMap.dcMotor.get("M0");
@@ -41,6 +64,8 @@ public class TicTacToe extends LinearOpMode {
         yMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         xMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         yMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
 
         RotationServo.setPosition(0);
 
@@ -84,6 +109,10 @@ public class TicTacToe extends LinearOpMode {
             telemetry.addLine("yMotor power: " + yMotor.getPower());
             telemetry.addLine("xMotor pos: " + xMotor.getCurrentPosition());
             telemetry.addLine("yMotor pos: " + yMotor.getCurrentPosition());
+
+            telemetry.addLine("HomeSenor Power:"+HomeSenorX.isPressed());
+            telemetry.addLine("HomeSenor Power:"+HomeSenorY.isPressed());
+
 
             telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
             telemetry.addLine("RotServo: " + RotationServo.getPosition());
@@ -232,4 +261,40 @@ public class TicTacToe extends LinearOpMode {
             return best;
         }
     }
+
+    private void initAprilTag() {
+        AprilTagProcessor.Builder myAprilTagProcessorBuilder;
+
+        // First, create an AprilTagProcessor.Builder.
+        myAprilTagProcessorBuilder = new AprilTagProcessor.Builder();
+        // Create each AprilTagProcessor by calling build.
+        myAprilTagProcessor_1 = myAprilTagProcessorBuilder.build();
+        Make_first_VisionPortal();
+    }
+
+    private void Make_first_VisionPortal() {
+        // Create a VisionPortal.Builder and set attributes related to the first camera.
+        myVisionPortalBuilder = new VisionPortal.Builder();
+        if (USE_WEBCAM_1) {
+            // Use a webcam.
+            myVisionPortalBuilder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        } else {
+            // Use the device's back camera.
+            myVisionPortalBuilder.setCamera(BuiltinCameraDirection.BACK);
+        }
+        // Manage USB bandwidth of two camera streams, by adjusting resolution from default 640x480.
+        // Set the camera resolution.
+        myVisionPortalBuilder.setCameraResolution(new Size(320, 240));
+        // Manage USB bandwidth of two camera streams, by selecting Streaming Format.
+        // Set the stream format.
+        myVisionPortalBuilder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
+        // Add myAprilTagProcessor to the VisionPortal.Builder.
+        myVisionPortalBuilder.addProcessor(myAprilTagProcessor_1);
+        // Add the Portal View ID to the VisionPortal.Builder
+        // Set the camera monitor view id.
+        myVisionPortalBuilder.setLiveViewContainerId(Portal_1_View_ID);
+        // Create a VisionPortal by calling build.
+        myVisionPortal_1 = myVisionPortalBuilder.build();
+    }
+
 }
