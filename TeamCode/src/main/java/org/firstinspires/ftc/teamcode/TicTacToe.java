@@ -90,20 +90,29 @@ public class TicTacToe extends LinearOpMode {
                 yMotor.setPower(0);
             }
 
+
+
+            
             if (gamepad1.x) {
                 pickupLinearServo.setPosition(1);
             } else if (gamepad1.a) {
                 pickupLinearServo.setPosition(0);
             }
 
+            //Spins the pickup 90 degress
             if (gamepad1.y) {
                 RotationServo.setPosition((85.0 / 270.0));
             } else if (gamepad1.b) {
                 RotationServo.setPosition(0);
             }
 
+            //home placer
             if(gamepad1.right_bumper){
                 homeMotors(xMotor,yMotor,HomeSenorX,HomeSenorY);
+            }
+            //grab a piece
+            if(gamepad1.left_bumper){
+                grabAPiece(xMotor,yMotor,RotationServo,pickupLinearServo,HomeSenorX,HomeSenorY);
             }
 
 
@@ -177,15 +186,28 @@ public class TicTacToe extends LinearOpMode {
         resetMotors(x,y);
     }
 
-    public void grabAPiece(DcMotor x,DcMotor y,Servo RotationServo){
-        while(y.getCurrentPosition()>-39000){
+    public void grabAPiece(DcMotor x,DcMotor y,Servo RotationServo, Servo LinearServo,TouchSensor TSX,TouchSensor TSY){
+        homeMotors(x,y,TSX,TSY);
+        LinearServo.setPosition(0);
+        sleep(2000);
+        while(y.getCurrentPosition()>-38000){
             if(isStopRequested()) return;
             y.setPower(-1);
             sleep(1);
         }
         RotationServo.setPosition((85.0 / 270.0));
         sleep(100);
-        
+        LinearServo.setPosition(1);
+        sleep(2000);
+        while(y.getCurrentPosition()<-31000){
+            if(isStopRequested()) return;
+            y.setPower(1);
+            sleep(1);
+        }
+        RotationServo.setPosition(0);
+        sleep(100);
+        homeMotors(x,y,TSX,TSY);
+
     }
 
     public static Boolean isMovesLeft(char[] board) {
