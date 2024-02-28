@@ -10,11 +10,16 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 //@Disabled
 //safety :)
@@ -30,12 +35,24 @@ public class TicTacToe extends LinearOpMode {
     static final char player = 'o';
     static final char opponent = 'x';
 
+    int[] expectedPosOnCamX = {1, 2, 3,
+                              4, 5, 6,
+                              7, 8, 9};
+    int[] expectedPosOnCamY = {1, 2, 3,
+                               4, 5, 6,
+                               7, 8, 9};
+
+    int expectedDiveationX = 100;
+    int expectedDiveationY = 100;
+
     //true means not clicked
 
 
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+
 
         //AnalogInput HomeSenorX = hardwareMap.analogInput.get("HomeSp0");
       //  DigitalChannel HomeSenorX = hardwareMap.digitalChannel.get("HomeSp0");
@@ -74,6 +91,7 @@ public class TicTacToe extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            AprilTag_telemetry_for_Portal_1(board);
 
             if (gamepad1.dpad_left) {
                 xMotor.setPower(-1);
@@ -92,10 +110,12 @@ public class TicTacToe extends LinearOpMode {
 
 
 
-            
+
             if (gamepad1.x) {
+                //servo out
                 pickupLinearServo.setPosition(1);
             } else if (gamepad1.a) {
+                //servo in
                 pickupLinearServo.setPosition(0);
             }
 
@@ -140,27 +160,7 @@ public class TicTacToe extends LinearOpMode {
 
 
 
-    public int[] findBestMove(char[] board) {
-        int moveIndex = -1;
-        int moveVal = Integer.MIN_VALUE;
-        int bestVal = Integer.MIN_VALUE;
-        for(int i = 0; i < 9; i++){
-            if(board[i] == '_') {
-                // try a move
-                board[i] = player;
-                // check value
-                moveVal = minimax(board, 0, true);
-                // undo move
-                board[i] = '_';
-                if(moveVal > bestVal) {
-                    moveIndex = i;
-                }
-            }
-        }
 
-        int[] movePosition = moveToCoordinates(moveIndex);
-        return movePosition;
-    }
 
     public void  resetMotors(DcMotor x,DcMotor y){
         x.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -210,6 +210,20 @@ public class TicTacToe extends LinearOpMode {
 
     }
 
+    public  void MoveToSpot(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY,int[] Loc){
+        homeMotors(x,y,TSX,TSY);
+        while(x.getCurrentPosition()<Loc[0]){
+            if(isStopRequested()) return;
+            x.setPower(0.5);
+            sleep(1);
+        }
+        while(y.getCurrentPosition()<Loc[1]){
+            if(isStopRequested()) return;
+            y.setPower(-0.5);
+            sleep(1);
+        }
+    }
+
     public static Boolean isMovesLeft(char[] board) {
         for (int i = 0; i < 9; i++)
                 if (board[i] == '_')
@@ -217,7 +231,27 @@ public class TicTacToe extends LinearOpMode {
         return false;
     }
 
+    public int[] findBestMove(char[] board) {
+        int moveIndex = -1;
+        int moveVal = Integer.MIN_VALUE;
+        int bestVal = Integer.MIN_VALUE;
+        for(int i = 0; i < 9; i++){
+            if(board[i] == '_') {
+                // try a move
+                board[i] = player;
+                // check value
+                moveVal = minimax(board, 0, true);
+                // undo move
+                board[i] = '_';
+                if(moveVal > bestVal) {
+                    moveIndex = i;
+                }
+            }
+        }
 
+        int[] movePosition = moveToCoordinates(moveIndex);
+        return movePosition;
+    }
     public int[] moveToCoordinates(int moveIndex) {
         int[] movePosition = new int[2];
         switch (moveIndex) {
@@ -358,5 +392,38 @@ public class TicTacToe extends LinearOpMode {
         // Create a VisionPortal by calling build.
         myVisionPortal_1 = myVisionPortalBuilder.build();
     }
+    private void AprilTag_telemetry_for_Portal_1(char[] board) {
+        double  x=0;
+        double y =0;
+        int count = 0;
 
+        List<AprilTagDetection> myAprilTagDetections_1;
+        AprilTagDetection thisDetection_1;
+
+        // Get a list of AprilTag detections.
+        myAprilTagDetections_1 = myAprilTagProcessor_1.getDetections();
+        telemetry.addData("Portal 1 - # AprilTags Detected", JavaUtil.listLength(myAprilTagDetections_1));
+        // Iterate through list and call a function to
+        // display info for each recognized AprilTag.
+        for (AprilTagDetection thisDetection_1_item : myAprilTagDetections_1) {
+            thisDetection_1 = thisDetection_1_item;
+
+            // Display info about the detection.
+            telemetry.addLine("");
+            if (thisDetection_1.metadata != null) {
+                x = thisDetection_1.rawPose.x;
+                y = thisDetection_1.rawPose.y;
+                ComparePosOnCam(x,y,board);
+            }
+        }
+    }
+    public void ComparePosOnCam(double x,double y,char[] board){
+        for(int i =0;i<expectedPosOnCamX.length;i++){
+            if(x<expectedPosOnCamX[i]+expectedDiveationX&&x>expectedPosOnCamX[i]-expectedDiveationX){
+                if(y<expectedPosOnCamY[i]+expectedDiveationY&&y>expectedPosOnCamY[i]-expectedDiveationY){
+                board[i] = opponent;
+                }
+            }
+        }
+    }
 }
