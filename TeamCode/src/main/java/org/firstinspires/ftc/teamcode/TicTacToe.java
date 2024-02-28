@@ -30,22 +30,22 @@ public class TicTacToe extends LinearOpMode {
     static final char player = 'o';
     static final char opponent = 'x';
 
+    //true means not clicked
+
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         //AnalogInput HomeSenorX = hardwareMap.analogInput.get("HomeSp0");
       //  DigitalChannel HomeSenorX = hardwareMap.digitalChannel.get("HomeSp0");
 
-        TouchSensor HomeSenorX = hardwareMap.get(TouchSensor.class, "HomeSp0");
 
-
-        TouchSensor HomeSenorY = hardwareMap.get(TouchSensor.class, "HomeSp1");
 
         initAprilTag();
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor xMotor = hardwareMap.dcMotor.get("M0");
-        DcMotor yMotor = hardwareMap.dcMotor.get("M3");
+
 
         char[] board = new char[]{'_', '_', '_',
                                   '_', '_', '_',
@@ -57,17 +57,15 @@ public class TicTacToe extends LinearOpMode {
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
-
+        DcMotor yMotor = hardwareMap.dcMotor.get("M0");
+        DcMotor xMotor = hardwareMap.dcMotor.get("M3");
         xMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         yMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        xMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        yMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        xMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        yMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
+        resetMotors(xMotor,yMotor);
 
         RotationServo.setPosition(0);
+        TouchSensor HomeSenorY = hardwareMap.get(TouchSensor.class, "HomeSp0");
+        TouchSensor HomeSenorX = hardwareMap.get(TouchSensor.class, "HomeSp2");
 
 
         waitForStart();
@@ -77,19 +75,19 @@ public class TicTacToe extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            if (gamepad1.dpad_left && yMotor.getCurrentPosition() >= 1000) {
-                yMotor.setPower(-1);
-            } else if (gamepad1.dpad_right && yMotor.getCurrentPosition() <= 20000) {
-                yMotor.setPower(1);
-            } else {
-                yMotor.setPower(0);
-            }
-            if (gamepad1.dpad_up && xMotor.getCurrentPosition() <= 40000) {
-                xMotor.setPower(1);
-            } else if (gamepad1.dpad_down && xMotor.getCurrentPosition() >= 1000) {
+            if (gamepad1.dpad_left) {
                 xMotor.setPower(-1);
+            } else if (gamepad1.dpad_right ) {
+                xMotor.setPower(1);
             } else {
                 xMotor.setPower(0);
+            }
+            if (gamepad1.dpad_up ) {
+                yMotor.setPower(1);
+            } else if (gamepad1.dpad_down ) {
+                yMotor.setPower(-1);
+            } else {
+                yMotor.setPower(0);
             }
 
             if (gamepad1.x) {
@@ -104,14 +102,19 @@ public class TicTacToe extends LinearOpMode {
                 RotationServo.setPosition(0);
             }
 
+            if(gamepad1.right_bumper){
+                homeMotors(xMotor,yMotor,HomeSenorX,HomeSenorY);
+            }
+
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
             telemetry.addLine("yMotor power: " + yMotor.getPower());
             telemetry.addLine("xMotor pos: " + xMotor.getCurrentPosition());
             telemetry.addLine("yMotor pos: " + yMotor.getCurrentPosition());
 
-            telemetry.addLine("HomeSenor Power:"+HomeSenorX.isPressed());
-            telemetry.addLine("HomeSenor Power:"+HomeSenorY.isPressed());
+            //true means not clicked
+            telemetry.addLine("HomeSenorY Power:"+HomeSenorY.isPressed());
+            telemetry.addLine("HomeSenorX Power:"+HomeSenorX.isPressed());
 
 
             telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
@@ -125,6 +128,8 @@ public class TicTacToe extends LinearOpMode {
 
         }
     }
+
+
 
     public int[] findBestMove(char[] board) {
         int moveIndex = -1;
@@ -146,6 +151,41 @@ public class TicTacToe extends LinearOpMode {
 
         int[] movePosition = moveToCoordinates(moveIndex);
         return movePosition;
+    }
+
+    public void  resetMotors(DcMotor x,DcMotor y){
+        x.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        y.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        x.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        y.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void  homeMotors(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY){
+        while (TSX.isPressed()){
+            if(isStopRequested()) return;
+            x.setPower(-1);
+            sleep(1);
+        }
+        x.setPower(0);
+        while (TSY.isPressed()){
+            if(isStopRequested()) return;
+            y.setPower(1);
+            sleep(1);
+        }
+        y.setPower(0);
+        sleep(100);
+        resetMotors(x,y);
+    }
+
+    public void grabAPiece(DcMotor x,DcMotor y,Servo RotationServo){
+        while(y.getCurrentPosition()>-39000){
+            if(isStopRequested()) return;
+            y.setPower(-1);
+            sleep(1);
+        }
+        RotationServo.setPosition((85.0 / 270.0));
+        sleep(100);
+        
     }
 
     public static Boolean isMovesLeft(char[] board) {
