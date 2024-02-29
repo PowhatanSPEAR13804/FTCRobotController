@@ -91,7 +91,7 @@ public class TicTacToe extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            AprilTag_telemetry_for_Portal_1(board);
+          //  AprilTag_telemetry_for_Portal_1(board);
 
             if (gamepad1.dpad_left) {
                 xMotor.setPower(-1);
@@ -135,6 +135,10 @@ public class TicTacToe extends LinearOpMode {
                 grabAPiece(xMotor,yMotor,RotationServo,pickupLinearServo,HomeSenorX,HomeSenorY);
             }
 
+            if(gamepad1.left_stick_button){
+                AprilTag_telemetry_for_Portal_1(board);
+                findBestMove(board);
+            }
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
             telemetry.addLine("yMotor power: " + yMotor.getPower());
@@ -153,7 +157,7 @@ public class TicTacToe extends LinearOpMode {
 
             telemetry.update();
 
-            findBestMove(board);
+           // findBestMove(board);
 
         }
     }
@@ -250,6 +254,7 @@ public class TicTacToe extends LinearOpMode {
         }
 
         int[] movePosition = moveToCoordinates(moveIndex);
+        board[moveIndex] = player;
         return movePosition;
     }
     public int[] moveToCoordinates(int moveIndex) {
