@@ -137,7 +137,7 @@ public class TicTacToe extends LinearOpMode {
 
             if(gamepad1.left_stick_button){
                 AprilTag_telemetry_for_Portal_1(board);
-                findBestMove(board);
+              //  MoveToSpot(findBestMove(board));
             }
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
@@ -418,8 +418,13 @@ public class TicTacToe extends LinearOpMode {
             if (thisDetection_1.metadata != null) {
                 x = thisDetection_1.rawPose.x;
                 y = thisDetection_1.rawPose.y;
+                telemetry.addLine(""+x);
+                telemetry.addLine(""+y);
+
                 ComparePosOnCam(x,y,board);
             }
+            telemetry.update();
+            sleep(10000);
         }
     }
     public void ComparePosOnCam(double x,double y,char[] board){
