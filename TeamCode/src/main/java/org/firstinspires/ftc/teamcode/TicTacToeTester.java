@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-public class TicTacToeTester {
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TicTacToeTester", group="TeleOp")
+public class TicTacToeTester extends LinearOpMode {
     static final char player = 'o';
     static final char opponent = 'x';
 
 
-    public static void main(String[] args) {
+
+    public void runOpMode() throws InterruptedException {
+        waitForStart();
         char board[] = {'x', 'o', 'x' ,
                         'o', 'o', 'x',
                         '_', '_', '_'};
@@ -13,8 +18,9 @@ public class TicTacToeTester {
         int bestMove = findBestMove(board);
         int[] movePosition = moveToCoordinates(bestMove);
 
-        System.out.printf("The Optimal Move is: " + bestMove);
-        System.out.printf("ROW: " + movePosition[0] + "COL: " + movePosition[1]);
+        telemetry.addLine("The Optimal Move is: " + bestMove);
+        telemetry.addLine("ROW: " + movePosition[0] + "COL: " + movePosition[1]);
+        telemetry.update();
     }
 
     public static int findBestMove(char[] board) {
