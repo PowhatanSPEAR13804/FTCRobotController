@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -20,17 +22,23 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 //@Disabled
 //safety :)
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TicTacToe", group="TeleOp")
 public class TicTacToe extends LinearOpMode {
-    VisionPortal myVisionPortal_1;
-    VisionPortal.Builder myVisionPortalBuilder;
-    boolean USE_WEBCAM_1 = true;
-    int Portal_1_View_ID;
-    AprilTagProcessor myAprilTagProcessor_1;
+
+    double  x=0;
+    double y =0;
+
+    private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
+    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private VisionPortal visionPortal;               // Used to manage the video source.
+    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
+
 
     static final char player = 'o';
     static final char opponent = 'x';
@@ -52,14 +60,16 @@ public class TicTacToe extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
+        initAprilTag();
+        if (USE_WEBCAM)
+            setManualExposure(6, 150);  // Use low exposure time to reduce motion blur
 
         //AnalogInput HomeSenorX = hardwareMap.analogInput.get("HomeSp0");
       //  DigitalChannel HomeSenorX = hardwareMap.digitalChannel.get("HomeSp0");
 
 
 
-        initAprilTag();
+
         // Declare our motors
         // Make sure your ID's match your configuration
 
@@ -136,9 +146,22 @@ public class TicTacToe extends LinearOpMode {
             }
 
             if(gamepad1.left_stick_button){
-                AprilTag_telemetry_for_Portal_1(board);
+
               //  MoveToSpot(findBestMove(board));
+
+                List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+                for (AprilTagDetection detection : currentDetections) {
+                    // Look to see if we have size info on this tag.
+                    if (detection.metadata != null) {
+                       x =detection.rawPose.x;
+                       y =detection.rawPose.y;
+                    } else {
+                        // This tag is NOT in the library, so we don't have enough information to track to it.
+                        telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+                    }
+                }
             }
+
 
             telemetry.addLine("xMotor power: " + xMotor.getPower());
             telemetry.addLine("yMotor power: " + yMotor.getPower());
@@ -154,6 +177,9 @@ public class TicTacToe extends LinearOpMode {
             telemetry.addLine("RotServo: " + RotationServo.getPosition());
             telemetry.addLine("pickupServo: " + pickupLinearServo.getPosition());
             telemetry.addLine("RotServo: " + RotationServo.getPosition());
+
+            telemetry.addLine("x="+x);
+            telemetry.addLine("y="+y);
 
             telemetry.update();
 
@@ -364,67 +390,67 @@ public class TicTacToe extends LinearOpMode {
     }
 
     private void initAprilTag() {
-        AprilTagProcessor.Builder myAprilTagProcessorBuilder;
+        // Create the AprilTag processor by using a builder.
+        aprilTag = new AprilTagProcessor.Builder().build();
 
-        // First, create an AprilTagProcessor.Builder.
-        myAprilTagProcessorBuilder = new AprilTagProcessor.Builder();
-        // Create each AprilTagProcessor by calling build.
-        myAprilTagProcessor_1 = myAprilTagProcessorBuilder.build();
-        Make_first_VisionPortal();
-    }
+        // Adjust Image Decimation to trade-off detection-range for detection-rate.
+        // eg: Some typical detection data using a Logitech C920 WebCam
+        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
+        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
+        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
+        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
+        // Note: Decimation can be changed on-the-fly to adapt during a match.
+        aprilTag.setDecimation(3);
 
-    private void Make_first_VisionPortal() {
-        // Create a VisionPortal.Builder and set attributes related to the first camera.
-        myVisionPortalBuilder = new VisionPortal.Builder();
-        if (USE_WEBCAM_1) {
-            // Use a webcam.
-            myVisionPortalBuilder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        // Create the vision portal by using a builder.
+        if (USE_WEBCAM) {
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .addProcessor(aprilTag)
+                    .build();
         } else {
-            // Use the device's back camera.
-            myVisionPortalBuilder.setCamera(BuiltinCameraDirection.BACK);
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(BuiltinCameraDirection.BACK)
+                    .addProcessor(aprilTag)
+                    .build();
         }
-        // Manage USB bandwidth of two camera streams, by adjusting resolution from default 640x480.
-        // Set the camera resolution.
-        myVisionPortalBuilder.setCameraResolution(new Size(320, 240));
-        // Manage USB bandwidth of two camera streams, by selecting Streaming Format.
-        // Set the stream format.
-        myVisionPortalBuilder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
-        // Add myAprilTagProcessor to the VisionPortal.Builder.
-        myVisionPortalBuilder.addProcessor(myAprilTagProcessor_1);
-        // Add the Portal View ID to the VisionPortal.Builder
-        // Set the camera monitor view id.
-        myVisionPortalBuilder.setLiveViewContainerId(Portal_1_View_ID);
-        // Create a VisionPortal by calling build.
-        myVisionPortal_1 = myVisionPortalBuilder.build();
     }
-    private void AprilTag_telemetry_for_Portal_1(char[] board) {
-        double  x=0;
-        double y =0;
-        int count = 0;
 
-        List<AprilTagDetection> myAprilTagDetections_1;
-        AprilTagDetection thisDetection_1;
+    /*
+     Manually set the camera gain and exposure.
+     This can only be called AFTER calling initAprilTag(), and only works for Webcams;
+    */
+    private void    setManualExposure(int exposureMS, int gain) {
+        // Wait for the camera to be open, then use the controls
 
-        // Get a list of AprilTag detections.
-        myAprilTagDetections_1 = myAprilTagProcessor_1.getDetections();
-        telemetry.addData("Portal 1 - # AprilTags Detected", JavaUtil.listLength(myAprilTagDetections_1));
-        // Iterate through list and call a function to
-        // display info for each recognized AprilTag.
-        for (AprilTagDetection thisDetection_1_item : myAprilTagDetections_1) {
-            thisDetection_1 = thisDetection_1_item;
+        if (visionPortal == null) {
+            return;
+        }
 
-            // Display info about the detection.
-            telemetry.addLine("");
-            if (thisDetection_1.metadata != null) {
-                x = thisDetection_1.rawPose.x;
-                y = thisDetection_1.rawPose.y;
-                telemetry.addLine(""+x);
-                telemetry.addLine(""+y);
-
-                ComparePosOnCam(x,y,board);
-            }
+        // Make sure camera is streaming before we try to set the exposure controls
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
             telemetry.update();
-            sleep(10000);
+            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!isStopRequested())
+        {
+            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
         }
     }
     public void ComparePosOnCam(double x,double y,char[] board){
