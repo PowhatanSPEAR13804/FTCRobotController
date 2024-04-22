@@ -43,15 +43,18 @@ public class TicTacToe extends LinearOpMode {
     static final char player = 'o';
     static final char opponent = 'x';
 
-    int[] expectedPosOnCamX = {1, 2, 3,
+    double[] expectedPosOnCamX = {1, 2, 3,
                               4, 5, 6,
                               7, 8, 9};
-    int[] expectedPosOnCamY = {1, 2, 3,
+    double[] expectedPosOnCamY = {1, 2, 3,
                                4, 5, 6,
                                7, 8, 9};
 
     int expectedDiveationX = 100;
     int expectedDiveationY = 100;
+
+    double baseX =0;
+    double baseY =0;
 
     //true means not clicked
 
@@ -146,20 +149,14 @@ public class TicTacToe extends LinearOpMode {
             }
 
             if(gamepad1.left_stick_button){
+                int i = getPos();
 
-              //  MoveToSpot(findBestMove(board));
+             telemetry.addLine("Pos = "+i);
+                telemetry.addLine("Current Cords ="+expectedPosOnCamX[i]+","+expectedPosOnCamY[i]);
+            }
+            if(gamepad1.right_stick_button){
 
-                List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-                for (AprilTagDetection detection : currentDetections) {
-                    // Look to see if we have size info on this tag.
-                    if (detection.metadata != null) {
-                       x =detection.rawPose.x;
-                       y =detection.rawPose.y;
-                    } else {
-                        // This tag is NOT in the library, so we don't have enough information to track to it.
-                        telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
-                    }
-                }
+               resetCenter();
             }
 
 
@@ -181,6 +178,11 @@ public class TicTacToe extends LinearOpMode {
             telemetry.addLine("x="+x);
             telemetry.addLine("y="+y);
 
+            telemetry.addLine("BaseX="+baseX);
+            telemetry.addLine("BaseY="+baseY);
+
+
+
             telemetry.update();
 
            // findBestMove(board);
@@ -190,7 +192,52 @@ public class TicTacToe extends LinearOpMode {
 
 
 
+    public void resetCenter(){
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        for (AprilTagDetection detection : currentDetections) {
+            // Look to see if we have size info on this tag.
+            if (detection.metadata != null) {
+                x =detection.rawPose.x;
+                y =detection.rawPose.y;
+            } else {
+                // This tag is NOT in the library, so we don't have enough information to track to it.
+                telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+            }
+        }
+        baseX =x;
+        baseY =y;
+        expectedPosOnCamX[0] = baseX+2.5;  expectedPosOnCamX[1] = baseX;  expectedPosOnCamX[2] = baseX-2.5;
+        expectedPosOnCamY[0] = baseY-3.5;  expectedPosOnCamY[1] = baseY-3.5;  expectedPosOnCamY[2] = baseY-3.5;
 
+        expectedPosOnCamX[3] = baseX+2.5;  expectedPosOnCamX[4] = baseX;  expectedPosOnCamX[5] = baseX-2.5;
+        expectedPosOnCamY[3] = baseY;  expectedPosOnCamY[4] = baseY;  expectedPosOnCamY[5] = baseY;
+
+        expectedPosOnCamX[6] = baseX+2.5;  expectedPosOnCamX[7] = baseX;  expectedPosOnCamX[8] = baseX-2.5;
+        expectedPosOnCamY[6] = baseY+2.5;  expectedPosOnCamY[7] = baseY+2.5;  expectedPosOnCamY[8] = baseY+2.5;
+    }
+    public int getPos(){
+        int place=-1;
+
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        for (AprilTagDetection detection : currentDetections) {
+            // Look to see if we have size info on this tag.
+            if (detection.metadata != null) {
+                x =detection.rawPose.x;
+                y =detection.rawPose.y;
+            } else {
+                // This tag is NOT in the library, so we don't have enough information to track to it.
+                telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+            }
+        }
+        for(int i =0;i<9;i++){
+            if(expectedPosOnCamX[i]+1>x&&x>expectedPosOnCamX[i]-1){
+                if(expectedPosOnCamY[i]+1>y&&y>expectedPosOnCamY[i]-1){
+                    place = i;
+                }
+            }
+        }
+      return (place);
+    }
 
     public void  resetMotors(DcMotor x,DcMotor y){
         x.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
