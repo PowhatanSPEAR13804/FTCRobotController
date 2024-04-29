@@ -53,6 +53,7 @@ public class TicTacToe extends LinearOpMode {
     int expectedDiveationX = 100;
     int expectedDiveationY = 100;
 
+
     double baseX =0;
     double baseY =0;
 
@@ -93,6 +94,8 @@ public class TicTacToe extends LinearOpMode {
         yMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         resetMotors(xMotor,yMotor);
 
+        pickupLinearServo.setPosition(0);
+        sleep(4000);
         RotationServo.setPosition(0);
         TouchSensor HomeSenorY = hardwareMap.get(TouchSensor.class, "HomeSp0");
         TouchSensor HomeSenorX = hardwareMap.get(TouchSensor.class, "HomeSp2");
@@ -126,16 +129,24 @@ public class TicTacToe extends LinearOpMode {
 
             if (gamepad1.x) {
                 //servo out
-                pickupLinearServo.setPosition(1);
+                pickupLinearServo.setPosition(0.48);
             } else if (gamepad1.a) {
                 //servo in
                 pickupLinearServo.setPosition(0);
+            }
+            if (gamepad1.right_trigger>0) {
+                //servo out
+                pickupLinearServo.setPosition(pickupLinearServo.getPosition()+0.01);
+            } else if (gamepad1.left_trigger>0) {
+                //servo in
+                pickupLinearServo.setPosition(pickupLinearServo.getPosition()-0.01);
             }
 
             //Spins the pickup 90 degress
             if (gamepad1.y) {
                 RotationServo.setPosition((85.0 / 270.0));
             } else if (gamepad1.b) {
+                pickupLinearServo.setPosition(0);
                 RotationServo.setPosition(0);
             }
 
@@ -267,20 +278,26 @@ public class TicTacToe extends LinearOpMode {
         homeMotors(x,y,TSX,TSY);
         LinearServo.setPosition(0);
         sleep(2000);
-        while(y.getCurrentPosition()>-38000){
+        while(y.getCurrentPosition()>-33000){
             if(isStopRequested()) return;
             y.setPower(-1);
             sleep(1);
         }
+        y.setPower(0);
         RotationServo.setPosition((85.0 / 270.0));
         sleep(100);
-        LinearServo.setPosition(1);
-        sleep(2000);
-        while(y.getCurrentPosition()<-31000){
+        LinearServo.setPosition(0.84);
+        sleep(3000);
+        while(y.getCurrentPosition()<-25500){
             if(isStopRequested()) return;
             y.setPower(1);
             sleep(1);
         }
+        y.setPower(0);
+        RotationServo.setPosition((65.0 / 270.0));
+        sleep(2000);
+        LinearServo.setPosition(0.414);
+        sleep(3000);
         RotationServo.setPosition(0);
         sleep(100);
         homeMotors(x,y,TSX,TSY);
