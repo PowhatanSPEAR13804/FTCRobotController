@@ -49,6 +49,12 @@ public class TicTacToe extends LinearOpMode {
     double[] expectedPosOnCamY = {1, 2, 3,
                                4, 5, 6,
                                7, 8, 9};
+    double[] expectedPosOnMotorX = {1, 2, 3,
+            4, 5, 6,
+            7, 8, 9};
+    double[] expectedPosOnMotorY = {1, 2, 3,
+            4, 5, 6,
+            7, 8, 9};
 
     int expectedDiveationX = 100;
     int expectedDiveationY = 100;
@@ -226,6 +232,18 @@ public class TicTacToe extends LinearOpMode {
         expectedPosOnCamX[6] = baseX+2.5;  expectedPosOnCamX[7] = baseX;  expectedPosOnCamX[8] = baseX-2.5;
         expectedPosOnCamY[6] = baseY+2.5;  expectedPosOnCamY[7] = baseY+2.5;  expectedPosOnCamY[8] = baseY+2.5;
     }
+    public void resetMotorCenter(DcMotor x,DcMotor y){
+        baseX =x.getCurrentPosition();
+        baseY =y.getCurrentPosition();
+        expectedPosOnMotorX[0] = baseX-8000;  expectedPosOnMotorX[1] = baseX;  expectedPosOnMotorX[2] = baseX+8000;
+        expectedPosOnMotorY[0] = baseY+13000;  expectedPosOnMotorY[1] = baseY+13000;  expectedPosOnMotorY[2] = baseY+13000;
+
+        expectedPosOnMotorX[3] = baseX-8000;  expectedPosOnMotorX[4] = baseX;  expectedPosOnMotorX[5] = baseX+8000;
+        expectedPosOnMotorY[3] = baseY;  expectedPosOnMotorY[4] = baseY;  expectedPosOnMotorY[5] = baseY;
+
+        expectedPosOnMotorX[6] = baseX-8000;  expectedPosOnMotorX[7] = baseX;  expectedPosOnMotorX[8] = baseX+8000;
+        expectedPosOnMotorY[6] = baseY-13000;  expectedPosOnMotorY[7] = baseY-13000;  expectedPosOnMotorY[8] = baseY-13000;
+    }
     public int getPos(){
         int place=-1;
 
@@ -304,18 +322,20 @@ public class TicTacToe extends LinearOpMode {
 
     }
 
-    public  void MoveToSpot(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY,int[] Loc){
+    public  void MoveToSpot(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY,int posX, int posY){
         homeMotors(x,y,TSX,TSY);
-        while(x.getCurrentPosition()<Loc[0]){
+        while(x.getCurrentPosition()<posX){
             if(isStopRequested()) return;
             x.setPower(0.5);
             sleep(1);
         }
-        while(y.getCurrentPosition()<Loc[1]){
+        x.setPower(0);
+        while(y.getCurrentPosition()<posY){
             if(isStopRequested()) return;
             y.setPower(-0.5);
             sleep(1);
         }
+        y.setPower(0);
     }
 
     public static Boolean isMovesLeft(char[] board) {
