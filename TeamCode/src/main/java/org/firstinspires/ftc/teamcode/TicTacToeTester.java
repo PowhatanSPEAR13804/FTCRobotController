@@ -32,7 +32,7 @@ public class TicTacToeTester extends LinearOpMode {
                 // try a move
                 board[i] = player;
                 // check value
-                moveVal = minimax(board, 0, true);
+                moveVal = minimax(board, 0, false);
                 // undo move
                 board[i] = '_';
                 if(moveVal > bestVal) {
@@ -50,25 +50,35 @@ public class TicTacToeTester extends LinearOpMode {
             //using temporary x and y values.
             case 0:
                 movePosition = new int[]{0, 0};
+                break;
             case 1:
                 movePosition = new int[]{0, 1};
+                break;
             case 2:
                 movePosition = new int[]{0, 2};
+                break;
             case 3:
                 movePosition = new int[]{1, 0};
+                break;
             case 4:
                 movePosition = new int[]{1, 1};
+                break;
             case 5:
                 movePosition = new int[]{1, 2};
+                break;
             case 6:
                 movePosition = new int[]{2, 0};
+                break;
             case 7:
                 movePosition = new int[]{2, 1};
+                break;
             case 8:
                 movePosition = new int[]{2, 2};
+                break;
             case 9:
                 //no change found
                 movePosition = new int[]{-1, -1};
+                break;
         }
         return movePosition;
     }
@@ -127,7 +137,7 @@ public class TicTacToeTester extends LinearOpMode {
             return 0;
 
         if(isMax) {
-            int best = -1000;
+            int best = Integer.MIN_VALUE;
 
             for (int i = 0; i < 9; i++) {
                 if (board[i] == '_') {
@@ -141,7 +151,7 @@ public class TicTacToeTester extends LinearOpMode {
             }
             return best;
         } else {
-            int best = 1000;
+            int best = Integer.MAX_VALUE;
 
             for (int i = 0; i < 9; i++) {
                 if (board[i] == '_') {

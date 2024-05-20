@@ -21,6 +21,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +60,7 @@ public class TicTacToe extends LinearOpMode {
     int expectedDiveationX = 100;
     int expectedDiveationY = 100;
 
-
+    int pos =-1;
     double baseX =0;
     double baseY =0;
 
@@ -131,8 +132,14 @@ public class TicTacToe extends LinearOpMode {
             }
 
 
-
-
+/*
+            //Spins the pickup 90 degress
+            if (gamepad1.y) {
+                RotationServo.setPosition((85.0 / 270.0));
+            } else if (gamepad1.b) {
+                pickupLinearServo.setPosition(0);
+                RotationServo.setPosition(0);
+            }
             if (gamepad1.x) {
                 //servo out
                 pickupLinearServo.setPosition(0.48);
@@ -140,6 +147,28 @@ public class TicTacToe extends LinearOpMode {
                 //servo in
                 pickupLinearServo.setPosition(0);
             }
+
+ */
+
+            if (gamepad1.b) {
+                homeMotors(xMotor,yMotor,HomeSenorX,HomeSenorY);
+                resetCenter();
+            }
+            if (gamepad1.a) {
+                resetMotorCenter(xMotor,yMotor);
+                grabAPiece(xMotor,yMotor,RotationServo,pickupLinearServo,HomeSenorX,HomeSenorY);
+            }
+            if (gamepad1.x) {
+                int i = getPos(board);
+                pos = findBestMove(board);
+                board[pos] = 'o';
+
+            }
+            if (gamepad1.y) {
+                MoveToSpot(xMotor,yMotor,HomeSenorX,HomeSenorY,expectedPosOnMotorX[pos], expectedPosOnMotorY[pos]);
+            }
+
+
             if (gamepad1.right_trigger>0) {
                 //servo out
                 pickupLinearServo.setPosition(pickupLinearServo.getPosition()+0.01);
@@ -148,32 +177,36 @@ public class TicTacToe extends LinearOpMode {
                 pickupLinearServo.setPosition(pickupLinearServo.getPosition()-0.01);
             }
 
-            //Spins the pickup 90 degress
-            if (gamepad1.y) {
-                RotationServo.setPosition((85.0 / 270.0));
-            } else if (gamepad1.b) {
-                pickupLinearServo.setPosition(0);
-                RotationServo.setPosition(0);
-            }
+
 
             //home placer
             if(gamepad1.right_bumper){
                 homeMotors(xMotor,yMotor,HomeSenorX,HomeSenorY);
+                resetCenter();
             }
             //grab a piece
             if(gamepad1.left_bumper){
                 grabAPiece(xMotor,yMotor,RotationServo,pickupLinearServo,HomeSenorX,HomeSenorY);
+             //   resetMotorCenter(xMotor,yMotor);
             }
 
             if(gamepad1.left_stick_button){
-                int i = getPos();
+                homeMotors(xMotor,yMotor,HomeSenorX,HomeSenorY);
+                int i = getPos(board);
+                pos = findBestMove(board);
+                MoveToSpot(xMotor,yMotor,HomeSenorX,HomeSenorY,expectedPosOnMotorX[pos], expectedPosOnMotorY[pos]);
+
 
              telemetry.addLine("Pos = "+i);
-                telemetry.addLine("Current Cords ="+expectedPosOnCamX[i]+","+expectedPosOnCamY[i]);
+             telemetry.addLine("Current Cords ="+expectedPosOnCamX[i]+","+expectedPosOnCamY[i]);
+
             }
             if(gamepad1.right_stick_button){
 
-               resetCenter();
+              // resetCenter();
+               // MoveToSpot(xMotor,yMotor,HomeSenorX,HomeSenorY,expectedPosOnMotorX[4], expectedPosOnMotorY[4]);
+               // grabAPiece(xMotor,yMotor,RotationServo,pickupLinearServo,HomeSenorX,HomeSenorY);
+                placePiece(xMotor,yMotor,pickupLinearServo);
             }
 
 
@@ -197,6 +230,10 @@ public class TicTacToe extends LinearOpMode {
 
             telemetry.addLine("BaseX="+baseX);
             telemetry.addLine("BaseY="+baseY);
+            telemetry.addLine(Arrays.toString(expectedPosOnMotorX));
+            telemetry.addLine(Arrays.toString(expectedPosOnMotorY));
+            telemetry.addLine("Pos ="+pos);
+            telemetry.addLine("Board ="+Arrays.toString(board));
 
 
 
@@ -206,6 +243,8 @@ public class TicTacToe extends LinearOpMode {
 
         }
     }
+
+
 
 
 
@@ -244,7 +283,7 @@ public class TicTacToe extends LinearOpMode {
         expectedPosOnMotorX[6] = baseX-8000;  expectedPosOnMotorX[7] = baseX;  expectedPosOnMotorX[8] = baseX+8000;
         expectedPosOnMotorY[6] = baseY-13000;  expectedPosOnMotorY[7] = baseY-13000;  expectedPosOnMotorY[8] = baseY-13000;
     }
-    public int getPos(){
+    public int getPos(char[] board){
         int place=-1;
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -253,18 +292,22 @@ public class TicTacToe extends LinearOpMode {
             if (detection.metadata != null) {
                 x =detection.rawPose.x;
                 y =detection.rawPose.y;
+                for(int i =0;i<9;i++){
+                    if(expectedPosOnCamX[i]+1>x&&x>expectedPosOnCamX[i]-1){
+                        if(expectedPosOnCamY[i]+1>y&&y>expectedPosOnCamY[i]-1){
+                            place = i;
+                        }
+                    }
+                }
+                if(place>-1){
+                    board[place] = 'x';
+                }
             } else {
                 // This tag is NOT in the library, so we don't have enough information to track to it.
                 telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
             }
         }
-        for(int i =0;i<9;i++){
-            if(expectedPosOnCamX[i]+1>x&&x>expectedPosOnCamX[i]-1){
-                if(expectedPosOnCamY[i]+1>y&&y>expectedPosOnCamY[i]-1){
-                    place = i;
-                }
-            }
-        }
+
       return (place);
     }
 
@@ -314,28 +357,44 @@ public class TicTacToe extends LinearOpMode {
         y.setPower(0);
         RotationServo.setPosition((65.0 / 270.0));
         sleep(2000);
-        LinearServo.setPosition(0.414);
+        LinearServo.setPosition(0.6);
         sleep(3000);
         RotationServo.setPosition(0);
         sleep(100);
+        LinearServo.setPosition(0.40);
         homeMotors(x,y,TSX,TSY);
 
     }
 
-    public  void MoveToSpot(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY,int posX, int posY){
+    public void placePiece(DcMotor x,DcMotor y,Servo LS){
+        LS.setPosition(1);
+        sleep(10000);
+        LS.setPosition(0.7);
+        sleep(10000);
+        double tempY = y.getCurrentPosition();
+        while (tempY-5000<y.getCurrentPosition()){
+            y.setPower(-0.5);
+            sleep(1);
+        }
+        y.setPower(0);
+        LS.setPosition(0);
+    }
+
+    public  void MoveToSpot(DcMotor x,DcMotor y,TouchSensor TSX,TouchSensor TSY,double posX, double posY){
         homeMotors(x,y,TSX,TSY);
+        while(y.getCurrentPosition()>posY){
+            if(isStopRequested()) return;
+            y.setPower(-0.5);
+            sleep(1);
+        }
+        y.setPower(0);
         while(x.getCurrentPosition()<posX){
             if(isStopRequested()) return;
             x.setPower(0.5);
             sleep(1);
         }
         x.setPower(0);
-        while(y.getCurrentPosition()<posY){
-            if(isStopRequested()) return;
-            y.setPower(-0.5);
-            sleep(1);
-        }
-        y.setPower(0);
+
     }
 
     public static Boolean isMovesLeft(char[] board) {
@@ -345,7 +404,7 @@ public class TicTacToe extends LinearOpMode {
         return false;
     }
 
-    public int[] findBestMove(char[] board) {
+    public int findBestMove(char[] board) {
         int moveIndex = -1;
         int moveVal = Integer.MIN_VALUE;
         int bestVal = Integer.MIN_VALUE;
@@ -354,7 +413,7 @@ public class TicTacToe extends LinearOpMode {
                 // try a move
                 board[i] = player;
                 // check value
-                moveVal = minimax(board, 0, true);
+                moveVal = minimax(board, 0, false);
                 // undo move
                 board[i] = '_';
                 if(moveVal > bestVal) {
@@ -365,7 +424,7 @@ public class TicTacToe extends LinearOpMode {
 
         int[] movePosition = moveToCoordinates(moveIndex);
         board[moveIndex] = player;
-        return movePosition;
+        return moveIndex;
     }
     public int[] moveToCoordinates(int moveIndex) {
         int[] movePosition = new int[2];
@@ -373,55 +432,65 @@ public class TicTacToe extends LinearOpMode {
             //using temporary x and y values.
             case 0:
                 movePosition = new int[]{0, 0};
+                break;
             case 1:
                 movePosition = new int[]{0, 1};
+                break;
             case 2:
                 movePosition = new int[]{0, 2};
+                break;
             case 3:
                 movePosition = new int[]{1, 0};
+                break;
             case 4:
                 movePosition = new int[]{1, 1};
+                break;
             case 5:
                 movePosition = new int[]{1, 2};
+                break;
             case 6:
                 movePosition = new int[]{2, 0};
+                break;
             case 7:
                 movePosition = new int[]{2, 1};
+                break;
             case 8:
                 movePosition = new int[]{2, 2};
+                break;
             case 9:
                 //no change found
                 movePosition = new int[]{-1, -1};
+                break;
         }
         return movePosition;
     }
 
-    public static int evaluate(char[] board) {
+    public static int evaluate(char[] board, int depth) {
         //win for x is -10 and win for o is +10;
         for (int row = 0; row <= 6; row+=3)
         {
             if (board[row] == board[row + 1] && board[row + 1] == board[row + 2])
             {
                 if (board[row] == 'x')
-                    return -10;
+                    return -10 + depth;
                 else if (board[row] == 'o')
-                    return 10;
+                    return 10 - depth;
             }
         }
         for (int col = 0; col < 3; col++)
         {
             if (board[col] == board[col + 3] && board[col + 3] == board[col + 6]) {
                 if (board[col] == 'x')
-                    return -10;
+                    return -10 + depth;
                 else if (board[col] == 'o')
-                    return 10;
+                    return 10 - depth;
             }
         }
         if(board[2] == board[4] && board[4] == board[6]) {
             if(board[4] == 'x')
-                return - 10;
+                return - 10 + depth;
             else if(board[4] == 'o')
-                return 10;
+                return 10 - depth;
         }
 
         //if there no wins return 0
@@ -429,7 +498,7 @@ public class TicTacToe extends LinearOpMode {
     }
 
     static int minimax(char[] board, int depth, Boolean isMax) {
-        int score = evaluate(board);
+        int score = evaluate(board, depth);
         //we win
         if(score == 10)
             return score;
@@ -439,38 +508,38 @@ public class TicTacToe extends LinearOpMode {
             return score;
 
         //no more moves and no one wins
-        if(isMovesLeft(board) == false)
+        if(!isMovesLeft(board))
             return 0;
 
+        int best;
         if(isMax) {
-            int best = -1000;
+            best = Integer.MIN_VALUE;
 
             for (int i = 0; i < 9; i++) {
                 if (board[i] == '_') {
                     // try a move
                     board[i] = player;
                     // check value
-                    best = Math.max(best, minimax(board, depth + 1, !isMax));
+                    best = Math.max(best, minimax(board, depth + 1, false));
                     // undo move
                     board[i] = '_';
                 }
             }
-            return best;
         } else {
-            int best = 1000;
+            best = Integer.MAX_VALUE;
 
             for (int i = 0; i < 9; i++) {
                 if (board[i] == '_') {
                     // try a move
                     board[i] = opponent;
                     // check value
-                    best = Math.min(best, minimax(board, depth + 1, !isMax));
+                    best = Math.min(best, minimax(board, depth + 1, true));
                     // undo move
                     board[i] = '_';
                     }
             }
-            return best;
         }
+        return best;
     }
 
     private void initAprilTag() {
