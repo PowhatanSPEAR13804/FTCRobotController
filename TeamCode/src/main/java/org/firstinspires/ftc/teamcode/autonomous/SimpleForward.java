@@ -24,7 +24,7 @@ public class SimpleForward extends LinearOpMode{
         robot.setMotors(-0.5, -0.5, -0.5, -0.5);
 
         NormalizedRGBA colors;
-
+-
         boolean isRed = false;
 
         while(!isRed) {
