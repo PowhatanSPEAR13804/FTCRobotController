@@ -35,8 +35,8 @@ public class ServoMotorDeclarations {
     public ServoMotorDeclarations(HardwareMap hardwareMap) {
         //Movement motors
         motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
         //Intake/Outtake motors
