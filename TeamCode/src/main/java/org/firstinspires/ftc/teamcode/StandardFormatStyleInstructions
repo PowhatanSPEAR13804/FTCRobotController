@@ -3,10 +3,7 @@
 //stopped in settings at wrapping and braces
 
 Already formatted:
-    * TeleOp //need to change variables
-    * RobotMove
-    * SimpleForward, SimpleLeft, SimpleRight //all need header comments
-    * ControllerTest
+    *
 
 
 
