@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="CameraAutonomusBlueFar", group="Autonomous")
+@Autonomous(name="CameraAutonomusRedClose", group="Autonomous")
 
-public class CameraAutonomusBlueFar extends LinearOpMode{
+public class CameraAutonomusRedClose extends LinearOpMode{
 
 
     @Override
@@ -69,11 +69,10 @@ public class CameraAutonomusBlueFar extends LinearOpMode{
             intakeLeft.setPosition(0.5);
             intakeRight.setPosition(0.5);
         }
-        robot.left(0.5, 80);
+        robot.right(0.5, 40);
 
-        //turn robot right 90 degrees
-        robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
-
+        //turn robot left 90 degrees
+        robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
 
         fourBar.setPower(0.5);
         sleep(1000);
@@ -103,7 +102,7 @@ public class CameraAutonomusBlueFar extends LinearOpMode{
             outputL.setPosition(0);
             outputS.setPosition(45);
         }
-        robot.right(0.5, 23);
+        robot.left(0.5, 23);
 
 
 

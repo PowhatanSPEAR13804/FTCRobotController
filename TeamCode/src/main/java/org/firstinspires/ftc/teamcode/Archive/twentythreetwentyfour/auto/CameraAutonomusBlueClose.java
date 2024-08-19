@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,14 +9,13 @@ import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="CameraAutonomusRedFar", group="Autonomous")
+@Autonomous(name="CameraAutonomusBlueClose", group="Autonomous")
 
-public class CameraAutonomusRedFar extends LinearOpMode{
+public class CameraAutonomusBlueClose extends LinearOpMode{
 
 
     @Override
     public void runOpMode() {
-        double forwardDistance=29.5;
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -37,12 +36,10 @@ public class CameraAutonomusRedFar extends LinearOpMode{
         double x = Scanner.objectPositionX(0);
         double y = Scanner.objectPositionY(0);
         while(x==0){
-            robot.forward(0.1,0.5);
-            forwardDistance -=0.5;
             x = Scanner.objectPositionX(0);
             y = Scanner.objectPositionY(0);
         }
-        robot.forward(0.5, forwardDistance);
+        robot.forward(0.5, 29.5);
         if(x>550){
             //right spike
             robot.right(0.5, 11.5);
@@ -72,10 +69,10 @@ public class CameraAutonomusRedFar extends LinearOpMode{
             intakeLeft.setPosition(0.5);
             intakeRight.setPosition(0.5);
         }
-        robot.right(0.5, 80);
+        robot.left(0.5, 40);
 
-        //turn robot left 90 degrees
-        robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
+        //turn robot right 90 degrees
+        robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
 
         fourBar.setPower(0.5);
         sleep(1000);
@@ -105,7 +102,7 @@ public class CameraAutonomusRedFar extends LinearOpMode{
             outputL.setPosition(0);
             outputS.setPosition(45);
         }
-        robot.left(0.5, 23);
+        robot.right(0.5, 23);
 
 
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,13 +9,14 @@ import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 
 // TODO - stuff with pixels
 
-@Autonomous(name="CameraAutonomusRedClose", group="Autonomous")
+@Autonomous(name="CameraAutonomusRedFar", group="Autonomous")
 
-public class CameraAutonomusRedClose extends LinearOpMode{
+public class CameraAutonomusRedFar extends LinearOpMode{
 
 
     @Override
     public void runOpMode() {
+        double forwardDistance=29.5;
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -36,10 +37,12 @@ public class CameraAutonomusRedClose extends LinearOpMode{
         double x = Scanner.objectPositionX(0);
         double y = Scanner.objectPositionY(0);
         while(x==0){
+            robot.forward(0.1,0.5);
+            forwardDistance -=0.5;
             x = Scanner.objectPositionX(0);
             y = Scanner.objectPositionY(0);
         }
-        robot.forward(0.5, 29.5);
+        robot.forward(0.5, forwardDistance);
         if(x>550){
             //right spike
             robot.right(0.5, 11.5);
@@ -69,7 +72,7 @@ public class CameraAutonomusRedClose extends LinearOpMode{
             intakeLeft.setPosition(0.5);
             intakeRight.setPosition(0.5);
         }
-        robot.right(0.5, 40);
+        robot.right(0.5, 80);
 
         //turn robot left 90 degrees
         robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
