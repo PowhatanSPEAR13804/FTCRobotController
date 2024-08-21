@@ -27,20 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
-
-import android.util.Size;
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-//import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
 import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -55,9 +50,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@Autonomous(name="TestAutoRed", group="Autonomous")
+@Autonomous(name="TestAutoBlueFar", group="Autonomous")
 public class
-TestAuto extends LinearOpMode {
+TestAutoBlueFar extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -66,7 +61,7 @@ TestAuto extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "model_20231202_083115.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-       "Red Cube","Blue Cube"
+       "Blue Cube"
     };
 
     /**
@@ -173,10 +168,11 @@ TestAuto extends LinearOpMode {
                 sleep(1000);
                 intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.5);
-                robot.backward(0.5,5);
-/*
+                robot.backward(0.5,18);
+                robot.stop();
+                /*
                 //if the object is on the right side of the screen the robot moves to the center spike
-                if(x>300){
+                if(x>200&&x<400){
                     robot.stop();
 
                     //center spike
@@ -189,7 +185,7 @@ TestAuto extends LinearOpMode {
                     intakeRight.setPosition(0.5);
                     robot.backward(0.5,5);
                 }
-                else if(x>=0){ //if the object is on the left side of the screen the robot moves to the left spike
+                else if(x<=200){ //if the object is on the left side of the screen the robot moves to the left spike
 
                     robot.stop();
 
@@ -213,7 +209,7 @@ TestAuto extends LinearOpMode {
                      // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
 
                 }
-                else{ //if the object is not found it is assumed to be on the right spike, see line 144
+                else if(x>=400){ //if the object is not found it is assumed to be on the right spike, see line 144
                     robot.stop();
 
                     //right spike
@@ -232,7 +228,6 @@ TestAuto extends LinearOpMode {
  */
 
                 //makes the robot strafe right
-                robot.right(0.5, 40);
 
                 //turns robot left 90 degrees
                // robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
@@ -278,7 +273,6 @@ TestAuto extends LinearOpMode {
                // robot.left(0.5, 23);
 
               //  robot.backward(0.5, 20);
-                robot.forward(0.5, 22);
                 robot.stop();
 
               //  telemetryTfod();
