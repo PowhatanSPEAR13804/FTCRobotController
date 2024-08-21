@@ -27,14 +27,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -48,9 +50,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 
-@TeleOp(name="TestBlueCam", group="Test")
+@Autonomous(name="TesterAutoRed", group="Autonomous")
 public class
-TestCamRec extends LinearOpMode {
+TesterAutoRed extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -59,7 +61,7 @@ TestCamRec extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "NewRedFinder.tflite";
      // Defines the labels recognized in the model for TFOD (must be in training order!)
     private static final String[] LABELS = {
-      "Red Cube"
+       "Red Cube"
     };
 
     /**
@@ -101,11 +103,11 @@ TestCamRec extends LinearOpMode {
     // Make this into a normal java class like the buttonclick or robotMove class
     // This means they need a constructor which is a function
     // that has the same name as the class.
-    @Override
+
     public void runOpMode() {
 
         initTfod();
-/*
+
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
       //  DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -118,11 +120,9 @@ TestCamRec extends LinearOpMode {
         Servo outputL =  hardwareMap.servo.get("Hub1_Servo4");
 
         robotMove robot = new robotMove(hardwareMap);
-
- */
         waitForStart();
 
-       // double distanceMove = 21.5;
+        double distanceMove = 21.5;
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -133,12 +133,19 @@ TestCamRec extends LinearOpMode {
                 //or it has moved forward enough to rule out the other spots
                 List<Recognition> currentRecognitions = tfod.getRecognitions();
                 telemetry.addLine("\ncurrent recognitions: " + currentRecognitions);
-                while(currentRecognitions.size() == 0) {
-                    //distanceMove-=0.1;
-                  //  robot.forward(0.1, 0.1);
-                    currentRecognitions = tfod.getRecognitions();
-                    x=-1;
+                while(currentRecognitions.size() == 0&& distanceMove>10) {
+                    distanceMove-=1;
+                    robot.forward(0.5, 1);
+                    int i =0;
+                    while(currentRecognitions.size() == 0&& i<10){
+                        currentRecognitions = tfod.getRecognitions();
+                        i++;
+                        sleep(100);
+                    }
 
+                    x=-1;
+                    telemetry.addLine("\ndistanceMove:" + distanceMove);
+                    telemetry.update();
 
                 }
 
@@ -157,21 +164,20 @@ TestCamRec extends LinearOpMode {
 
 
                 //moves the robot forward the remaining amount
-               /* robot.forward(0.5, distanceMove);
+                robot.forward(0.5, distanceMove);
 
                 //center spike
-                telemetry.addLine("\ncenter spike");
+                /*telemetry.addLine("\ncenter spike");
                 telemetry.update();
                 intakeLeft.setPosition(0);
                 intakeRight.setPosition(0);
                 sleep(1000);
                 intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.5);
-                robot.backward(0.5,18);
-                robot.stop();
+                robot.backward(0.5,5);
 
-                */
-                /*
+                 */
+
                 //if the object is on the right side of the screen the robot moves to the center spike
                 if(x>300){
                     robot.stop();
@@ -192,22 +198,19 @@ TestCamRec extends LinearOpMode {
 
                     //left spike
 
-                     //turns robot left 90 degrees
-                     robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
 
 
                     telemetry.addLine("\nleft spike");
                     telemetry.update();
-                    //robot.left(0.5, 11.5);
+                    robot.left(0.5, 6.5);
                     intakeLeft.setPosition(0);
                     intakeRight.setPosition(0);
                     sleep(1000);
                     intakeLeft.setPosition(0.5);
                     intakeRight.setPosition(0.5);
                     robot.backward(0.5,5);
-                    //robot.right(0.5, 11.5);
-                     //turns robot right 90 degrees
-                     // robot.runMotorsForDistance(-0.5, 0.5, -0.5, 0.5, 0.5*Math.PI*6.25);
+                    robot.right(0.5, 6.5);
+
 
                 }
                 else{ //if the object is not found it is assumed to be on the right spike, see line 144
@@ -226,9 +229,10 @@ TestCamRec extends LinearOpMode {
                     robot.left(0.5, 11.5);
                 }
 
- */
+
 
                 //makes the robot strafe right
+                robot.right(0.5, 40);
 
                 //turns robot left 90 degrees
                // robot.runMotorsForDistance(0.5, -0.5, 0.5, -0.5, 0.5*Math.PI*6.25);
@@ -274,7 +278,8 @@ TestCamRec extends LinearOpMode {
                // robot.left(0.5, 23);
 
               //  robot.backward(0.5, 20);
-              //  robot.stop();
+                robot.forward(0.5, 22);
+                robot.stop();
 
               //  telemetryTfod();
 
