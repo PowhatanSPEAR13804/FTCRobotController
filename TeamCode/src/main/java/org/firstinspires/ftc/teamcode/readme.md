@@ -18,25 +18,16 @@ Sensor is a Sample OpMode that shows how to use a specific sensor.
   Not intended to drive a functioning robot.
 
 Robot is a Sample OpMode that assumes a simple two-motor (differential) drive base.
-            May be used to provide a common baseline driving OpMode.
+  May be used to provide a common baseline driving OpMode.
 
-Concept:	This is a sample OpMode that illustrates performing a specific function or concept.
-            These may be complex, but their operation should be explained clearly in the comments,
-            or the comments should reference an external doc, guide or tutorial.
-            Each OpMode should try to only demonstrate a single concept so they are easy to
-            locate based on their name.  These OpModes may not produce a drivable robot.
+Concept is a sample OpMode that illustrates performing a specific function or concept.
 
 After the prefix, other conventions will apply:
+* Sensor class names:  Sensor - Company - Type
+* Robot class names are constructed as:  Robot - Mode - Action - OpModetype
+* Concept class names are constructed as:  Concept - Topic - OpModetype
 
-* Sensor class names are constructed as:    Sensor - Company - Type
-* Robot class names are constructed as:     Robot - Mode - Action - OpModetype
-* Concept class names are constructed as:   Concept - Topic - OpModetype
-
-Once you are familiar with the range of samples available, you can choose one to be the
-basis for your own robot.  In all cases, the desired sample(s) needs to be copied into
-your TeamCode module to be used.
-
-This is done inside Android Studio directly, using the following steps:
+To create a sample as a base file, you must:
 
  1) Locate the desired sample class in the Project/Android tree.
 
@@ -73,26 +64,19 @@ This line can simply be deleted , or commented out, to make the OpMode visible.
 
 
 ## ADVANCED Multi-Team App management:  Cloning the TeamCode Module
-
-In some situations, you have multiple teams in your club and you want them to all share
-a common code organization, with each being able to *see* the others code but each having
-their own team module with their own code that they maintain themselves.
-
-In this situation, you might wish to clone the TeamCode module, once for each of these teams.
-Each of the clones would then appear along side each other in the Android Studio module list,
-together with the FtcRobotController module (and the original TeamCode module).
+In the case that you have multiple teams and want to have seperate code bases for each team,
+you may clone the TeamCode module for each team to have. These will appear in the Android Studio
+module list alongside the FtcRobotController module. What this allows is other teams to see
+eachothers code but not edit it.
 
 Selective Team phones can then be programmed by selecting the desired Module from the pulldown list
 prior to clicking to the green Run arrow.
 
-Warning:  This is not for the inexperienced Software developer.
-You will need to be comfortable with File manipulations and managing Android Studio Modules.
-These changes are performed OUTSIDE of Android Studios, so close Android Studios before you do this.
- 
-Also.. Make a full project backup before you start this :)
+THIS IS NOT FOR INEXPERIENCED DEVELOPERS
+These changes are performed OUTSIDE of Android Studio
+It is suggested to make a full project backup before you start this :)
 
 To clone TeamCode, do the following:
-
 Note: Some names start with "Team" and others start with "team".  This is intentional.
 
 1)  Using your operating system file management tools, copy the whole "TeamCode"
@@ -111,3 +95,128 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 5)  Add:    include ':Team0417' to the "/settings.gradle" file.
     
 6)  Open up Android Studios and clean out any old files by using the menu to "Build/Clean Project""
+
+## Code formatting specific to THIS code base
+
+#remove on full format
+#Already formatted:
+*
+
+#Naming:
+	Folders/Files/Classes use pascal case
+	Ex: SimpleName
+
+    	Functions/Variables use camel case
+    	Ex: simpleName
+
+
+#General:
+	Put a space after commas and arithmetic operators as well
+	* Ex: str.substring(i, i + 1);
+	* EXCEPTION: x++;
+
+    	Seperate code SECTIONS with one line
+    	Seperate code BLOCKS with three lines
+
+
+
+#Comments:
+	Only use comments if the code is not self explanatory. If you dont't know if the code is self explanatory, get another programmer to proof read if they are free.
+
+	Please put comments in the code in the proper spaces
+	Ex on what NOT to do: if(<code>) {//comment//
+		<code>
+	}
+
+	No space after forward slashes and leave lower case
+	Ex:   //checks to see if x = 2
+	if(x == 2)
+
+    	Also explain the basic input, processing, and output of the
+    	function or statement(s) in the same comment. Go into more detail
+    	if need-be in the function or statement(s).
+    	Ex:   if(x == 2)
+		//add one to x
+                x++;
+
+    * Multiline comments should look like this
+    * /*
+      this comment has multiple lines blahblahblahblahblah
+      blahblahblahblahblahblahblahblahblahblahblahblahblah
+       */
+
+    * Space multiline comments from normal ones like this
+    * //blah
+      //blah2
+
+      /*
+      blahblahblahblahblah
+      blahblahblahblahblah
+       */
+
+      //blah3
+
+    * Add header comments to explain class purposes
+    * Ex: (at top of this file)
+
+
+
+Variables:
+* Have a short, mostly self-explanatory name
+* Ex: int totalCost = 0;
+
+    * Split up variables into commented groups that share
+    similar purposes
+    * Ex:   //declare motors
+            DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+            DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+            DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+            DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+
+            //misc
+            double sillyVariable = 0.0;
+            int seriousVariable = 0;
+
+
+
+If statements:
+* Parentheses have no spaces before them
+* Ex: if()
+* Ex: else if()
+
+    * One line if statements should look like this
+    * Ex: if() {<code here>}
+
+    * else statements on same line as closing brackets with spaces
+    * Ex: } else {
+    * Same for else ifs
+
+    * "One" line if else statements should look like this
+    * if() {<code here>}
+      else {}
+
+    * Comparison operators need to have spaces between what's
+    being compared
+    * Ex: if(1 + 1 == 2)
+    * Ex: if(1 + 1 == 2 && true)
+    * Ex: if(1 + 1 == 2 || true)
+
+    * If an if-else statement seems to get too large, use a
+    switch case instead
+
+
+
+Complexity:
+* Only nest control flow statements if necessary
+* If there's a simpler solution, use it
+* Always work as if you're making a finished product
+* Don't leave it half done
+* Make a class file to reduce repeated code in multiple files
+
+
+
+Github:
+* Commit after you're done working on something or someone
+else needs to work with the latest changes
+* Experimental changes should be split into separate branches
+* Working on a new feature? Make a new branch!!!!!
