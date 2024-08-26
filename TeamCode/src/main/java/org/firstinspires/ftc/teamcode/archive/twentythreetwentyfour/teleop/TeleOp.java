@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+import org.firstinspires.ftc.teamcode.Helperclasses.buttonClick;
 
 //@Disabled
 //safety :)

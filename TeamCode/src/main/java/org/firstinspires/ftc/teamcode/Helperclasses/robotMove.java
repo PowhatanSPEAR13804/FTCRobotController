@@ -1,13 +1,8 @@
-package org.firstinspires.ftc.teamcode.helperclasses;
+package org.firstinspires.ftc.teamcode.Helperclasses;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /*
    Object for controlling the 4 drive motors

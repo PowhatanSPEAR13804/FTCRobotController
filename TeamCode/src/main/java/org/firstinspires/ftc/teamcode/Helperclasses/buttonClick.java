@@ -1,6 +1,6 @@
 //check the state of a button
 
-package org.firstinspires.ftc.teamcode.helperclasses;
+package org.firstinspires.ftc.teamcode.Helperclasses;
 
 public class buttonClick {
     public long startTime;

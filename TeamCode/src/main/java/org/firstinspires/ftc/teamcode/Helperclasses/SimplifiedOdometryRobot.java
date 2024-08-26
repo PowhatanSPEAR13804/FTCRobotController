@@ -4,13 +4,12 @@
     See the readme for a link to a video tutorial explaining the operation and limitations of the code.
  */
 
-package org.firstinspires.ftc.teamcode.helperclasses;
+package org.firstinspires.ftc.teamcode.Helperclasses;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
