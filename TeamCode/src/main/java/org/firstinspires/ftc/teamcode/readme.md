@@ -100,14 +100,15 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 # remove on full format
 # Already formatted:
-*
+    ButtonClick
+    RobotMove
 
 # Naming:
 	Folders/Files/Classes use pascal case
 	Ex: SimpleName
 
-    	Functions/Variables use camel case
-    	Ex: simpleName
+    Functions/Variables use camel case
+    Ex: simpleName
 
 
 # General:
@@ -162,8 +163,8 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # Variables:
-* Have a short, mostly self-explanatory name
-* Ex: int totalCost = 0;
+    Have a short, mostly self-explanatory name
+    Ex: int totalCost = 0;
 
     * Split up variables into commented groups that share
     similar purposes
@@ -180,9 +181,9 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # If statements:
-* Parentheses have no spaces before them
-* Ex: if()
-* Ex: else if()
+    Parentheses have no spaces before them
+    Ex: if()
+    Ex: else if()
 
     * One line if statements should look like this
     * Ex: if() {<code here>}
@@ -207,16 +208,16 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # Complexity:
-* Only nest control flow statements if necessary
-* If there's a simpler solution, use it
-* Always work as if you're making a finished product
-* Don't leave it half done
-* Make a class file to reduce repeated code in multiple files
+    Only nest control flow statements if necessary
+    If there's a simpler solution, use it
+    Always work as if you're making a finished product
+    Don't leave it half done
+    Make a class file to reduce repeated code in multiple files
 
 
 
 # Github:
-* Commit after you're done working on something or someone
-else needs to work with the latest changes
-* Experimental changes should be split into separate branches
-* Working on a new feature? Make a new branch!!!!!
+    Commit after you're done working on something or someone
+        else needs to work with the latest changes
+    Experimental changes should be split into separate branches
+    Working on a new feature? Make a new branch!!!!!
