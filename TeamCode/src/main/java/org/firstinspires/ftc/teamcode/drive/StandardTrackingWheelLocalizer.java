@@ -58,10 +58,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
 
         // TODO: set encoders
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Hub1_Motor2"));
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Hub2_Motor2"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Hub2_Motor1"));
