@@ -37,8 +37,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
-import org.firstinspires.ftc.teamcode.helperclasses.SimplifiedOdometryRobot;
+import org.firstinspires.ftc.teamcode.helperclasses.RobotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -116,7 +115,7 @@ TestBlueAuto extends LinearOpMode {
 
         Servo outputS =  hardwareMap.servo.get("Hub1_Servo5");
 
-        robotMove  robot =  new robotMove(hardwareMap);
+        RobotMove robot =  new RobotMove(hardwareMap);
 
 
 

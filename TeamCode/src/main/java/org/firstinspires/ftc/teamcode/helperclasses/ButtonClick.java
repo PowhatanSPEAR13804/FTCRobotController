@@ -2,13 +2,13 @@
 
 package org.firstinspires.ftc.teamcode.helperclasses;
 
-public class buttonClick {
+public class ButtonClick {
     public long startTime;
     public boolean pressed;
     public int clickCount;
     public int pressTime;
 
-    public buttonClick() {
+    public ButtonClick() {
         startTime = 0;
         pressed = false;
         pressTime = 1;

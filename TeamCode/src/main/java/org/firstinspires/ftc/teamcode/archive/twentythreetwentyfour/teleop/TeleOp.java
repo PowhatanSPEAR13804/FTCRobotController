@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+import org.firstinspires.ftc.teamcode.helperclasses.ButtonClick;
 
 //@Disabled
 //safety :)
@@ -75,23 +73,23 @@ public class TeleOp extends LinearOpMode {
         boolean hookUp = false;
         boolean viperInUse = false;
 
-        buttonClick dPadLeft = new buttonClick();
-        buttonClick dPadRight = new buttonClick();
+        ButtonClick dPadLeft = new ButtonClick();
+        ButtonClick dPadRight = new ButtonClick();
         //buttonClick gamepadA = new buttonClick();
-        buttonClick gamepadB = new buttonClick();
-        buttonClick gamepadX = new buttonClick();
-        buttonClick gamepadY = new buttonClick();
-        buttonClick BumperLeft = new buttonClick();
-        buttonClick BumperRight = new buttonClick();
-        buttonClick littleBroB = new buttonClick();
-        buttonClick littleBroY = new buttonClick();
+        ButtonClick gamepadB = new ButtonClick();
+        ButtonClick gamepadX = new ButtonClick();
+        ButtonClick gamepadY = new ButtonClick();
+        ButtonClick BumperLeft = new ButtonClick();
+        ButtonClick BumperRight = new ButtonClick();
+        ButtonClick littleBroB = new ButtonClick();
+        ButtonClick littleBroY = new ButtonClick();
         /*
         buttonClick littleBroA = new buttonClick();
         buttonClick littleBroDL = new buttonClick();
         buttonClick littleBroDR = new buttonClick();
         */
-        buttonClick littleBroRB = new buttonClick();
-        buttonClick littleBroLB = new buttonClick();
+        ButtonClick littleBroRB = new ButtonClick();
+        ButtonClick littleBroLB = new ButtonClick();
 
 
         waitForStart();

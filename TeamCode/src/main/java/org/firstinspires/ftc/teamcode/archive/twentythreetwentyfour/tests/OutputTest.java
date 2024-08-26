@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+import org.firstinspires.ftc.teamcode.helperclasses.ButtonClick;
 
 @TeleOp(name="OutputTest", group="Tests")
 public class OutputTest extends LinearOpMode{
@@ -41,8 +41,8 @@ public class OutputTest extends LinearOpMode{
         int test = 0; //index of each motor
 
         //create a button click object that will check the button state
-        buttonClick b = new buttonClick();
-        buttonClick a = new buttonClick();
+        ButtonClick b = new ButtonClick();
+        ButtonClick a = new ButtonClick();
 
         waitForStart();
 
