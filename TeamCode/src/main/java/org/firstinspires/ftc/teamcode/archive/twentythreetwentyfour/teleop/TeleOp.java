@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.helperclasses.buttonClick;
+import org.firstinspires.ftc.teamcode.Helperclasses.buttonClick;
 
 //@Disabled
 //safety :)

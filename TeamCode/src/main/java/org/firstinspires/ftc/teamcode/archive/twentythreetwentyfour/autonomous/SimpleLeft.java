@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
+import org.firstinspires.ftc.teamcode.Helperclasses.robotMove;
 
 // TODO - stuff with pixels
 

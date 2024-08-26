@@ -37,7 +37,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 //import org.firstinspires.ftc.teamcode.helperclasses.TestTensorFlowObjectDetection;
-import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
+import org.firstinspires.ftc.teamcode.Helperclasses.robotMove;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
