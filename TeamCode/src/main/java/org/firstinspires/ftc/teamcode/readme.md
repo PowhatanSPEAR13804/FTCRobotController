@@ -181,20 +181,25 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # If statements:
+    
+    Example if statements:
+        * one line
+        if(<condition>) { <code> }
+        else if(<condition>) { <code> }
+        else { <code> }
+        
+        * multi-line
+        if(<condition>) {
+            <code>
+        } else if(<condition>) {
+            <code>
+        } else {
+            <code>
+        }
+
     Parentheses have no spaces before them
-    Ex: if()
-    Ex: else if()
 
-    * One line if statements should look like this
-    * Ex: if() {<code here>}
-
-    * else statements on same line as closing brackets with spaces
-    * Ex: } else {
-    * Same for else ifs
-
-    * "One" line if else statements should look like this
-    * if() {<code here>}
-      else {}
+    One line if statements should be able to fit on the screen without problem
 
     * Comparison operators need to have spaces between what's
     being compared
@@ -208,16 +213,17 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # Complexity:
-    Only nest control flow statements if necessary
-    If there's a simpler solution, use it
-    Always work as if you're making a finished product
-    Don't leave it half done
+    Only nest control flow statements if necessary or more performant
+    If there's a simpler solution, use it if it comply's with rules stated
+    Don't make placeholder code that violates the format instructions as you likely won't fix it
     Make a class file to reduce repeated code in multiple files
 
 
 
 # Github:
     Commit after you're done working on something or someone
-        else needs to work with the latest changes
+        else needs to work with the latest changes.
     Experimental changes should be split into separate branches
-    Working on a new feature? Make a new branch!!!!!
+    Working on a new feature? Make a new branch!
+    IMPORTANT NOTE: If you work on something that will or maybe will have changes, do not make
+        a new branch of it as it will cause severe headache.
