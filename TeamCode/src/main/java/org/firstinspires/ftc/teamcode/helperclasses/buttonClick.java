@@ -15,23 +15,19 @@ public class buttonClick {
     }
 
     public void checkButton(boolean buttonState) {
-        if(buttonState && !pressed) /* when the button starts being pressed*/ {
+        if(buttonState && !pressed) {
             pressed = true;
-            startTime = System.currentTimeMillis(); /*when the button starts to be pressed*/
-        } else if (!buttonState && pressed) /*when the button is released*/ {
+            startTime = System.currentTimeMillis();
+        } else if(!buttonState && pressed) {
             pressed = false;
-            long elapsedTime = System.currentTimeMillis() - startTime; /*figure out how long the button has been pressed */
-            if (elapsedTime > pressTime) /*if the button has been pressed for long enough, increment the count. */ {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (elapsedTime > pressTime) {
                 clickCount++;
             }
         }
     }
 
-    public int getClickCount() {
-        return clickCount;
-    }
+    public int getClickCount() { return clickCount; }
 
-    public void resetClickCount() {
-        clickCount = 0;
-    }
+    public void resetClickCount() { clickCount = 0; }
 }

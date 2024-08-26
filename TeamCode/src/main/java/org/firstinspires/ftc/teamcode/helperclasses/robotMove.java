@@ -9,11 +9,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-// Object for controlling the 4 drive motors
-// Expects the 4 drive motors connected to omni directional wheels
-// See OmniDirectionWheels.jpg for how these work.
-// TODO - recreate the JPG in ASCII and paste here.
-// TODO - make this a singleton or static member so there can be only one set of drive motor objects.
+/*
+   Object for controlling the 4 drive motors
+   Expects the 4 drive motors connected to omni directional wheels
+   See OmniDirectionWheels.jpg for how these work.
+*/
 
 public class robotMove {
     public DcMotor motorFR = null;
@@ -24,58 +24,66 @@ public class robotMove {
     public  DcMotor motorX =null ;
     public  DcMotor motorY = null;
 
-    public double ticksPerInch = 0.0;   // Encoder ticks per inch
+    public double ticksPerInch = 0.0;   //encoder ticks per inch
 
     public  double ODOM_INCHES_PER_COUNT   = (2*24/25.4*Math.PI)/2000;   //  GoBilda Odometry Pod (1/226.8)
 
 
-    // Constructor - does all the initialization of the motors
-    // this function gets called when you make a new object.
+    //constructor - does all the initialization of the motors
+    //this function gets called when you make a new object.
     public robotMove(HardwareMap hardwareMap) {
-        // Create the motor devices
-        // TODO - this is setup to the 2023 robot map
-        // Change this mapping to however your robot is setup.
+        /*
+            create the motor devices
+            todo - this is setup to the 2023 robot map
+            change this mapping to however your robot is setup.
 
-        // test bot motors
-        // motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        // motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        // motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        // motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
 
-        // comp bot motors
-        motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+
+            test bot motors
+            motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+            motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+            motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+            motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+
+            comp bot motors
+            motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
+            motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
+            motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
+            motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
+         */
 
         motorY = hardwareMap.dcMotor.get("Hub2_Motor2");
         motorX = hardwareMap.dcMotor.get("Hub2_Motor1");
-        // Setup the motors to turn in the correct
-        // direction to default to forward motion
-        // Always set all 4 just in case their default
-        // is NOT FORWARD.
+        /*
+          setup the motors to turn in the correct
+          direction to default to forward motion
+          always set all 4 just in case their default
+          is NOT FORWARD.
+         */
         motorFR.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.REVERSE);
         motorBL.setDirection(DcMotor.Direction.FORWARD);
 
-        // Setup the motors so that they are speed and not
-        // power based...  it uses the encoders to control the speed.
-        setModeStopAndReset();
-        setModeRunUsingEncoder();
+        /*
+            setup the motors so that they are speed and not
+            power based...  it uses the encoders to control the speed.
+            setModeStopAndReset();
+            setModeRunUsingEncoder();
+        */
 
         double CompBotDiam = 96.0;
         double TestBotDiam = 100.0;
 
 
-        // Calculate the encoder ticks per inch
+        //calculate the encoder ticks per inch
         double wheelDiameterInches = CompBotDiam / 25.4; // https://www.gobilda.com/3606-series-mecanum-wheel-set-bearing-supported-rollers-100mm-diameter/
 
         double wheelCircumference = wheelDiameterInches * Math.PI;
         double ticksPerRevolution = 384.5;  // From https://www.gobilda.com/5202-series-yellow-jacket-planetary-gear-motor-13-7-1-ratio-435-rpm-3-3-5v-encoder/
         ticksPerInch = ticksPerRevolution / wheelCircumference;
 
-        // Make sure we are stopped
+        //make sure we are stopped
         stop();
     }
 public void GetDistance(){
@@ -109,44 +117,52 @@ public  double getOdomDistance(){
         return (D*ODOM_INCHES_PER_COUNT);
 
 }
-    // Set the power individually on each motor as a group
-    // You can call this by itself or use one of the
-    // other functions to call it for you.
+    /*
+       set the power individually on each motor as a group
+       you can call this by itself or use one of the
+       other functions to call it for you.
+     */
     public void setMotors(double FRS, double FLS, double BRS, double BLS) {
-        // the DcMotor.setPower function takes in a power value from -1.0 to 1.0
-        // 0.0 is stop / no motion
-        // -1.0 is full reverse
-        // 1.0 is full forward
-        // Note:  if you configure the motor direction to REVERSE then -1.0 will be the
-        // opposite direction that a motor configured for FORWARD
-        // This can help make all motors turn their wheels in the direction
-        // you want them to and then the speed is the same for all 4 motors.
-        // See the constructor for the directions the motors are set to.
-        // note:  the order we set the power in does not matter for
-        // steering offsets.  the bot always veers off in the same direction.
+        /*
+           the DcMotor.setPower function takes in a power value from -1.0 to 1.0
+           0.0 is stop / no motion
+           -1.0 is full reverse
+           1.0 is full forward
+           Note:  if you configure the motor direction to REVERSE then -1.0 will be the
+           opposite direction that a motor configured for FORWARD
+           This can help make all motors turn their wheels in the direction
+           you want them to and then the speed is the same for all 4 motors.
+           See the constructor for the directions the motors are set to.
+           note:  the order we set the power in does not matter for
+           steering offsets.  the bot always veers off in the same direction.
+         */
         motorFR.setPower(FRS);
         motorFL.setPower(FLS);
         motorBR.setPower(BRS);
         motorBL.setPower(BLS);
     }
 
-    // Set the Velocity individually on each motor as a group
-    // You can call this by itself or use one of the
-    // other functions to call it for you.
-    // FRS, FLS, BRS, BLS are in ticks per second
+    /*
+       Set the Velocity individually on each motor as a group
+       You can call this by itself or use one of the
+       other functions to call it for you.
+       FRS, FLS, BRS, BLS are in ticks per second
+     */
     public void setVelocity(double FRS, double FLS, double BRS, double BLS) {
-        // the DcMotorEx.setVelocity function takes in a value from -ticks per second
-        // to +ticks per second to set the velocity of the DC motor.
-        // 0.0 is stop / no motion
-        // -X.0 is full reverse
-        // X.0 is full forward
-        // Note:  if you configure the motor direction to REVERSE then -X.0 will be the
-        // opposite direction that a motor configured for FORWARD
-        // This can help make all motors turn their wheels in the direction
-        // you want them to and then the speed is the same for all 4 motors.
-        // See the constructor for the directions the motors are set to.
-        // note:  the order we set the power in does not matter for
-        // steering offsets.  the bot always veers off in the same direction.
+        /*
+           the DcMotorEx.setVelocity function takes in a value from -ticks per second
+           to +ticks per second to set the velocity of the DC motor.
+           0.0 is stop / no motion
+           -X.0 is full reverse
+           X.0 is full forward
+           Note:  if you configure the motor direction to REVERSE then -X.0 will be the
+           opposite direction that a motor configured for FORWARD
+           This can help make all motors turn their wheels in the direction
+           you want them to and then the speed is the same for all 4 motors.
+           See the constructor for the directions the motors are set to.
+           note:  the order we set the power in does not matter for
+           steering offsets.  the bot always veers off in the same direction.
+         */
         ((DcMotorEx)motorFR).setVelocity(FRS);
         ((DcMotorEx)motorFL).setVelocity(FLS);
         ((DcMotorEx)motorBR).setVelocity(BRS);
@@ -161,27 +177,28 @@ public  double getOdomDistance(){
         while(currentTime < stopTime)
             currentTime = System.currentTimeMillis();
     }
-
-    // Stop the robot
-    // TODO -there is a breaking mode and floating mode
-    // or something like that.  the breaking action
-    // should stop the motors really quickly and
-    // the non breaking mode will allow the motors
-    // to coast a little.  What do we want?
+    /*
+       Stop the robot
+       TODO -there is a breaking mode and floating mode
+       or something like that.  the breaking action
+       should stop the motors really quickly and
+       the non breaking mode will allow the motors
+       to coast a little.  What do we want?
+     */
     public void stop() {
-        // Set all 4 motors to 0.0 speed
         setMotors(0.0, 0.0, 0.0, 0.0);
         resetEncoders();
     }
-
-    // Runs the motors using the given speeds for the desired distance
-    // Inputs:
-    // FRS, FLS, BRS, BLS = speed for each motor 1.0 to -1.0
-    // distance = distance in inches to travel
+        /*
+        Runs the motors using the given speeds for the desired distance
+        Inputs:
+        FRS, FLS, BRS, BLS = speed for each motor 1.0 to -1.0
+        distance = distance in inches to travel
+         */
     public void runMotorsForDistance(double FRS, double FLS, double BRS, double BLS, double distance) {
 
-        // Store the starting position of the motor encoder
-        // Use the Front Right motor for right now...
+        //store the starting position of the motor encoder
+        //use the Front Right motor for right now...
         double dStartDistance = getOdomDistance();
 
 
@@ -189,17 +206,17 @@ public  double getOdomDistance(){
         double vMax = 1.0;
         double aMax = 1.0;
 
-        // Calculate the starting velocity using the motion profile
+        //calculate the starting velocity using the motion profile
         double dCurrentDistance = getOdomDistance();
         double dVelMul = triangleMotionProfile(vMin, vMax, distance, dCurrentDistance);
 
-        // Multiply the vMax for each motor by the starting velocity (scalar)
+        //multiply the vMax for each motor by the starting velocity (scalar)
         setMotors(FRS * dVelMul, FLS * dVelMul, BRS * dVelMul, BLS * dVelMul);
 
-        // Wait until the encoder says we have traveled the desired distance
-        // Eventually the ticks will roll over or something like that.
-        // However the autonomous code only needs to run for 30 seconds or so
-        // Use the absolute distance traveled from dStartTicks to currentPosition
+        //wait until the encoder says we have traveled the desired distance
+        //eventually the ticks will roll over or something like that.
+        //however the autonomous code only needs to run for 30 seconds or so
+        //use the absolute distance traveled from dStartTicks to currentPosition
         //double dTicks = Math.abs(motorFR.getCurrentPosition() - dStartTicks);
         while (dCurrentDistance < distance)
         {
