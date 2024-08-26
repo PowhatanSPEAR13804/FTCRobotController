@@ -98,11 +98,11 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 ## Code formatting specific to THIS code base
 
-#remove on full format
-#Already formatted:
+# remove on full format
+# Already formatted:
 *
 
-#Naming:
+# Naming:
 	Folders/Files/Classes use pascal case
 	Ex: SimpleName
 
@@ -110,7 +110,7 @@ Note: Some names start with "Team" and others start with "team".  This is intent
     	Ex: simpleName
 
 
-#General:
+# General:
 	Put a space after commas and arithmetic operators as well
 	* Ex: str.substring(i, i + 1);
 	* EXCEPTION: x++;
@@ -120,7 +120,7 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 
-#Comments:
+# Comments:
 	Only use comments if the code is not self explanatory. If you dont't know if the code is self explanatory, get another programmer to proof read if they are free.
 
 	Please put comments in the code in the proper spaces
@@ -161,7 +161,7 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 
-Variables:
+# Variables:
 * Have a short, mostly self-explanatory name
 * Ex: int totalCost = 0;
 
@@ -179,7 +179,7 @@ Variables:
 
 
 
-If statements:
+# If statements:
 * Parentheses have no spaces before them
 * Ex: if()
 * Ex: else if()
@@ -206,7 +206,7 @@ If statements:
 
 
 
-Complexity:
+# Complexity:
 * Only nest control flow statements if necessary
 * If there's a simpler solution, use it
 * Always work as if you're making a finished product
@@ -215,7 +215,7 @@ Complexity:
 
 
 
-Github:
+# Github:
 * Commit after you're done working on something or someone
 else needs to work with the latest changes
 * Experimental changes should be split into separate branches
