@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "Drag_Car", group = "Misc")
 
 
-public class Drag_Car extends LinearOpMode {
+public class DragCar extends LinearOpMode {
 //e
     static final double INCREMENT   = 0.01;     // amount to ramp motor each CYCLE_MS cycle
     static final int    CYCLE_MS    =   50;     // period of each cycle
