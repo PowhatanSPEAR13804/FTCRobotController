@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-import org.firstinspires.ftc.teamcode.helperclasses.RobotMove;
+import org.firstinspires.ftc.teamcode.helperclasses.robotMove;
 
 // TODO - stuff with pixels
 
@@ -16,7 +16,7 @@ public class SimpleForward extends LinearOpMode{
     @Override
     public void runOpMode() {
         NormalizedColorSensor color = hardwareMap.get(NormalizedColorSensor.class, "Hub2_I2C_3");;
-        RobotMove robot = new RobotMove(hardwareMap);
+        robotMove robot = new robotMove(hardwareMap);
 
         waitForStart();
 

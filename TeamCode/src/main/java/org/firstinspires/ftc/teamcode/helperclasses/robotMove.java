@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 //TODO - recreate the JPG in ASCII and paste here.
 //TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
-public class RobotMove {
+public class robotMove {
     public DcMotor motorFR = null;
     public DcMotor motorFL = null;
     public DcMotor motorBR = null;
@@ -25,7 +25,7 @@ public class RobotMove {
 
 
     //initialization
-    public RobotMove(HardwareMap hardwareMap) {
+    public robotMove(HardwareMap hardwareMap) {
         motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
         motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
