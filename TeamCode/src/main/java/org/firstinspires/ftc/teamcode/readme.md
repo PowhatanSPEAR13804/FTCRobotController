@@ -122,7 +122,20 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # Comments:
-	Only use comments if the code is not self explanatory. If you dont't know if the code is self explanatory, get another programmer to proof read if they are free.
+
+    /*
+      A very intricatly descriptive description of absolutely and totally very complex code
+      that is utterly confusing at first glance
+    */
+
+    //Lorem Ipsum
+    //Oh yeah, Lorem Ipsum means nothing
+
+    Comments should articulate a single train of thought on a chunk or block of code
+
+	Only use comments if the code is not self explanatory.
+    If you dont't know if the code is self explanatory,
+    get another programmer to proof read if they are free.
 
 	Please put comments in the code in the proper spaces
 	Ex on what NOT to do: if(<code>) {//comment//
@@ -163,32 +176,32 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 # Variables:
-    Have a short, mostly self-explanatory name
-    Ex: int totalCost = 0;
+                        -Example variables-
+    DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+    DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+    DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+    DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
 
-    * Split up variables into commented groups that share
-    similar purposes
-    * Ex:   //declare motors
-            DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
-            DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
-            DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
-            DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+    //misc
+    double sillySpeed = 178.0;
+    double seriousSpeed = 1.0;
 
-            //misc
-            double sillyVariable = 0.0;
-            int seriousVariable = 0;
+    Short explainatory names for variables
+
+    * Split up variables into groups that share similar purpose and
+      comment if the groups are unclear
 
 
 
 # If statements:
     
-    Example if statements:
-        * one line
+          -Example if statements-
+    * one line
         if(<condition>) { <code> }
         else if(<condition>) { <code> }
         else { <code> }
         
-        * multi-line
+    * multi-line
         if(<condition>) {
             <code>
         } else if(<condition>) {
@@ -197,26 +210,25 @@ Note: Some names start with "Team" and others start with "team".  This is intent
             <code>
         }
 
-    Parentheses have no spaces before them
+            -Example condition-
+        if(1 + 1 == 2 && 2 + 2 == 4)
 
-    One line if statements should be able to fit on the screen without problem
+    * Parentheses have no spaces before them
 
-    * Comparison operators need to have spaces between what's
-    being compared
-    * Ex: if(1 + 1 == 2)
-    * Ex: if(1 + 1 == 2 && true)
-    * Ex: if(1 + 1 == 2 || true)
+    * One line if statements should be able to fit on the screen without problem
 
-    * If an if-else statement seems to get too large, use a
-    switch case instead
+    * If an if-else statement has too many possible other conditions (causing visible slowdown)
+    use a switch case in it's place
+
+    * Spaces must be put between operands (+, -, &&, =, etc.)
 
 
 
 # Complexity:
-    Only nest control flow statements if necessary or more performant
-    If there's a simpler solution, use it if it comply's with rules stated
-    Don't make placeholder code that violates the format instructions as you likely won't fix it
-    Make a class file to reduce repeated code in multiple files
+    * Only nest control flow statements if necessary or more performant
+    * If there's a simpler solution, use it if it comply's with rules stated
+    * Don't make placeholder code that violates the format instructions as you likely won't fix it
+    * Make a class file to reduce repeated code in multiple files
 
 
 
