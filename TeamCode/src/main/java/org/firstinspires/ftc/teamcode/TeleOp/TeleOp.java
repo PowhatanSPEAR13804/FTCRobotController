@@ -34,21 +34,22 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double x = gamepad1.right_stick_x;
-            double y = gamepad1.right_stick_y;
-            double rx = gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x;
+            double y = gamepad1.left_stick_y;
+            double rx = gamepad1.right_stick_x;
 
-            double denominator = Math.max(Math.max(x, y), Math.max(rx, 1.0));
+            double denominator = Math.max(Math.abs(x + y + rx), 1.0);
 
-            double FLSpeed = (y - x + rx)/denominator;
-            double FRSpeed = (y + x - rx)/denominator;
+            double FLSpeed = (y + x + rx)/denominator;
+            double FRSpeed = (y - x - rx)/denominator;
             double BLSpeed = (y - x + rx)/denominator;
             double BRSpeed = (y + x - rx)/denominator;
 
+
             FLMotor.setPower(FLSpeed);
-            FRMotor.setPower(FLSpeed);
-            BLMotor.setPower(FLSpeed);
-            BRMotor.setPower(FLSpeed);
+            FRMotor.setPower(FRSpeed);
+            BLMotor.setPower(BLSpeed);
+            BRMotor.setPower(BRSpeed);
 
         }
     }
