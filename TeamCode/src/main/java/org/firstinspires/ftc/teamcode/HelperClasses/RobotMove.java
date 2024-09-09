@@ -11,33 +11,26 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 // TODO - make this a singleton or static member so there can be only one set of drive motor objects.
 
 public class RobotMove {
-    public DcMotor motorFR = null;
-    public DcMotor motorFL = null;
-    public DcMotor motorBR = null;
-    public DcMotor motorBL = null;
+    public DcMotor motorFR;
+    public DcMotor motorFL;
+    public DcMotor motorBR;
+    public DcMotor motorBL;
 
-    public  DcMotor motorX =null ;
-    public  DcMotor motorY = null;
+    public  DcMotor motorX;
+    public  DcMotor motorY;
 
-    public double ticksPerInch = 0.0;   // Encoder ticks per inch
+    public double ticksPerInch;   // Encoder ticks per inch
 
-    public  double ODOM_INCHES_PER_COUNT   = (2*24/25.4*Math.PI)/2000;   //  GoBilda Odometry Pod (1/226.8)
+    public  double ODOM_INCHES_PER_COUNT = (2*24 / 25.4*Math.PI) / 2000;   //  GoBilda Odometry Pod (1/226.8)
 
 
     // Constructor - does all the initialization of the motors
     // this function gets called when you make a new object.
     public RobotMove(HardwareMap hardwareMap) {
-        // Create the motor devices
         // TODO - this is setup to the 2023 robot map
-        // Change this mapping to however your robot is setup.
-
-        // test bot motors
-        // motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
-        // motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
-        // motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
-        // motorBR = hardwareMap.dcMotor.get("Hub2_Motor3");
-
-        // comp bot motors
+        //change this mapping to however your robot is setup.
+        //do not make the mistake we did and wire the test bot and comp bot differently
+        
         motorFL = hardwareMap.dcMotor.get("Hub1_Motor3");
         motorBL = hardwareMap.dcMotor.get("Hub1_Motor0");
         motorFR = hardwareMap.dcMotor.get("Hub2_Motor0");
@@ -45,37 +38,38 @@ public class RobotMove {
 
         motorY = hardwareMap.dcMotor.get("Hub2_Motor2");
         motorX = hardwareMap.dcMotor.get("Hub2_Motor1");
-        // Setup the motors to turn in the correct
-        // direction to default to forward motion
-        // Always set all 4 just in case their default
-        // is NOT FORWARD.
+        
+        /*
+          setup the motors to turn in the correct
+          direction to default to forward motion
+          Always set all 4 just in case their default
+          is NOT FORWARD.
+        */
         motorFR.setDirection(DcMotor.Direction.REVERSE);
         motorFL.setDirection(DcMotor.Direction.FORWARD);
         motorBR.setDirection(DcMotor.Direction.REVERSE);
         motorBL.setDirection(DcMotor.Direction.FORWARD);
 
-        // Setup the motors so that they are speed and not
-        // power based...  it uses the encoders to control the speed.
+        //setup the motors so that they are speed and not
+        //power based...  it uses the encoders to control the speed.
         setModeStopAndReset();
         setModeRunUsingEncoder();
 
-        double CompBotDiam = 96.0;
-        double TestBotDiam = 100.0;
-
+        double compBotDiameter = 96.0;
 
         // Calculate the encoder ticks per inch
-        double wheelDiameterInches = CompBotDiam / 25.4; // https://www.gobilda.com/3606-series-mecanum-wheel-set-bearing-supported-rollers-100mm-diameter/
+        double wheelDiameterInches = compBotDiameter / 25.4; // https://www.gobilda.com/3606-series-mecanum-wheel-set-bearing-supported-rollers-100mm-diameter/
 
         double wheelCircumference = wheelDiameterInches * Math.PI;
         double ticksPerRevolution = 384.5;  // From https://www.gobilda.com/5202-series-yellow-jacket-planetary-gear-motor-13-7-1-ratio-435-rpm-3-3-5v-encoder/
         ticksPerInch = ticksPerRevolution / wheelCircumference;
 
-        // Make sure we are stopped
+        //stop
         stop();
     }
-public void GetDistance(){
+    public void getDistance(){
 
-}
+    }
     public void setMode(DcMotor.RunMode mode) {
         motorFR.setMode(mode);
         motorFL.setMode(mode);
@@ -97,13 +91,13 @@ public void GetDistance(){
       motorX.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorY.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-public  double getOdomDistance(){
-       double x = motorX.getCurrentPosition();
-    double y =  motorY.getCurrentPosition();
+    public double getOdomDistance(){
+        double x = motorX.getCurrentPosition();
+        double y =  motorY.getCurrentPosition();
         double D = Math.sqrt(x*x+y*y);
         return (D*ODOM_INCHES_PER_COUNT);
 
-}
+    }
     // Set the power individually on each motor as a group
     // You can call this by itself or use one of the
     // other functions to call it for you.
