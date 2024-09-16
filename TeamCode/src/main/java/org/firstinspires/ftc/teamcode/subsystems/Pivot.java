@@ -22,6 +22,7 @@ public class Pivot extends SubsystemBase {
     public Pivot(HardwareMap hardwareMap, String servoID, Telemetry tl) {
         pivotServo = new CRServo(hardwareMap, servoID);
         telemetry = tl;
+        pivotServo.resetEncoder();
     }
 
     public void rotateWithPID(double position) {
