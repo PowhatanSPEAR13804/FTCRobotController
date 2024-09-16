@@ -1,0 +1,149 @@
+package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.tests;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.Libraries.ButtonClick;
+import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
+
+//Tests outputs using the controller
+@TeleOp(name="OutputTest", group="Tests")
+public class    OutputTest extends LinearOpMode{
+    @Override
+    public void runOpMode() throws InterruptedException{
+
+        ServoMotorDeclarations servoMotors = new ServoMotorDeclarations(hardwareMap);
+
+        //Sets that maximum and minimum values for testing
+        final int minTest = 0;
+        final int maxTest = 14;
+        //Intermediate variable to set motors or servos
+        int test = 0;
+
+        //create a button click object that will check the button state
+        ButtonClick b = new ButtonClick();
+        ButtonClick a = new ButtonClick();
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+
+        while (opModeIsActive()){
+
+            b.checkButton(gamepad1.b);
+
+            if(b.getClickCount() > 0) {
+                test--;
+                b.resetClickCount();
+            }
+
+            a.checkButton(gamepad1.a);
+
+            if(a.getClickCount() > 0) {
+                test++;
+                a.resetClickCount();
+            }
+
+            //Makes values loop from min to max or max to min
+            if (test > maxTest) {
+                test = minTest;
+            }
+            if (test < minTest) {
+                test = maxTest;
+            }
+
+            switch (test) {
+                case 0:
+                    telemetry.addLine("testing front left motor.");
+                    testMotor(servoMotors.motorFR);
+                    break;
+                case 1:
+                    telemetry.addLine("testing back left motor.");
+                    testMotor(servoMotors.motorFL);
+                    break;
+                case 2:
+                    telemetry.addLine("testing front right motor.");
+                    testMotor(servoMotors.motorBR);
+                    break;
+                case 3:
+                    telemetry.addLine("testing back right motor.");
+                    testMotor(servoMotors.motorBL);
+                    break;
+                case 4:
+                    telemetry.addLine("testing four Bar motor.");
+                    testMotor(servoMotors.fourBar);
+                    break;
+                case 5:
+                    telemetry.addLine("testing viper motor.");
+                    testMotor(servoMotors.viper);
+                    break;
+                case 6:
+                    telemetry.addLine("testing hanging motor.");
+                    testMotor(servoMotors.hangingM);
+                    break;
+                case 7:
+                    telemetry.addLine("testing left intake servo.");
+                    continuousTest(servoMotors.intakeLeft);
+                    break;
+                case 8:
+                    telemetry.addLine("testing right intake servo.");
+                    continuousTest(servoMotors.intakeRight);
+                    break;
+                case 9:
+                    telemetry.addLine("testing throughput servo.");
+                    continuousTest(servoMotors.throughput);
+                    break;
+                case 10:
+                    telemetry.addLine("testing the drone launch servo.");
+                    positionalTest(servoMotors.launch);
+                    break;
+                case 11:
+                    telemetry.addLine("testing the output servo");
+                    positionalTest(servoMotors.outputS);
+                    break;
+                case 12:
+                    telemetry.addLine("testing the hanging servo");
+                    positionalTest(servoMotors.hangingS);
+                    break;
+                case 13:
+                    telemetry.addLine("testing the output linear servo.");
+                    linearServoTest(servoMotors.outputL);
+                    break;
+                default:
+                    telemetry.addLine("test unknown");
+                    break;
+            }
+            telemetry.update();
+        }
+    }
+
+    public void testMotor(DcMotor motor) {
+        //set motor power to a value that is from -1 to 1 depending on the trigger positions
+        motor.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+    }
+
+    public void continuousTest(Servo servo) {
+        //get the combined values of the triggers (-1 to 1)
+        double triggerValue = gamepad1.right_trigger - gamepad1.left_trigger;
+        //turn that value into a double with the range 0 to 1 with 0.5 being nothing pressed
+        double position = (triggerValue + 1)/2;
+        //continuous servos will go backwards if position is below 0.5, forwards if position is above 0.5, and stop if position is 0.5
+        servo.setPosition(position);
+    }
+
+    public void positionalTest(Servo servo) {
+        double position = 90;
+        if (gamepad1.left_trigger > 0.5) {
+            position = 180;
+        } else if (gamepad1.right_trigger > 0.5) {
+            position = 0;
+        }
+        servo.setPosition(position);
+    }
+
+    public void linearServoTest(Servo servo) {
+        servo.setPosition(gamepad1.left_trigger);
+    }
+}

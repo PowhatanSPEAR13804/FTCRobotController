@@ -1,6 +1,4 @@
-testing testing
-
-## Creating your own OpModes
+## Creating youown OpModes
 The easiest way to create your own OpMode is to copy a Sample OpMode and make it your own.
 Sample opmodes exist in the FtcRobotController module.
 
@@ -20,7 +18,7 @@ Sensor is a Sample OpMode that shows how to use a specific sensor.
   Not intended to drive a functioning robot.
 
 Robot is a Sample OpMode that assumes a simple two-motor (differential) drive base.
-  May be used to provide a common baseline driving OpMode.
+            May be used to provide a common baseline driving OpMode.
 
 Concept is a sample OpMode that illustrates performing a specific function or concept.
 
