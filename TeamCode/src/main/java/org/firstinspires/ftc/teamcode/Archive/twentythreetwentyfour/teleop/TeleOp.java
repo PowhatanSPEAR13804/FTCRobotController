@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.teleop;
+package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;

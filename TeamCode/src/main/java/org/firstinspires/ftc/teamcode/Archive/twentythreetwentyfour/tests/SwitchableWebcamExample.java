@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Archive.twentythreetwentyfour.tests;
+package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
