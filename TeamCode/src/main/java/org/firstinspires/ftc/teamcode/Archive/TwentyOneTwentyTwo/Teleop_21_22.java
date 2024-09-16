@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyOneTwentyTwo;
+package org.firstinspires.ftc.teamcode.Archive.twentyonetwentytwo;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
 
-public class TeleOp_21_22 extends LinearOpMode
+public class Teleop_21_22 extends LinearOpMode
 
 {
     private ElapsedTime timer = new ElapsedTime();
