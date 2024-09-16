@@ -1,4 +1,4 @@
-## Creating your own OpModes
+## Creating youown OpModes
 The easiest way to create your own OpMode is to copy a Sample OpMode and make it your own.
 Sample opmodes exist in the FtcRobotController module.
 
@@ -20,23 +20,14 @@ Sensor is a Sample OpMode that shows how to use a specific sensor.
 Robot is a Sample OpMode that assumes a simple two-motor (differential) drive base.
             May be used to provide a common baseline driving OpMode.
 
-Concept:	This is a sample OpMode that illustrates performing a specific function or concept.
-            These may be complex, but their operation should be explained clearly in the comments,
-            or the comments should reference an external doc, guide or tutorial.
-            Each OpMode should try to only demonstrate a single concept so they are easy to
-            locate based on their name.  These OpModes may not produce a drivable robot.
+Concept is a sample OpMode that illustrates performing a specific function or concept.
 
 After the prefix, other conventions will apply:
+* Sensor class names:  Sensor - Company - Type
+* Robot class names are constructed as:  Robot - Mode - Action - OpModetype
+* Concept class names are constructed as:  Concept - Topic - OpModetype
 
-* Sensor class names are constructed as:    Sensor - Company - Type
-* Robot class names are constructed as:     Robot - Mode - Action - OpModetype
-* Concept class names are constructed as:   Concept - Topic - OpModetype
-
-Once you are familiar with the range of samples available, you can choose one to be the
-basis for your own robot.  In all cases, the desired sample(s) needs to be copied into
-your TeamCode module to be used.
-
-This is done inside Android Studio directly, using the following steps:
+To create a sample as a base file, you must:
 
  1) Locate the desired sample class in the Project/Android tree.
 
@@ -73,26 +64,19 @@ This line can simply be deleted , or commented out, to make the OpMode visible.
 
 
 ## ADVANCED Multi-Team App management:  Cloning the TeamCode Module
-
-In some situations, you have multiple teams in your club and you want them to all share
-a common code organization, with each being able to *see* the others code but each having
-their own team module with their own code that they maintain themselves.
-
-In this situation, you might wish to clone the TeamCode module, once for each of these teams.
-Each of the clones would then appear along side each other in the Android Studio module list,
-together with the FtcRobotController module (and the original TeamCode module).
+In the case that you have multiple teams and want to have seperate code bases for each team,
+you may clone the TeamCode module for each team to have. These will appear in the Android Studio
+module list alongside the FtcRobotController module. What this allows is other teams to see
+eachothers code but not edit it.
 
 Selective Team phones can then be programmed by selecting the desired Module from the pulldown list
 prior to clicking to the green Run arrow.
 
-Warning:  This is not for the inexperienced Software developer.
-You will need to be comfortable with File manipulations and managing Android Studio Modules.
-These changes are performed OUTSIDE of Android Studios, so close Android Studios before you do this.
- 
-Also.. Make a full project backup before you start this :)
+THIS IS NOT FOR INEXPERIENCED DEVELOPERS
+These changes are performed OUTSIDE of Android Studio
+It is suggested to make a full project backup before you start this :)
 
 To clone TeamCode, do the following:
-
 Note: Some names start with "Team" and others start with "team".  This is intentional.
 
 1)  Using your operating system file management tools, copy the whole "TeamCode"
@@ -111,3 +95,147 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 5)  Add:    include ':Team0417' to the "/settings.gradle" file.
     
 6)  Open up Android Studios and clean out any old files by using the menu to "Build/Clean Project""
+
+## Code formatting specific to THIS code base
+
+# remove on full format
+# Already formatted:
+    ButtonClick
+    RobotMove
+
+# Naming:
+	Folders/Files/Classes use pascal case
+	Ex: SimpleName
+
+    Functions/Variables use camel case
+    Ex: simpleName
+
+
+# General:
+	Put a space after commas and arithmetic operators as well
+	* Ex: str.substring(i, i + 1);
+	* EXCEPTION: x++;
+
+    	Seperate code SECTIONS with one line
+    	Seperate code BLOCKS with three lines
+
+
+
+# Comments:
+
+    /*
+      A very intricatly descriptive description of absolutely and totally very complex code
+      that is utterly confusing at first glance
+    */
+
+    //Lorem Ipsum
+    //Oh yeah, Lorem Ipsum means nothing
+
+    Comments should articulate a single train of thought on a chunk or block of code
+
+	Only use comments if the code is not self explanatory.
+    If you dont't know if the code is self explanatory,
+    get another programmer to proof read if they are free.
+
+	Please put comments in the code in the proper spaces
+	Ex on what NOT to do: if(<code>) {//comment//
+		<code>
+	}
+
+	No space after forward slashes and leave lower case
+	Ex:   //checks to see if x = 2
+	if(x == 2)
+
+    	Also explain the basic input, processing, and output of the
+    	function or statement(s) in the same comment. Go into more detail
+    	if need-be in the function or statement(s).
+    	Ex:   if(x == 2)
+		//add one to x
+                x++;
+
+    * Multiline comments should look like this
+    * /*
+      this comment has multiple lines blahblahblahblahblah
+      blahblahblahblahblahblahblahblahblahblahblahblahblah
+       */
+
+    * Space multiline comments from normal ones like this
+    * //blah
+      //blah2
+
+      /*
+      blahblahblahblahblah
+      blahblahblahblahblah
+       */
+
+      //blah3
+
+    * Add header comments to explain class purposes
+    * Ex: (at top of this file)
+
+
+
+# Variables:
+                        -Example variables-
+    DcMotor motorFrontLeft = hardwareMap.dcMotor.get("Hub1_Motor3");
+    DcMotor motorBackLeft = hardwareMap.dcMotor.get("Hub1_Motor0");
+    DcMotor motorFrontRight = hardwareMap.dcMotor.get("Hub2_Motor0");
+    DcMotor motorBackRight = hardwareMap.dcMotor.get("Hub2_Motor3");
+
+    //misc
+    double sillySpeed = 178.0;
+    double seriousSpeed = 1.0;
+
+    Short explainatory names for variables
+
+    * Split up variables into groups that share similar purpose and
+      comment if the groups are unclear
+
+
+
+# If statements:
+    
+          -Example if statements-
+    * one line
+        if(<condition>) { <code> }
+        else if(<condition>) { <code> }
+        else { <code> }
+        
+    * multi-line
+        if(<condition>) {
+            <code>
+        } else if(<condition>) {
+            <code>
+        } else {
+            <code>
+        }
+
+            -Example condition-
+        if(1 + 1 == 2 && 2 + 2 == 4)
+
+    * Parentheses have no spaces before them
+
+    * One line if statements should be able to fit on the screen without problem
+
+    * If an if-else statement has too many possible other conditions (causing visible slowdown)
+    use a switch case in it's place
+
+    * Spaces must be put between operands (+, -, &&, =, etc.)
+
+
+
+# Complexity:
+    * Only nest control flow statements if necessary or more performant
+    * If there's a simpler solution, use it if it comply's with rules stated
+    * Don't make placeholder code that violates the format instructions as you likely won't fix it
+    * Make a class file to reduce repeated code in multiple files
+
+
+
+# Github:
+    Commit after you're done working on something or someone
+        else needs to work with the latest changes.
+    Experimental changes should be split into separate branches
+    Working on a new feature? Make a new branch!
+    IMPORTANT NOTE: If you work on something that will or maybe will have changes, do not make
+        a new branch of it as it will cause severe headache.
