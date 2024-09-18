@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyFour;
+package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyThree;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Disabled
 
-@Autonomous(name="Cone_Auto", group="Robot")
+@Autonomous(name="Color_Sensor_Test", group="Robot")
 
-public class Cone_Auto extends LinearOpMode {
+public class Color_Sensor_Test extends LinearOpMode {
     private DcMotor         frontLeftDrive   = null;
     private DcMotor         frontRightDrive  = null;
     private DcMotor         backLeftDrive   = null;
@@ -112,14 +112,25 @@ public class Cone_Auto extends LinearOpMode {
 
         IMU.initialize(parameters);
 
-        rightColor.setGain(12);
-        NormalizedRGBA colors = rightColor.getNormalizedColors();
-        //double correctiveValue=(double)0.02;
-        red = colors.red;
-        green = colors.green;
-        blue = colors.blue;
-
         waitForStart();
+
+        while (opModeIsActive())
+        {
+            rightColor.setGain(12);
+            NormalizedRGBA colors = rightColor.getNormalizedColors();
+
+            double R = 0.024;
+            double G = 0.014;
+            double B = 0.06;
+            red = colors.red;
+            green = colors.green;
+            blue = colors.blue;
+
+            telemetry.addData("R; ",red);
+            telemetry.addData("G; ",green);
+            telemetry.addData("B; ",blue);
+            telemetry.update();
+        }
 
         // Step through each leg of the path,
 
@@ -132,16 +143,26 @@ public class Cone_Auto extends LinearOpMode {
         //Strafe Right
         //encoderDrive(2, -100, 100, 100, -100, 3);
         //encoderDrive(Speed:FL,FR,BL,BR,Inches:FL,FR,BL,BR,Timeout Seconds,Step);
-        //armAndWrist(pickup,dropOff,Arm Height(number of rotations to get there),Arm Speed,Wrist Position("front" or "back"), Timeout Seconds)
+        //armandwrist(pickup,dropoff,armheight,armspeed,wristposition,timeout seconds)
+        /*
         //step 1 (ForwardToCone)
         encoderDrive(0.60, 0.60, 0.60, 0.60, -22, 17, 17, -22, 3, 1);
-        armAndWrist(true, false, 0.2 , 0.75, "front", 2);
         //sense the color(Sense)
+        rightColor.setGain(12);
+        NormalizedRGBA colors = rightColor.getNormalizedColors();
+        int R = 1;
+        int G = 0;
+        int B = 1;
+        red = colors.red + R;
+        green = colors.green + G;
+        blue = colors.blue + B;
         sense(true);
         //step2(BackToWall)
         encoderDrive(0.60, 0.60, 0.60, 0.60, 20, -15, -15, 20, 3, 2);
+
         //step 2.5(MoveOverAWittle)
         encoderDrive(0.80, 0.80, 0.80, 0.80, 18, 13, 13, 18, 1, 3);
+
         //step 2.625(Adjustment)
         //encoderDrive(0.60, -1, 64, 64, -0, 3, 3, false, false, false, 0.2, 0.75, "front");
         //step 2.75(DriveToJunction)
@@ -149,19 +170,23 @@ public class Cone_Auto extends LinearOpMode {
         double c = 1.06;
         encoderDrive(0.60, 0.60, 0.60, 0.60, -64*c, 58*c, 58*c, -64*c, 3, 4);
         //step 4 (ArmUp)
-        armAndWrist(true, false, 1.5, 1, "front", 2);
+        armAndWrist(true, false, 1.5 , 0.75, "front", 2);
         //step 3(TowardJunction)
-        encoderDrive(0.40, 0.40, -0.40, 0.40, -8.5*c, -8.5, -8.5, -8.5*c, 1, 5);
+        encoderDrive(0.40, 0.40, -0.40, 0.40, -8.5*c, -8.5, -8.5, -8.5*c, 1.5, 5);
+
+        //armAndWrist(true, false, 1.5, 0.4, "front", 2);
         //step 4(DropCone)
-        armAndWrist(false, true, 0.7, 1, "front", 2);
+        armAndWrist(false, true, 0, 0, "front", 0.3);
+        //arm back up
+        armAndWrist(false, true, 1.5, 1, "front", 0.5);
         //4.1927563716552736451726
         encoderDrive(0, 0, 0, 0, 0, 0, 0, 0, 1, 6);
-        //arm down
-        armAndWrist(true, false, 0.2, 1, "front", 2);
         //wait
         encoderDrive(0, 0, 0, 0, 0, 0, 0, 0, 1, 6);
         //step 4.5 (AwayFromJunction)
         encoderDrive(0.60, 0.60, 0.60, 0.60, 7, 7, 7, 7, 3, 6);
+        //arm down
+        armAndWrist(true, false, 0, 0, "front", 0.5);
         //step5 (park)
         encoderDrive(0.60, 0.60, 0.60, 0.60, 13*c, -8*c, -8*c, 13*c, 3, 7);
         /*
@@ -180,21 +205,21 @@ public class Cone_Auto extends LinearOpMode {
             encoderDrive(0.75, 10, -5, -5, 10, 3, 7, false, false, false, 0, 0, "back");
         }
         */
-
+        /*
         switch (parkColor)
         {
             case "red":
                 //forward
-                encoderDrive(0.60, 0.60, 0.60, 0.60, -44, -44, -44, -44, 3, 8);
+                encoderDrive(0.60, 0.60, 0.60, 0.60, -44, -46, -44, -46, 3, 8);
                 break;
             case "green":
                 //backward
-                encoderDrive(0.60, 0.60, 0.60, 0.60, -22, -22, -22, -22, 3, 8);
+                encoderDrive(0.60, 0.60, 0.60, 0.60, -22, -24, -22, -24, 3, 8);
                 break;
             //case blue
-            //stay still
+                //stay still
         }
-
+        */
 
     }
 
@@ -212,7 +237,7 @@ public class Cone_Auto extends LinearOpMode {
         {
             int newArmTarget;
 
-            newArmTarget = forearm.getCurrentPosition() + (int)(COUNTS_PER_INCH * armHeight);
+            newArmTarget = forearm.getCurrentPosition() + (int)(armHeight * COUNTS_PER_INCH);
 
             forearm.setTargetPosition(newArmTarget);
 
@@ -226,6 +251,8 @@ public class Cone_Auto extends LinearOpMode {
             {
 
             }
+
+            //forearm.setPower(0);
 
             //forearm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -500,6 +527,9 @@ public class Cone_Auto extends LinearOpMode {
             telemetry.addData("G; ",green);
             telemetry.addData("B; ",blue);
             telemetry.update();
+
+            //temporary
+            parkColor = "green";
 
                 /*if (rightColor.red() > 0.9 && rightColor.blue() < 0.3 && rightColor.green() < 0.3)
                 {

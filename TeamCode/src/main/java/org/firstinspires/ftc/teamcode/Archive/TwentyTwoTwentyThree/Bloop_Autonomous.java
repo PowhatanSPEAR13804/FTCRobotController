@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyFour;
+package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyThree;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,9 +10,10 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Disabled
-@Autonomous(name="Arm_Test", group="Robot")
 
-public class Arm_Test extends LinearOpMode {
+@Autonomous(name="Bloop_Autonomous", group="Robot")
+
+public class Bloop_Autonomous extends LinearOpMode {
     private DcMotor         frontLeftDrive   = null;
     private DcMotor         frontRightDrive  = null;
     private DcMotor         backLeftDrive   = null;
@@ -58,12 +59,12 @@ public class Arm_Test extends LinearOpMode {
 
         IMU = hardwareMap.get(BNO055IMU.class, "imu");
 
-        //sensor = hardwareMap.get()
+        //sensor = hardwareMap.get()"Hub2_motor0");
+        //        frontRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor0");
+        //        backLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor2");
+        //        backRightDrive  = hardwareMap.get(DcMotor.class,
 
-        frontLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor0");
-        frontRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor0");
-        backLeftDrive  = hardwareMap.get(DcMotor.class, "Hub2_motor2");
-        backRightDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor2");
+        frontLeftDrive  = hardwareMap.get(DcMotor.class, "Hub1_motor2");
 
         forearm = hardwareMap.get(DcMotor.class, "Hub2_motor1");
         rotation = hardwareMap.get(DcMotor.class, "Hub1_motor1");
@@ -111,13 +112,6 @@ public class Arm_Test extends LinearOpMode {
 
         IMU.initialize(parameters);
 
-        rightColor.setGain(12);
-        NormalizedRGBA colors = rightColor.getNormalizedColors();
-        //double correctiveValue=(double)0.02;
-        red = colors.red;
-        green = colors.green;
-        blue = colors.blue;
-
         waitForStart();
 
         // Step through each leg of the path,
@@ -131,23 +125,26 @@ public class Arm_Test extends LinearOpMode {
         //Strafe Right
         //encoderDrive(2, -100, 100, 100, -100, 3);
         //encoderDrive(Speed:FL,FR,BL,BR,Inches:FL,FR,BL,BR,Timeout Seconds,Step);
-        //armAndWrist(pickup,dropOff,Arm Height(number of rotations to get there),Arm Speed,Wrist Position("front" or "back"), Timeout Seconds)
+        //armandwrist(pickup,dropoff,armheight,armspeed,wristposition,timeout seconds)
+
         //step 1 (ForwardToCone)
-        for(double i = 1; i < 100; i+=1) {
-            armAndWrist(true, false, i , 0.75, "front", 2);
-            String armheight=Double.toString(i);
-            telemetry.addData("armheight = ",armheight);
-            telemetry.update();
-            sleep(50);
-        }
-        /*encoderDrive(0.60, 0.60, 0.60, 0.60, -22, 17, 17, -22, 3, 1);
-        armAndWrist(true, false, 0.125 , 0.75, "front", 2);
+        encoderDrive(0.60, 0.60, 0.60, 0.60, -22, 17, 17, -22, 3, 1);
         //sense the color(Sense)
+        rightColor.setGain(12);
+        NormalizedRGBA colors = rightColor.getNormalizedColors();
+        double R = 0.024;
+        double G = 0.014;
+        double B = 0.06;
+        red = colors.red + R;
+        green = colors.green + G;
+        blue = colors.blue + B;
         sense(true);
         //step2(BackToWall)
         encoderDrive(0.60, 0.60, 0.60, 0.60, 20, -15, -15, 20, 3, 2);
+
         //step 2.5(MoveOverAWittle)
         encoderDrive(0.80, 0.80, 0.80, 0.80, 18, 13, 13, 18, 1, 3);
+
         //step 2.625(Adjustment)
         //encoderDrive(0.60, -1, 64, 64, -0, 3, 3, false, false, false, 0.2, 0.75, "front");
         //step 2.75(DriveToJunction)
@@ -155,9 +152,11 @@ public class Arm_Test extends LinearOpMode {
         double c = 1.06;
         encoderDrive(0.60, 0.60, 0.60, 0.60, -64*c, 58*c, 58*c, -64*c, 3, 4);
         //step 4 (ArmUp)
-        armAndWrist(true, false, 1.5, 1, "front", 2);
+        armAndWrist(true, false, 1.5 , 0.75, "front", 2);
         //step 3(TowardJunction)
         encoderDrive(0.40, 0.40, -0.40, 0.40, -8.5*c, -8.5, -8.5, -8.5*c, 1.5, 5);
+
+        //armAndWrist(true, false, 1.5, 0.4, "front", 2);
         //step 4(DropCone)
         armAndWrist(false, true, 0, 0, "front", 0.3);
         //arm back up
@@ -218,13 +217,15 @@ public class Arm_Test extends LinearOpMode {
         // Ensure that the opmode is still active
         if (opModeIsActive())
         {
-            double newArmTarget;
+            int newArmTarget;
 
-            newArmTarget = (forearm.getCurrentPosition() + (COUNTS_PER_MOTOR_REV * armHeight));
+            newArmTarget = forearm.getCurrentPosition() + (int)(armHeight * COUNTS_PER_INCH);
 
-            forearm.setTargetPosition((int)newArmTarget);
+            forearm.setTargetPosition(newArmTarget);
 
             forearm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            runtime.reset();
 
             forearm.setPower(Math.abs(armSpeed));
 
@@ -510,7 +511,7 @@ public class Arm_Test extends LinearOpMode {
             telemetry.update();
 
             //temporary
-            parkColor = "green";
+            //parkColor = "green";
 
                 /*if (rightColor.red() > 0.9 && rightColor.blue() < 0.3 && rightColor.green() < 0.3)
                 {

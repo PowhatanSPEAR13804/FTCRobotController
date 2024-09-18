@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyFour;
+package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyThree;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Disabled
+
 @TeleOp
-public class Motor_Spin extends LinearOpMode {
+public class Robot_Centric_Drive_Train extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -91,7 +92,7 @@ public class Motor_Spin extends LinearOpMode {
             }
 
             if (gamepad2.dpad_right) {
-                wrist.setPosition(0.8);
+                wrist.setPosition(0.85);
             }
         }
     }

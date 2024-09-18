@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyFour;
+package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyThree;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,16 +9,10 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
 @Disabled
-@Autonomous(name="Autonomous_Minibot", group="Robot")
+@Autonomous(name="Arm_Test", group="Robot")
 
-public class Autonomous_Minibot extends LinearOpMode {
+public class Arm_Test extends LinearOpMode {
     private DcMotor         frontLeftDrive   = null;
     private DcMotor         frontRightDrive  = null;
     private DcMotor         backLeftDrive   = null;
@@ -45,10 +39,11 @@ public class Autonomous_Minibot extends LinearOpMode {
     private double []          colorValues = new double [] {red, green, blue};
     //private int             max = colorValues[0];
 
-    double correction;
-    Orientation             lastAngles = new Orientation();
-    double                  globalAngle;
+    //double correction;
+    //Orientation             lastAngles = new Orientation();
+    //double                  globalAngle;
 
+    double UpDownSpeed = 0.5;
 
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -116,6 +111,13 @@ public class Autonomous_Minibot extends LinearOpMode {
 
         IMU.initialize(parameters);
 
+        rightColor.setGain(12);
+        NormalizedRGBA colors = rightColor.getNormalizedColors();
+        //double correctiveValue=(double)0.02;
+        red = colors.red;
+        green = colors.green;
+        blue = colors.blue;
+
         waitForStart();
 
         // Step through each leg of the path,
@@ -128,22 +130,48 @@ public class Autonomous_Minibot extends LinearOpMode {
         //encoderDrive(2, 100, -100, -100, 100, 3);
         //Strafe Right
         //encoderDrive(2, -100, 100, 100, -100, 3);
-        //encoderDrive(Speed,FL,FR,BL,BR,Timeout Seconds,Step,pickup,dropOff,hold,Arm Height(number of rotations to get there),Arm Speed,Wrist Position("front" or "back"));
-        //step 1
-        encoderDrive(0.75, -22, 17, 17, -22, 3, 1, false, true, true, 0 , 0, "front");
-        //sense the color
-        rightColor.setGain(12);
-        NormalizedRGBA colors = rightColor.getNormalizedColors();
-        //double correctiveValue=(double)0.02;
-        red = colors.red;
-        green = colors.green-0.01;
-        blue = colors.blue;
+        //encoderDrive(Speed:FL,FR,BL,BR,Inches:FL,FR,BL,BR,Timeout Seconds,Step);
+        //armAndWrist(pickup,dropOff,Arm Height(number of rotations to get there),Arm Speed,Wrist Position("front" or "back"), Timeout Seconds)
+        //step 1 (ForwardToCone)
+        for(double i = 1; i < 100; i+=1) {
+            armAndWrist(true, false, i , 0.75, "front", 2);
+            String armheight=Double.toString(i);
+            telemetry.addData("armheight = ",armheight);
+            telemetry.update();
+            sleep(50);
+        }
+        /*encoderDrive(0.60, 0.60, 0.60, 0.60, -22, 17, 17, -22, 3, 1);
+        armAndWrist(true, false, 0.125 , 0.75, "front", 2);
+        //sense the color(Sense)
         sense(true);
-        //step 2
-        encoderDrive(1.25, 2, -2, -2, 2, 3,2, true, false, true, 1.49, 0.75, "front"); //6
-
-        //step 3
-        encoderDrive(0.75, 15, -10, -10, 15, 3, 3, false, false, false, 0, 0, "back");
+        //step2(BackToWall)
+        encoderDrive(0.60, 0.60, 0.60, 0.60, 20, -15, -15, 20, 3, 2);
+        //step 2.5(MoveOverAWittle)
+        encoderDrive(0.80, 0.80, 0.80, 0.80, 18, 13, 13, 18, 1, 3);
+        //step 2.625(Adjustment)
+        //encoderDrive(0.60, -1, 64, 64, -0, 3, 3, false, false, false, 0.2, 0.75, "front");
+        //step 2.75(DriveToJunction)
+        //encoderDrive(0.60, 0.60, 0.60, 0.60, -64, 58, 58, -64, 3, 3, true, false, 0.2, 0.75, "front");
+        double c = 1.06;
+        encoderDrive(0.60, 0.60, 0.60, 0.60, -64*c, 58*c, 58*c, -64*c, 3, 4);
+        //step 4 (ArmUp)
+        armAndWrist(true, false, 1.5, 1, "front", 2);
+        //step 3(TowardJunction)
+        encoderDrive(0.40, 0.40, -0.40, 0.40, -8.5*c, -8.5, -8.5, -8.5*c, 1.5, 5);
+        //step 4(DropCone)
+        armAndWrist(false, true, 0, 0, "front", 0.3);
+        //arm back up
+        armAndWrist(false, true, 1.5, 1, "front", 0.5);
+        //4.1927563716552736451726
+        encoderDrive(0, 0, 0, 0, 0, 0, 0, 0, 1, 6);
+        //wait
+        encoderDrive(0, 0, 0, 0, 0, 0, 0, 0, 1, 6);
+        //step 4.5 (AwayFromJunction)
+        encoderDrive(0.60, 0.60, 0.60, 0.60, 7, 7, 7, 7, 3, 6);
+        //arm down
+        armAndWrist(true, false, 0, 0, "front", 0.5);
+        //step5 (park)
+        encoderDrive(0.60, 0.60, 0.60, 0.60, 13*c, -8*c, -8*c, 13*c, 3, 7);
         /*
         for (int i=0; i<1;i++) {
             //step 4
@@ -165,46 +193,92 @@ public class Autonomous_Minibot extends LinearOpMode {
         {
             case "red":
                 //forward
-                encoderDrive(0.75, -22, -22, -22, -22, 3, 1, false, false, false, 0, 0, "");
+                encoderDrive(0.60, 0.60, 0.60, 0.60, -44, -46, -44, -46, 3, 8);
                 break;
-            case "blue":
+            case "green":
                 //backward
-                encoderDrive(0.75, 22, 22, 22, 22, 3, 1, false, false, false, 0, 0, "");
+                encoderDrive(0.60, 0.60, 0.60, 0.60, -22, -24, -22, -24, 3, 8);
                 break;
-            //case green
+            //case blue
             //stay still
         }
 
 
     }
 
-    public void encoderDrive(double speed,
+    public void armAndWrist(boolean pickup,
+                            boolean dropOff,
+                            double armHeight,
+                            double armSpeed,
+                            String wristPosition,
+                            double timeoutS)
+    {
+        if (isStopRequested()) return;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive())
+        {
+            double newArmTarget;
+
+            newArmTarget = (forearm.getCurrentPosition() + (COUNTS_PER_MOTOR_REV * armHeight));
+
+            forearm.setTargetPosition((int)newArmTarget);
+
+            forearm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            forearm.setPower(Math.abs(armSpeed));
+
+            while (opModeIsActive() && (runtime.seconds() < timeoutS))
+            {
+
+            }
+
+            //forearm.setPower(0);
+
+            //forearm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //wrist
+            if (wristPosition == "front") {
+                wrist.setPosition(0.05);
+            }
+
+            if (wristPosition == "back") {
+                wrist.setPosition(0.8);
+            }
+
+            if (pickup == true)
+            {
+                finger.setPosition(closedPosition);
+            }
+            else if (dropOff == true)
+            {
+                finger.setPosition(openPosition);
+            }
+        }
+    }
+
+    public void encoderDrive(double frontLeftSpeed,
+                             double frontRightSpeed,
+                             double backLeftSpeed,
+                             double backRightSpeed,
                              double frontLeftInches,
                              double frontRightInches,
                              double backLeftInches,
                              double backRightInches,
                              double timeoutS,
-                             int step,
-                             boolean pickup,
-                             boolean dropOff,
-                             boolean hold,
-                             double armHeight,
-                             double armSpeed,
-                             String wristPosition) {
+                             int step) {
 
         if (isStopRequested()) return;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
-            correction = checkDirection();
+            //correction = checkDirection();
 
             int newFrontLeftTarget;
             int newFrontRightTarget;
             int newBackLeftTarget;
             int newBackRightTarget;
-
-            int newArmTarget;
 
             // Determine new target position, and pass to motor controller
             newFrontLeftTarget = frontLeftDrive.getCurrentPosition() + (int)(frontLeftInches * COUNTS_PER_INCH);
@@ -212,14 +286,10 @@ public class Autonomous_Minibot extends LinearOpMode {
             newBackLeftTarget = backLeftDrive.getCurrentPosition() + (int)(backLeftInches * COUNTS_PER_INCH);
             newBackRightTarget = backRightDrive.getCurrentPosition() + (int)(backRightInches * COUNTS_PER_INCH);
 
-            newArmTarget = forearm.getCurrentPosition() + (int)(COUNTS_PER_INCH * armHeight);
-
             frontLeftDrive.setTargetPosition(newFrontLeftTarget);
             frontRightDrive.setTargetPosition(newFrontRightTarget);
             backLeftDrive.setTargetPosition(newBackLeftTarget);
             backRightDrive.setTargetPosition(newBackRightTarget);
-
-            forearm.setTargetPosition(newArmTarget);
 
             // Turn On RUN_TO_POSITION
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -227,16 +297,27 @@ public class Autonomous_Minibot extends LinearOpMode {
             backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            forearm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
             // reset the timeout time and start motion.
             runtime.reset();
-            frontLeftDrive.setPower(Math.abs(speed));
-            frontRightDrive.setPower(Math.abs(speed));
-            backLeftDrive.setPower(Math.abs(speed));
-            backRightDrive.setPower(Math.abs(speed));
+            //    double currentFrontLeftSpeed = 0;
+            //    double currentFrontRightSpeed = 0;
+            //    double currentBackLeftSpeed = 0;
+            //    double currentBackRightSpeed = 0;
+            //    while(currentFrontLeftSpeed < frontLeftSpeed &&
+            //          currentFrontRightSpeed < frontRightSpeed &&
+            //          currentBackLeftSpeed < backLeftSpeed &&
+            //          currentBackRightSpeed < backRightSpeed)
+            //    {
+            frontLeftDrive.setPower(Math.abs(frontLeftSpeed));
+            frontRightDrive.setPower(Math.abs(frontRightSpeed));
+            backLeftDrive.setPower(Math.abs(backLeftSpeed));
+            backRightDrive.setPower(Math.abs(backRightSpeed));
 
-            forearm.setPower(Math.abs(armSpeed));
+            //currentFrontLeftSpeed += UpDownSpeed;
+            //currentFrontRightSpeed += UpDownSpeed;
+            //currentBackLeftSpeed += UpDownSpeed;
+            //currentBackRightSpeed += UpDownSpeed;
+            //    }
 
 
             // keep looping while we are still active, and there is time left, and both motors are running.
@@ -269,46 +350,18 @@ public class Autonomous_Minibot extends LinearOpMode {
             backLeftDrive.setPower(0);
             backRightDrive.setPower(0);
 
-            forearm.setPower(0);
+            //forearm.setPower(0);
 
             // Turn off RUN_TO_POSITION
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            forearm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            //wrist
-            if (wristPosition == "front") {
-                wrist.setPosition(0.05);
-            }
-
-            if (wristPosition == "back") {
-                wrist.setPosition(0.8);
-            }
-
-            if (hold == true)
-            {
-                forearm.setPower(-armSpeed);
-                if (pickup == true)
-                {
-                    finger.setPosition(openPosition);
-                }
-                else if (dropOff == true)
-                {
-                    finger.setPosition(closedPosition);
-                }
-                forearm.setPower(armSpeed);
-            }
-
             //sleep(50);   // optional pause after each move.
-
-
         }
     }
-
-    private double getAngle()
+    /*
+        private double getAngle()
     {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
         // We have to process the angle because the imu works in euler angles so the Z axis is
@@ -362,8 +415,8 @@ public class Autonomous_Minibot extends LinearOpMode {
      * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.
      * @param degrees Degrees to turn, + is left - is right
      */
-
-    private void rotate(int degrees)
+     /*
+        private void rotate(int degrees)
     {
         double  leftPower, rightPower;
 
@@ -410,7 +463,7 @@ public class Autonomous_Minibot extends LinearOpMode {
         // reset angle tracking on new heading.
         resetAngle();
     }
-
+    */
     public void sense (boolean cone)
     {
         //if color sensor is on the left
@@ -455,6 +508,9 @@ public class Autonomous_Minibot extends LinearOpMode {
             telemetry.addData("G; ",green);
             telemetry.addData("B; ",blue);
             telemetry.update();
+
+            //temporary
+            parkColor = "green";
 
                 /*if (rightColor.red() > 0.9 && rightColor.blue() < 0.3 && rightColor.green() < 0.3)
                 {

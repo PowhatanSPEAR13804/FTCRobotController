@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyFour;
+package org.firstinspires.ftc.teamcode.Archive.TwentyTwoTwentyThree;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Disabled
 
-@Autonomous(name="Color_Sensor_Test", group="Robot")
+@Autonomous(name="Bloop_Autonomous_Right", group="Robot")
 
-public class Color_Sensor_Test extends LinearOpMode {
+public class Bloop_Autonomous_Right extends LinearOpMode {
     private DcMotor         frontLeftDrive   = null;
     private DcMotor         frontRightDrive  = null;
     private DcMotor         backLeftDrive   = null;
@@ -114,24 +114,6 @@ public class Color_Sensor_Test extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive())
-        {
-            rightColor.setGain(12);
-            NormalizedRGBA colors = rightColor.getNormalizedColors();
-
-            double R = 0.024;
-            double G = 0.014;
-            double B = 0.06;
-            red = colors.red;
-            green = colors.green;
-            blue = colors.blue;
-
-            telemetry.addData("R; ",red);
-            telemetry.addData("G; ",green);
-            telemetry.addData("B; ",blue);
-            telemetry.update();
-        }
-
         // Step through each leg of the path,
 
         //Forward
@@ -144,35 +126,35 @@ public class Color_Sensor_Test extends LinearOpMode {
         //encoderDrive(2, -100, 100, 100, -100, 3);
         //encoderDrive(Speed:FL,FR,BL,BR,Inches:FL,FR,BL,BR,Timeout Seconds,Step);
         //armandwrist(pickup,dropoff,armheight,armspeed,wristposition,timeout seconds)
-        /*
+
         //step 1 (ForwardToCone)
-        encoderDrive(0.60, 0.60, 0.60, 0.60, -22, 17, 17, -22, 3, 1);
+        encoderDrive(0.60, 0.60, 0.60, 0.60, 22, -17, -17, 22, 3, 1);
         //sense the color(Sense)
         rightColor.setGain(12);
-        NormalizedRGBA colors = rightColor.getNormalizedColors();
-        int R = 1;
-        int G = 0;
-        int B = 1;
+        NormalizedRGBA colors = leftColor.getNormalizedColors();
+        double R = 0.024;
+        double G = 0.014;
+        double B = 0.06;
         red = colors.red + R;
         green = colors.green + G;
         blue = colors.blue + B;
         sense(true);
         //step2(BackToWall)
-        encoderDrive(0.60, 0.60, 0.60, 0.60, 20, -15, -15, 20, 3, 2);
+        encoderDrive(0.60, 0.60, 0.60, 0.60, -20, 15, 15, -20, 3, 2);
 
         //step 2.5(MoveOverAWittle)
-        encoderDrive(0.80, 0.80, 0.80, 0.80, 18, 13, 13, 18, 1, 3);
+        encoderDrive(0.80, 0.80, 0.80, 0.80, 30, 20, 20, 22, 1, 3);
 
         //step 2.625(Adjustment)
         //encoderDrive(0.60, -1, 64, 64, -0, 3, 3, false, false, false, 0.2, 0.75, "front");
         //step 2.75(DriveToJunction)
         //encoderDrive(0.60, 0.60, 0.60, 0.60, -64, 58, 58, -64, 3, 3, true, false, 0.2, 0.75, "front");
         double c = 1.06;
-        encoderDrive(0.60, 0.60, 0.60, 0.60, -64*c, 58*c, 58*c, -64*c, 3, 4);
+        encoderDrive(0.60, 0.60, 0.60, 0.60, 58*c, -64*c, -64*c, 58*c, 3, 4);
         //step 4 (ArmUp)
         armAndWrist(true, false, 1.5 , 0.75, "front", 2);
         //step 3(TowardJunction)
-        encoderDrive(0.40, 0.40, -0.40, 0.40, -8.5*c, -8.5, -8.5, -8.5*c, 1.5, 5);
+        encoderDrive(0.40, 0.40, -0.40, 0.40, 8.5*c, 8.5, 8.5, 8.5*c, 1.5, 5);
 
         //armAndWrist(true, false, 1.5, 0.4, "front", 2);
         //step 4(DropCone)
@@ -188,7 +170,7 @@ public class Color_Sensor_Test extends LinearOpMode {
         //arm down
         armAndWrist(true, false, 0, 0, "front", 0.5);
         //step5 (park)
-        encoderDrive(0.60, 0.60, 0.60, 0.60, 13*c, -8*c, -8*c, 13*c, 3, 7);
+        encoderDrive(0.60, 0.60, 0.60, 0.60, -13*c, 8*c, 8*c, -13*c, 3, 7);
         /*
         for (int i=0; i<1;i++) {
             //step 4
@@ -205,21 +187,21 @@ public class Color_Sensor_Test extends LinearOpMode {
             encoderDrive(0.75, 10, -5, -5, 10, 3, 7, false, false, false, 0, 0, "back");
         }
         */
-        /*
+
         switch (parkColor)
         {
             case "red":
                 //forward
-                encoderDrive(0.60, 0.60, 0.60, 0.60, -44, -46, -44, -46, 3, 8);
+                encoderDrive(0.60, 0.60, 0.60, 0.60, 44, 46, 44, 46, 3, 8);
                 break;
             case "green":
                 //backward
-                encoderDrive(0.60, 0.60, 0.60, 0.60, -22, -24, -22, -24, 3, 8);
+                encoderDrive(0.60, 0.60, 0.60, 0.60, 22, 24, 22, 24, 3, 8);
                 break;
             //case blue
-                //stay still
+            //stay still
         }
-        */
+
 
     }
 
@@ -529,7 +511,7 @@ public class Color_Sensor_Test extends LinearOpMode {
             telemetry.update();
 
             //temporary
-            parkColor = "green";
+            //parkColor = "green";
 
                 /*if (rightColor.red() > 0.9 && rightColor.blue() < 0.3 && rightColor.green() < 0.3)
                 {
