@@ -1,67 +1,116 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.localization.Localizer;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.geometry.Pose2d;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.drive.MecanumOdometry;
+
+import java.util.List;
+
+/**
+ * A subsystem that uses the {@link MecanumOdometry} class.
+ * This periodically calls {@link MecanumOdometry#update()} which runs the internal
+ * state machine for the mecanum drive. All movement/following is async to fit the paradigm.
+ */
 public class Drivetrain extends SubsystemBase {
-	private static final double TRACKWIDTH = 0.0;
-	private static final double CENTER_WHEEL_OFFSET = 0.0;
-	private static final double TICKS_TO_INCHES = 0.0;
 
-	private final MotorEx leftEncoder;
-	private final MotorEx rightEncoder;
-	private final MotorEx perpendicularEncoder;
+    private final MecanumOdometry drive;
+    private final boolean fieldCentric;
 
-	private final HolonomicOdometry odometry;
+    public Drivetrain(MecanumOdometry drive, boolean isFieldCentric) {
+        this.drive = drive;
+        fieldCentric = isFieldCentric;
+    }
 
-	private final MecanumDrive m_drive;
+    public void setMode(DcMotor.RunMode mode) {
+        drive.setMode(mode);
+    }
 
-	public Drivetrain(HardwareMap hardwareMap) {
-		Motor frontLeft = hardwareMap.get(Motor.class, "");
-		Motor frontRight = hardwareMap.get(Motor.class, "");
-		Motor backLeft = hardwareMap.get(Motor.class, "");
-		Motor backRight = hardwareMap.get(Motor.class, "");
+    public void setPIDFCoefficients(DcMotor.RunMode mode, PIDFCoefficients coefficients) {
+        drive.setPIDFCoefficients(mode, coefficients);
+    }
 
-		rightEncoder = hardwareMap.get(MotorEx.class, "");
-		leftEncoder = hardwareMap.get(MotorEx.class, "");
-		perpendicularEncoder = hardwareMap.get(MotorEx.class, "");
+    public void setPoseEstimate(Pose2d pose) {
+        drive.setPoseEstimate(pose);
+    }
 
-		leftEncoder.setDistancePerPulse(TICKS_TO_INCHES);
-		rightEncoder.setDistancePerPulse(TICKS_TO_INCHES);
-		perpendicularEncoder.setDistancePerPulse(TICKS_TO_INCHES);
+    @Override
+    public void periodic() {
+        drive.update();
+    }
 
-		odometry = new HolonomicOdometry(
-				  leftEncoder::getDistance,
-				  rightEncoder::getDistance,
-				  perpendicularEncoder::getDistance,
-				  TRACKWIDTH, CENTER_WHEEL_OFFSET
-		);
+    public void updatePoseEstimate() {
+        drive.updatePoseEstimate();
+    }
 
-		odometry.updatePose(new Pose2d());
+    public void drive(double leftY, double leftX, double rightX) {
+        Pose2d poseEstimate = getPoseEstimate();
 
-		m_drive = new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
-	}
+        Vector2d input = new Vector2d(-leftY, -leftX).rotated(
+                fieldCentric ? -poseEstimate.getHeading() : 0
+        );
 
-	public void drive(float forward, float strafe, float theta) {
-		m_drive.driveRobotCentric(forward, strafe, theta);
-	}
+        drive.setWeightedDrivePower(
+                new Pose2d(
+                        input.getX(),
+                        input.getY(),
+                        -rightX
+                )
+        );
+    }
 
-	@Override
-	public void periodic() {
-		odometry.updatePose();
-	}
+    public void setDrivePower(Pose2d drivePower) {
+        drive.setDrivePower(drivePower);
+    }
 
-	public Pose2d getPosition() {
-		return odometry.getPose();
-	}
+    public Pose2d getPoseEstimate() {
+        return drive.getPoseEstimate();
+    }
 
-	public com.acmerobotics.roadrunner.geometry.Pose2d getPositionRoadRunner() {
-		Pose2d pose = odometry.getPose();
-		return new com.acmerobotics.roadrunner.geometry.Pose2d(pose.getX(), pose.getY(), pose.getHeading());
-	}
+    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
+        return drive.trajectoryBuilder(startPose);
+    }
+
+    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, boolean reversed) {
+        return drive.trajectoryBuilder(startPose, reversed);
+    }
+
+    public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, double startHeading) {
+        return drive.trajectoryBuilder(startPose, startHeading);
+    }
+
+    public void followTrajectory(Trajectory trajectory) {
+        drive.followTrajectoryAsync(trajectory);
+    }
+
+    public boolean isBusy() {
+        return drive.isBusy();
+    }
+
+    public void turn(double radians) {
+        drive.turnAsync(radians);
+    }
+
+    public List<Double> getWheelVelocities() {
+        return drive.getWheelVelocities();
+    }
+
+    public void stop() {
+        drive(0, 0, 0);
+    }
+
+    public Pose2d getPoseVelocity() {
+        return drive.getPoseVelocity();
+    }
+
+    public Localizer getLocalizer() {
+        return drive.getLocalizer();
+    }
+
 }
