@@ -26,15 +26,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
@@ -48,9 +48,9 @@ import java.util.List;
  */
 
 @TeleOp(name="TensorFlowTest", group="Tests")
-
+@Disabled
 public class TestTensorFlowObjectDetection extends LinearOpMode {
-
+    /*
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
@@ -67,7 +67,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
-    private TfodProcessor tfod;
+    //private TfodProcessor tfod;
 
     /**
      * The variable to store our instance of the vision portal.
@@ -76,6 +76,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        /*
 
         initTfod();
 
@@ -121,12 +122,13 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-
+*/
     }   // end runOpMode()
 
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
+    /*
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
@@ -191,6 +193,7 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+    /*
     private void telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
@@ -238,5 +241,5 @@ public class TestTensorFlowObjectDetection extends LinearOpMode {
 
         return(y);
     }
-
+    */
 }   // end class

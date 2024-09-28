@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.STEM;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,7 +52,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp(name = "Drag_Car", group = "Misc")
-
+@Disabled
 
 public class DragCar extends LinearOpMode {
 //e

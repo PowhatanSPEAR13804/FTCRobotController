@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp(name="CameraTest", group="Tests")
-
+@Disabled
 public class CameraTest extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera

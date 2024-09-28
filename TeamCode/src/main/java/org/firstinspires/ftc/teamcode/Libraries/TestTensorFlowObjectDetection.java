@@ -30,9 +30,9 @@
 package org.firstinspires.ftc.teamcode.Libraries;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+//import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ import java.util.List;
 
 
 public class TestTensorFlowObjectDetection{
-
+    /*
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
@@ -63,11 +63,13 @@ public class TestTensorFlowObjectDetection{
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
+    /*
     private TfodProcessor tfod;
 
     /**
      * The variable to store our instance of the vision portal.
      */
+    /*
     private VisionPortal visionPortal;
 
     /*
@@ -84,13 +86,14 @@ public class TestTensorFlowObjectDetection{
     // Make this into a normal java class like the buttonclick or robotMove class
     // This means they need a constructor which is a function
     // that has the same name as the class.
-
+    /*
     public void TestTensorFlowObjectDetection() {
         //initTfod();
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
+    /*
     private void TestTensor() {
 
         // Create the TensorFlow processor by using a builder.
@@ -182,5 +185,5 @@ public class TestTensorFlowObjectDetection{
 
         return(y);
     }
-
+*/
 }   // end class

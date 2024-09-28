@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  */
 @Config
 @TeleOp
-public class FieldCentricTest extends CommandOpMode {
+public class RobotCentricTest extends CommandOpMode {
 
     private GamepadEx gamepad;
     private Drivetrain drive;
@@ -30,7 +30,7 @@ public class FieldCentricTest extends CommandOpMode {
     public void initialize() {
         gamepad = new GamepadEx(gamepad1);
 
-        drive = new Drivetrain(new MecanumOdometry(hardwareMap), true);
+        drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
 
         register(drive);
         drive.setDefaultCommand(new MecanumDriveCommand(
@@ -38,8 +38,6 @@ public class FieldCentricTest extends CommandOpMode {
         ));
 
         schedule(new RunCommand(() -> {
-            drive.periodic();
-            telemetry.addData("Heading", drive.getPoseEstimate().getHeading());
             telemetry.update();
         }));
     }

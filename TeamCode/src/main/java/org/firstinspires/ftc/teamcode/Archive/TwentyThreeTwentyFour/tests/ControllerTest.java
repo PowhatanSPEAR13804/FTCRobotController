@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.Locale;
@@ -7,7 +8,7 @@ import java.util.Locale;
 //allows us find dysfunctional controllers
 
 @TeleOp(name="ControllerTest", group="Tests")
-
+@Disabled
 public class ControllerTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

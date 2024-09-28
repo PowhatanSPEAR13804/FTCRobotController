@@ -30,14 +30,15 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
-import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+//import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
@@ -51,8 +52,9 @@ import java.util.List;
  */
 
 @Autonomous(name="TestAuto", group="Autonomous")
+@Disabled
 public class TestAuto extends LinearOpMode {
-
+    /*
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     // TFOD_MODEL_ASSET points to a model file stored in the project Asset location,
@@ -69,6 +71,7 @@ public class TestAuto extends LinearOpMode {
     /**
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
+    /*
     private TfodProcessor tfod;
 
     /**
@@ -90,8 +93,8 @@ public class TestAuto extends LinearOpMode {
     // Make this into a normal java class like the buttonclick or robotMove class
     // This means they need a constructor which is a function
     // that has the same name as the class.
-
     public void runOpMode() {
+        /*
 
         initTfod();
 
@@ -219,11 +222,12 @@ public class TestAuto extends LinearOpMode {
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-
+    */
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
      */
+    /*
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
@@ -288,6 +292,7 @@ public class TestAuto extends LinearOpMode {
     /**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
+    /*
     private void telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
@@ -335,5 +340,5 @@ public class TestAuto extends LinearOpMode {
 
         return(y);
     }
-
+*/
 }   // end class

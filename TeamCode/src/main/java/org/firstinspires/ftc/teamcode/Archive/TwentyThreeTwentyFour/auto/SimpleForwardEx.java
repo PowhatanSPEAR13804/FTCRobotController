@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Libraries.RobotMoveEx;
 
 // TODO - stuff with pixels
 
 @Autonomous(name="SimpleForwardEx", group="Autonomous")
-
+@Disabled
 public class SimpleForwardEx extends LinearOpMode{
 
     @Override

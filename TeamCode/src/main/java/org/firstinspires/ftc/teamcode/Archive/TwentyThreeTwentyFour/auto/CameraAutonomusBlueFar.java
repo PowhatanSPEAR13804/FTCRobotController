@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,12 +11,11 @@ import org.firstinspires.ftc.teamcode.Libraries.TestTensorFlowObjectDetection;
 // TODO - stuff with pixels
 
 @Autonomous(name="CameraAutonomusBlueFar", group="Autonomous")
-
-public class CameraAutonomusBlueFar extends LinearOpMode{
-
-
+@Disabled
+public class CameraAutonomusBlueFar extends LinearOpMode {
     @Override
     public void runOpMode() {
+        /*
         Servo intakeLeft =  hardwareMap.servo.get("Hub1_Servo0");
         Servo intakeRight =  hardwareMap.servo.get("Hub2_Servo0");
         DcMotor fourBar = hardwareMap.dcMotor.get("Hub1_Motor2");
@@ -117,6 +117,7 @@ public class CameraAutonomusBlueFar extends LinearOpMode{
         robot.stop();
 
         // idk if the arm needs to be extended first or something
+        */
 
     }
 }

@@ -42,6 +42,10 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        update();
+    }
+
+    public void update() {
         drive.update();
     }
 

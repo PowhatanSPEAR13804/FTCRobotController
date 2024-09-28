@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Libraries.ServoMotorDeclarations;
 //controls all of our robot's subsystems
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp", group="TeleOp")
-
+@Disabled
 public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

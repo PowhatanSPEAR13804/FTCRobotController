@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Libraries.RobotMove;
 //TODO - stuff with pixels
 
 @Autonomous(name="SimpleLeft", group="Autonomous")
-
+@Disabled
 public class SimpleLeft extends LinearOpMode{
     @Override
     public void runOpMode() {
