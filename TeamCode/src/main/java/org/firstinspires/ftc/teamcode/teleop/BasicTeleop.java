@@ -42,6 +42,18 @@ public class BasicTeleop extends CommandOpMode {
             leftSlide.setPosition(2250);
             rightSlide.setPosition(2250);
         }, leftSlide, rightSlide));
+        new Trigger(() -> gamepad2.dpad_right).whenActive(new InstantCommand(() -> {
+            leftSlide.setPosition(2050);
+            rightSlide.setPosition(2050);
+        }, leftSlide, rightSlide));
+        new Trigger(() -> gamepad2.dpad_down).whenActive(new InstantCommand(() -> {
+            leftSlide.setPosition(700);
+            rightSlide.setPosition(700);
+        }, leftSlide, rightSlide));
+        new Trigger(() -> gamepad2.y).whenActive(new InstantCommand(() -> {
+            leftSlide.setPosition(0);
+            rightSlide.setPosition(0);
+        }, leftSlide, rightSlide));
         
         new Trigger(() -> gamepad2.left_trigger > 0.1).whenActive(new RunCommand(() -> {
             leftSlide.setSpeed(-gamepad2.left_trigger);
@@ -59,17 +71,9 @@ public class BasicTeleop extends CommandOpMode {
             rightSlide.setPosition(rightSlide.getPosition());
         }, leftSlide, rightSlide));
 
-        new Trigger(() -> gamepad2.left_bumper).whenActive(new RunCommand(() -> {
-            pivot.rotate(-1);
-        }, pivot)).whenInactive(new RunCommand(() -> {
-            pivot.rotate(0);
-        }, pivot));
+        new Trigger(() -> gamepad2.left_bumper).whenActive(new RunCommand(() -> pivot.rotate(-1), pivot)).whenInactive(new RunCommand(() -> pivot.rotate(0), pivot));
 
-        new Trigger(() -> gamepad2.right_bumper).whenActive(new RunCommand(() -> {
-            pivot.rotate(1);
-        }, pivot)).whenInactive(new RunCommand(() -> {
-            pivot.rotate(0);
-        }, pivot));
+        new Trigger(() -> gamepad2.right_bumper).whenActive(new RunCommand(() -> pivot.rotate(1), pivot)).whenInactive(new RunCommand(() -> pivot.rotate(0), pivot));
 
         new Trigger(() -> gamepad2.b && !gamepad2.start).toggleWhenActive(new RunCommand(intake::rotateIn, pivot), new RunCommand(intake::stop, pivot));
         new Trigger(() -> gamepad2.a && !gamepad2.start).toggleWhenActive(new RunCommand(intake::rotateOut, pivot), new RunCommand(intake::stop, pivot));
