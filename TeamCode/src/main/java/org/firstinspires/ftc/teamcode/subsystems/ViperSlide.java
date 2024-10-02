@@ -1,26 +1,25 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.controller.PIDFController;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ViperSlide extends SubsystemBase {
-	private static final double kP = 0.0;
-	private static final double kD = 0.0;
-	private static final double kF = 0.0;
+	private static final double kP = 0.02;
+	private static final double kD = 0.0001;
 
-	private final MotorEx motor;
+	private final Motor motor;
 	private final String motorId;
 	private final Telemetry telemetry;
 
 	private Double setpointPosition;
-	private final PIDFController pid = new PIDFController(kP, 0.0, kD, kF);
+	private final PIDController pid = new PIDController(kP, 0.0, kD);
 
 	public ViperSlide(HardwareMap hardwareMap, Telemetry tl, String motorId, boolean reverse) {
-		motor = hardwareMap.get(MotorEx.class, motorId);
+		motor = new Motor(hardwareMap, motorId);
 		telemetry = tl;
 		this.motorId = motorId;
 
@@ -34,10 +33,28 @@ public class ViperSlide extends SubsystemBase {
 		if (setpointPosition != null) {
 			motor.set(pid.calculate(motor.getCurrentPosition(), setpointPosition));
 		}
+
+		if (getPosition() > 4260) {
+			setpointPosition = 4260d;
+		}
+
+		if (getPosition() < 0) {
+			setpointPosition = 0d;
+		}
 	}
 
 	public void setPosition(double position) {
-		setpointPosition = position;
+		if (position > 4260) {
+			setpointPosition = 4260d;
+		} else if (position < 0) {
+			setpointPosition = 0d;
+		} else {
+			setpointPosition = position;
+		}
+	}
+
+	public double getPosition() {
+		return motor.getCurrentPosition();
 	}
 
 	public void setSpeed(double speed) {

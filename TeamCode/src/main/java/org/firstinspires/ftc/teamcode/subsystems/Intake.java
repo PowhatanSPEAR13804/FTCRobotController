@@ -10,7 +10,7 @@ public class Intake extends SubsystemBase {
 
     public Intake(HardwareMap hardwareMap, String servoID) {
         intakeServo = new CRServo(hardwareMap, servoID);
-        intakeServo.setInverted(false);
+        intakeServo.setInverted(true);
     }
 
     public void rotateIn() {
@@ -18,5 +18,8 @@ public class Intake extends SubsystemBase {
     }
     public void rotateOut() {
         intakeServo.set(-1.0);
+    }
+    public void stop() {
+        intakeServo.set(0);
     }
 }
