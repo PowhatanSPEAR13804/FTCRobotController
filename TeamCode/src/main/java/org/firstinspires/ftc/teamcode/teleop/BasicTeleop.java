@@ -25,7 +25,7 @@ public class BasicTeleop extends CommandOpMode {
         Drivetrain drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
         ViperSlide leftSlide = new ViperSlide(hardwareMap, telemetry, "Hub2_Motor2", true);
         ViperSlide rightSlide = new ViperSlide(hardwareMap, telemetry, "Hub1_Motor3", false);
-        Pivot pivot = new Pivot(hardwareMap, "Hub1_Servo5", telemetry);
+        Pivot pivot = new Pivot(hardwareMap, "Hub1_Motor1", telemetry, false);
         Intake intake = new Intake(hardwareMap, "Hub1_Servo4");
 
 
