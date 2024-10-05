@@ -15,7 +15,7 @@ public class Pivot extends SubsystemBase {
     private final PIDController pid = new PIDController(0.0, 0.0, 0.0);
     private final ArmFeedforward ff = new ArmFeedforward(0.0, 0.0, 0.0);
 
-    private final String motorId;
+    private final String motorID;
     private final Telemetry telemetry;
 
     private Double setpoint;
@@ -39,7 +39,7 @@ public class Pivot extends SubsystemBase {
     public void rotate(double speed) {
         setpoint = null;
         motor.set(speed);
-        telemetry.addData("Pivot motor" + motorId + " speed", speed);
+        telemetry.addData("Pivot motor" + motorID + " speed", speed);
     }
 
     @Override
