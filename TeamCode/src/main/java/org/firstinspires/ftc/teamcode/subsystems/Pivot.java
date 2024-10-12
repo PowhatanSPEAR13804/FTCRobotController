@@ -44,9 +44,9 @@ public class Pivot extends SubsystemBase {
 
     @Override
     public void periodic() {
-//        if(setpoint != null) {
-//            pivotServo.set(ff.calculate(setpoint, 0.0) + pid.calculate(pivotServo.getCurrentPosition() * TICKS_TO_RADIANS, setpoint));
-//        }
-//        telemetry.addData("Arm angle ", pivotServo.getCurrentPosition());
+        if(setpoint != null) {
+            motor.set(ff.calculate(setpoint, 0.0) + pid.calculate(motor.getCurrentPosition() * TICKS_TO_RADIANS, setpoint));
+        }
+        telemetry.addData("Arm angle ", motor.getCurrentPosition());
     }
 }
