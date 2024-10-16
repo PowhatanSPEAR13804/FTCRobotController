@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.lang.Math;
 
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:
@@ -33,11 +32,11 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = (48.0 / (2 * Math.PI)) / 25.4; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = (Math.toRadians(-3641.5055887856124) / (10 * Math.PI * 2)) * 4.75; // in; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = -4.833134781; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = -3.5; // in; offset of the lateral wheel
 
     public static double X_MULTIPLIER = 96.0 / 30.27746;
-    public static double Y_MULTIPLIER = 96.0 / 30.57668;
+    public static double Y_MULTIPLIER = -96.0 / 30.91001;
 
     private final Encoder leftEncoder, rightEncoder, frontEncoder;
 

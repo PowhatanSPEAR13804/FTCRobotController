@@ -75,6 +75,7 @@ public class AutomaticFeedforwardTuner extends CommandOpMode {
 
         drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
         gamepad = new GamepadEx(gamepad1);
+        clock = NanoClock.system();
         state = State.STATIC;
 
         telemetry.addLine("Press play to begin the feedforward tuning routine");
