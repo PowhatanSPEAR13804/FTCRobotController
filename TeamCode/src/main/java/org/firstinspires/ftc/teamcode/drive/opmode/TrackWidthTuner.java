@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
@@ -31,6 +32,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class TrackWidthTuner extends CommandOpMode {
 
@@ -49,8 +51,6 @@ public class TrackWidthTuner extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
-        // TODO: if you haven't already, set the localizer to something that doesn't depend on
-        // drive encoders for computing the heading
 
         turnCommand = new TurnCommand(drive, Math.toRadians(ANGLE));
 

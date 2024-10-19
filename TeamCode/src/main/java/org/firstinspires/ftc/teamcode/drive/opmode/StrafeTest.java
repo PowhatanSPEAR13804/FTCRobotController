@@ -4,7 +4,9 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.drive.MecanumOdometry;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class StrafeTest extends CommandOpMode {
 
@@ -32,13 +35,14 @@ public class StrafeTest extends CommandOpMode {
                     .strafeRight(DISTANCE)
                     .build()
         );
-        schedule(new WaitUntilCommand(this::isStarted).andThen(strafeFollower.whenFinished(() -> {
+        new Trigger(() -> gamepad1.y).whenActive(() -> {
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("finalX", poseEstimate.getX());
             telemetry.addData("finalY", poseEstimate.getY());
             telemetry.addData("finalHeading", poseEstimate.getHeading());
             telemetry.update();
-        })));
+        });
+        schedule(new WaitUntilCommand(this::isStarted).andThen(strafeFollower));
     }
 
 }

@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -26,6 +27,7 @@ import java.util.Objects;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class MaxVelocityTuner extends CommandOpMode {
 
