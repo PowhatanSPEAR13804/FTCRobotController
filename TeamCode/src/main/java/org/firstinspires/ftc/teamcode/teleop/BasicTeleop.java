@@ -26,7 +26,7 @@ public class BasicTeleop extends CommandOpMode {
         ViperSlide leftSlide = new ViperSlide(hardwareMap, telemetry, "Hub2_Motor2", true);
         ViperSlide rightSlide = new ViperSlide(hardwareMap, telemetry, "Hub1_Motor3", false);
         Pivot pivot = new Pivot(hardwareMap, "Hub1_Motor1", telemetry, false);
-        Intake intake = new Intake(hardwareMap, "Hub1_Servo4");
+        Intake intake = new Intake(hardwareMap, "Hub1_Servo5", "Hub1_Servo4");
 
 
         register(drive, leftSlide, rightSlide, pivot, intake);
@@ -75,8 +75,8 @@ public class BasicTeleop extends CommandOpMode {
 
         new Trigger(() -> gamepad2.right_bumper).whenActive(new RunCommand(() -> pivot.rotate(1), pivot)).whenInactive(new RunCommand(() -> pivot.rotate(0), pivot));
 
-        new Trigger(() -> gamepad2.b && !gamepad2.start).toggleWhenActive(new RunCommand(intake::rotateIn, pivot), new RunCommand(intake::stop, pivot));
-        new Trigger(() -> gamepad2.a && !gamepad2.start).toggleWhenActive(new RunCommand(intake::rotateOut, pivot), new RunCommand(intake::stop, pivot));
+        new Trigger(() -> gamepad2.a && !gamepad2.start).toggleWhenActive(new RunCommand(intake::openFinger, intake), new RunCommand(intake::closeFinger, intake));
+        new Trigger(() -> gamepad2.b && !gamepad2.start).toggleWhenActive(new RunCommand(intake::sidewaysWrist, intake), new RunCommand(intake::straightWrist, intake));
 
         schedule(new RunCommand(() -> {
             drive.update();
