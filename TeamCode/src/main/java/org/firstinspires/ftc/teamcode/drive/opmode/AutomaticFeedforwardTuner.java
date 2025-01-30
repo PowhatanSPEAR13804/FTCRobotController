@@ -42,7 +42,6 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.rpmToVelocity;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class AutomaticFeedforwardTuner extends CommandOpMode {
 

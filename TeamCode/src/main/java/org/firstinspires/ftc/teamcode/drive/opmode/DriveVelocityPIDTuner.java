@@ -62,7 +62,6 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends CommandOpMode {
 

@@ -1,16 +1,32 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.localization.Localizer;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.drive.MecanumOdometry;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,7 +35,6 @@ import java.util.List;
  * state machine for the mecanum drive. All movement/following is async to fit the paradigm.
  */
 public class Drivetrain extends SubsystemBase {
-
     private final MecanumOdometry drive;
     private final boolean fieldCentric;
 
@@ -89,8 +104,20 @@ public class Drivetrain extends SubsystemBase {
         return drive.trajectoryBuilder(startPose, startHeading);
     }
 
+    public TrajectorySequenceBuilder trajectorySequenceBuilder(Pose2d startPose) {
+        return new TrajectorySequenceBuilder(
+                startPose,
+                MecanumOdometry.getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH), MecanumOdometry.getAccelerationConstraint(MAX_ACCEL),
+                MAX_ANG_VEL, MAX_ANG_ACCEL
+        );
+    }
+
     public void followTrajectory(Trajectory trajectory) {
         drive.followTrajectoryAsync(trajectory);
+    }
+
+    public void followTrajectorySequence(TrajectorySequence sequence) {
+        drive.followTrajectorySequenceAsync(sequence);
     }
 
     public boolean isBusy() {
@@ -116,5 +143,4 @@ public class Drivetrain extends SubsystemBase {
     public Localizer getLocalizer() {
         return drive.getLocalizer();
     }
-
 }

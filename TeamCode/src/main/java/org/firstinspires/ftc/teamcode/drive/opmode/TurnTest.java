@@ -16,11 +16,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class TurnTest extends CommandOpMode {
 
-    public static double ANGLE = 90; // deg
+    public static double ANGLE = 180; // deg
 
     private Drivetrain drive;
     private TurnCommand turnCommand;

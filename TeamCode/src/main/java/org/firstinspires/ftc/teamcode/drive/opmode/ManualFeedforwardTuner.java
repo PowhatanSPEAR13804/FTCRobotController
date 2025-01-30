@@ -52,7 +52,6 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class ManualFeedforwardTuner extends CommandOpMode {
 

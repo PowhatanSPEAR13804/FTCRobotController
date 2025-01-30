@@ -3,20 +3,47 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
+import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake extends SubsystemBase {
-    private final SimpleServo wristServo;
+    private final CRServo intakeServo;
     private final SimpleServo fingerServo;
+    private boolean fingerClosed = false;
 
-    public Intake(HardwareMap hardwareMap, String wristID, String fingerID) {
-        wristServo = new SimpleServo(hardwareMap, wristID, 0, 270);
-        fingerServo = new SimpleServo(hardwareMap, fingerID, 0, 180);
-
+    public Intake(HardwareMap hardwareMap, String intakeID, String fingerID) {
+        intakeServo = new CRServo(hardwareMap, intakeID);
+        fingerServo = new SimpleServo(hardwareMap, fingerID, 0, 300);
+        intakeServo.setInverted(false);
     }
 
-    public void openFinger() { fingerServo.turnToAngle(25); }
-    public void closeFinger() { fingerServo.turnToAngle(90); }
-    public void straightWrist() { wristServo.turnToAngle(180); }
-    public void sidewaysWrist() { wristServo.turnToAngle(270); }
+    public void openFinger() {
+        fingerServo.turnToAngle(50);
+        fingerClosed = false;
+    }
+    public void closeFinger() {
+        fingerServo.turnToAngle(0);
+        fingerClosed = true;
+    }
+    public void toggleFinger() {
+        if (fingerClosed) {
+            openFinger();
+        } else {
+            closeFinger();
+        }
+    }
+
+    public void intake() {
+        intakeServo.set(1);
+    }
+
+    public void outtake() {
+        intakeServo.set(-1);
+    }
+
+    public void stop() {
+        intakeServo.set(0);
+    }
+
+    public int getIntakeMode(){return intakeServo.getCurrentPosition();}
 }

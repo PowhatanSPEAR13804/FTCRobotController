@@ -1,24 +1,25 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 
-public class TrajectoryFollowerCommand extends CommandBase {
+public class TrajectorySequenceFollowerCommand extends CommandBase {
     private final Drivetrain drive;
-    private final Trajectory trajectory;
+    private final TrajectorySequence sequence;
 
-    public TrajectoryFollowerCommand(Drivetrain drive, Trajectory trajectory) {
+    public TrajectorySequenceFollowerCommand(Drivetrain drive, TrajectorySequence sequence) {
         this.drive = drive;
-        this.trajectory = trajectory;
+        this.sequence = sequence;
 
         addRequirements(drive);
     }
 
     @Override
     public void initialize() {
-        drive.followTrajectory(trajectory);
+        drive.followTrajectorySequence(sequence);
     }
 
     @Override

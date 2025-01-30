@@ -17,7 +17,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
  * NOTE: this has been refactored to use FTCLib's command-based
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class StraightTest extends CommandOpMode {
 
