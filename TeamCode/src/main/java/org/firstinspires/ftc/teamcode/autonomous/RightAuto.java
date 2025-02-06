@@ -2,14 +2,11 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Libraries.GoBildaPinpointDriver;
-import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectorySequenceFollowerCommand;
 import org.firstinspires.ftc.teamcode.drive.MecanumOdometry;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
@@ -17,10 +14,9 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.ViperSlide;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 
 @Autonomous
-public class AutonomousRedRight extends CommandOpMode {
+public class RightAuto extends CommandOpMode {
     public void initialize() {
 
         Drivetrain drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
@@ -36,7 +32,10 @@ public class AutonomousRedRight extends CommandOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence trajectorySequence = drive.trajectorySequenceBuilder(startPose)
-                /*.back(31)
+                //go to bar
+                .back(31)
+
+                //drop off specimen
                 .addDisplacementMarker(10, () -> {
                     leftSlide.setPosition(1870);
                     rightSlide.setPosition(1870);
@@ -51,9 +50,12 @@ public class AutonomousRedRight extends CommandOpMode {
                 .addTemporalMarker(4, () -> {
                     leftSlide.setPosition(0);
                     rightSlide.setPosition(0);
-                })*/
-                .strafeLeft(25)
-                .back(3)
+                })
+                //move away from bar
+                //TODO fix movement so that it works :(
+
+                .forward(10)
+                .strafeLeft(10)
                 .lineTo(new Vector2d(24, -48))
                 .strafeLeft(8)
                 .splineToConstantHeading(new Vector2d(36, -12), Math.toRadians(270))

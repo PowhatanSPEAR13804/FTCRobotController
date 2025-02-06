@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.RobotState;
 
 public class ViperSlide extends SubsystemBase {
 	private static final double kP = 0.018;
-	private static final double kD = 0.000004;
+	private static final double kD = 0.000006;
 
 	private final Motor motor;
 	private final String motorId;

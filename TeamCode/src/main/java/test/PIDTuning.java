@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.test;
+package test;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;

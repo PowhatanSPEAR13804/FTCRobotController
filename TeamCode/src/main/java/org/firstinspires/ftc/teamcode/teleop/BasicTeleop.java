@@ -121,8 +121,8 @@ public class BasicTeleop extends CommandOpMode {
                 .whenInactive(new RunCommand(() -> pivot.rotateTo(pivot.getAngle()), pivot));
 
         new Trigger(() -> gamepad2.x).whenActive(new InstantCommand(intake::toggleFinger, intake));
-        new Trigger(() -> (gamepad2.b && !gamepad2.start)).toggleWhenActive(new RunCommand(intake::intake, intake), new RunCommand(intake::stop, intake));
-        new Trigger(() -> (gamepad2.a && !gamepad2.start)).toggleWhenActive(new RunCommand(intake::outtake, intake), new RunCommand(intake::stop, intake));
+        new Trigger(() -> (gamepad2.b && !gamepad2.start)).toggleWhenActive(new RunCommand(intake::outtake, intake), new RunCommand(intake::stop, intake));
+        new Trigger(() -> (gamepad2.a && !gamepad2.start)).toggleWhenActive(new RunCommand(intake::intake, intake), new RunCommand(intake::stop, intake));
 
         telemetry.addData("pivot position", pivot.getAngle());
 

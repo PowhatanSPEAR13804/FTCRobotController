@@ -2,13 +2,11 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.TrajectoryFollowerCommand;
 import org.firstinspires.ftc.teamcode.commands.TrajectorySequenceFollowerCommand;
 import org.firstinspires.ftc.teamcode.drive.MecanumOdometry;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
@@ -16,10 +14,9 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Pivot;
 import org.firstinspires.ftc.teamcode.subsystems.ViperSlide;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 
 @Autonomous
-public class AutonomousRedLeft extends CommandOpMode {
+public class LeftAutoSpecimen extends CommandOpMode {
     public void initialize() {
 
         Drivetrain drive = new Drivetrain(new MecanumOdometry(hardwareMap), false);
@@ -34,58 +31,112 @@ public class AutonomousRedLeft extends CommandOpMode {
         intake.closeFinger();
         drive.setPoseEstimate(startPose);
         TrajectorySequence trajectorySequence = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-11.5, -33))
+                //to red bar
+                .lineTo(new Vector2d(-11.5, -32.5))
+                //vipers up
+
                 .addDisplacementMarker(10, () -> {
                     leftSlide.setPosition(1870);
                     rightSlide.setPosition(1870);
                 })
                 .waitSeconds(0.5)
+                //down and release finger
                 .addTemporalMarker(2.5, () -> {
                     leftSlide.setPosition(1050);
                     rightSlide.setPosition(1050);
                     pivot.rotateTo(0);
                 })
                 .addTemporalMarker(2.65, intake::openFinger)
+                //all the way down
                 .addTemporalMarker(4, () -> {
                     leftSlide.setPosition(100);
                     rightSlide.setPosition(100);
                 })
+
+                //move away from bar
                 .forward(5)
-                .splineTo(new Vector2d(-39, -39), Math.toRadians(135))
-                .waitSeconds(3)
-                .addTemporalMarker(10, ()->{
+                //go to yellow block
+                .splineTo(new Vector2d(-35, -46), Math.toRadians(135))
+
+
+                //pick up
+                //TODO shorten time here, robot just sits still for a couple seconds
+                .waitSeconds(1.5)
+                .addTemporalMarker(7, ()->{
                     pivot.rotateTo(-490);
                 })
-                .addTemporalMarker(11, intake::intake)
+                .addTemporalMarker(8, intake::intake)
                 .addTemporalMarker(12, ()->{
                     pivot.rotateTo(-146);
                 })
-                .waitSeconds(1)
+                .forward(8)
+
+                //go to basket
                 .splineTo(new Vector2d(-60, -62), Math.toRadians(225))
                 .waitSeconds(1)
-                .addTemporalMarker(14, ()->{
+
+                //drop off block
+                .addTemporalMarker(11, ()->{
                     leftSlide.setPosition(3600);
                     rightSlide.setPosition(3600);
                 })
-                .addTemporalMarker(15, ()->{
+                .addTemporalMarker(12, ()->{
                     pivot.rotateTo(-180);
                 })
-                .addTemporalMarker(17,intake::outtake)
-                .addTemporalMarker(22, ()->{
-                    pivot.rotateTo(-146);
-                })
-                .addTemporalMarker(19, ()->{
+                .addTemporalMarker(14,intake::outtake)
+                .addTemporalMarker(16, ()->{
                     leftSlide.setPosition(100);
                     rightSlide.setPosition(100);
                 })
-                .back(20)
-                .addTemporalMarker(23, ()->{
+                .addTemporalMarker(17, ()->{
+                    pivot.rotateTo(-146);
+                })
+                .addTemporalMarker(17.5, intake::intake)
+
+                //TODO add subsystem code
+                //move right away from basket
+                .lineToSplineHeading(new Pose2d(-39, -62, Math.toRadians(180)))
+                //go to block
+                .strafeRight(31.75)
+
+                //pick up (pivot down and intake)
+                //.waitSeconds()
+                .addTemporalMarker(20, ()->{
                     pivot.rotateTo(-490);
                 })
-                .addTemporalMarker(23, intake::intake)
-                .turn(Math.toRadians(-90))
-                .forward(3)
+                .addTemporalMarker(22.5, ()->{
+                    pivot.rotateTo(-146);
+                })
+
+                .forward(2)
+                .splineTo(new Vector2d(-60, -62), Math.toRadians(225))
+
+                //drop off
+                //drop off block
+                .addTemporalMarker(24, ()->{
+                    leftSlide.setPosition(3600);
+                    rightSlide.setPosition(3600);
+                })
+                .addTemporalMarker(25, ()->{
+                    pivot.rotateTo(-180);
+                })
+                .addTemporalMarker(25.5, intake::outtake)
+                .addTemporalMarker(27, ()->{
+                    leftSlide.setPosition(100);
+                    rightSlide.setPosition(100);
+                })
+                .addTemporalMarker(27.5, ()->{
+                    pivot.rotateTo(-146);
+                })
+
+
+                .lineToSplineHeading(new Pose2d(-48, -62, Math.toRadians(180)))
+                /*.strafeRight(38)
+                //pick up
+                .forward(2)
                 .waitSeconds(3)
+                .splineTo(new Vector2d(-60, -62), Math.toRadians(225))
+                //drop off */
                 .build();
 
         schedule(new SequentialCommandGroup(
