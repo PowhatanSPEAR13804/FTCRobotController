@@ -6,11 +6,11 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+
 public class Intake extends SubsystemBase {
     private final CRServo intakeServo;
     private final SimpleServo fingerServo;
     private boolean fingerClosed = false;
-
     public Intake(HardwareMap hardwareMap, String intakeID, String fingerID) {
         intakeServo = new CRServo(hardwareMap, intakeID);
         fingerServo = new SimpleServo(hardwareMap, fingerID, 0, 300);
