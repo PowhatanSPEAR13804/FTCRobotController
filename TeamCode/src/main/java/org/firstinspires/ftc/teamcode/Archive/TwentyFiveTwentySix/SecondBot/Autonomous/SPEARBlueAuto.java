@@ -16,7 +16,7 @@ designated function and call the function in whichever part of the pathbuilder i
 */
 
 
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.Autonomous;
 
 // FTC SDK
 
@@ -28,29 +28,29 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.PedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.PedroPathing.Constants;
 
 import dev.nextftc.hardware.impl.CRServoEx;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@Autonomous(name = "RED FAR", group = "AUTO")
+@Disabled
+@Autonomous(name = "BLUE CLOSE", group = "AUTO")
 @Configurable // Panels
 @SuppressWarnings("FieldCanBeLocal") // Stop Android Studio from bugging about variables being predefined
-public class SPEARRedAutoFar extends LinearOpMode {
+public class SPEARBlueAuto extends LinearOpMode {
     // Initialize elapsed timer
     private final ElapsedTime runtime = new ElapsedTime();
 
     // Initialize poses
-    private final Pose startPose = new Pose(144-48, 18, Math.toRadians(90)); // Start Pose of our robot.
-    private final Pose transitionPose = new Pose(144-48, 120, Math.toRadians(45)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose scorePose = new Pose(144-38, 125, Math.toRadians(30)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose endPose = new Pose(144-48, 120, Math.toRadians(90)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose startPose = new Pose(26, 124, Math.toRadians(135)); // Start Pose of our robot.
+    private final Pose scorePose = new Pose(39, 112, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose endPose = new Pose(48, 120, Math.toRadians(90)); // Highest (First Set) of Artifacts from the Spike Mark.
 
     // Initialize variables for paths
-    private PathChain transition;
     private PathChain score;
     private PathChain end;
 
@@ -142,14 +142,9 @@ public class SPEARRedAutoFar extends LinearOpMode {
     public void buildPaths() {
         // basically just plotting the points for the lines that score
 
-        transition = follower.pathBuilder() //
-                .addPath(new BezierLine(startPose, transitionPose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), transitionPose.getHeading())
-                .build();
-
-        score = follower.pathBuilder()
-                .addPath(new BezierLine(transitionPose, scorePose))
-                .setLinearHeadingInterpolation(transitionPose.getHeading(), scorePose.getHeading())
+        score = follower.pathBuilder() //
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
 
         // Move to the ending pose from the scoring pose
@@ -163,31 +158,24 @@ public class SPEARRedAutoFar extends LinearOpMode {
     public void updateStateMachine() {
         switch (pathState) {
             case 0:
-                if(runtime.time() > 10.5) {
-                    // Move to the scoring position from the start position
-                    follower.followPath(transition);
-                    setPathState(1);
-                    // Call the setter method
-                }
+                // Move to the scoring position from the start position
+                follower.followPath(score);
+                setPathState(1);
+                // Call the setter method
                 break;
             case 1:
                 // Wait until we have passed all path constraints
                 if (!follower.isBusy()) {
                     // Move to the first artifact pickup location from the scoring position
-                    follower.followPath(score);
-                    setPathState(2);
-                }
-            case 2:
-                if(!follower.isBusy()) {
                     shootArtifacts();
-                    sleep(800);
-                    //follower.followPath(end);
-                    setPathState(-1);
+                    sleep(5000);
+                    follower.followPath(end);
+                    setPathState(-1); //set it to -1 so it stops the state machine execution
                 }
                 break;
         }
     }
-
+    
     // Setter methods for pathState variables placed at the class level
     void setPathState(int newPathState) {
         this.pathState = newPathState;

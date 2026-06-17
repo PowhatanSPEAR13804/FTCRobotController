@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.STEM;
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.STEM;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

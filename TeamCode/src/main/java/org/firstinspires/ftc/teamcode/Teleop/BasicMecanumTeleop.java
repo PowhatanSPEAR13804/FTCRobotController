@@ -7,10 +7,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Disabled
+/* This is the most basic mecanum controlled movement
+* it has no subsystems, pedropathing, or other libraries
+* */
 
 @TeleOp
-public class BasicMovement2 extends LinearOpMode {
+public class BasicMecanumTeleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors

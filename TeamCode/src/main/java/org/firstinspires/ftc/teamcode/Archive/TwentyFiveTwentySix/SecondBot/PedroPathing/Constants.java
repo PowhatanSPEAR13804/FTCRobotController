@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.PedroPathing;
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.PedroPathing;
 
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -13,10 +13,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-
-/*TODO: change all the constants maybe even start from scratch
-if you think you changed all the constants but you didn't everythings gonna break and you won't know why
-*/
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(23.13595)

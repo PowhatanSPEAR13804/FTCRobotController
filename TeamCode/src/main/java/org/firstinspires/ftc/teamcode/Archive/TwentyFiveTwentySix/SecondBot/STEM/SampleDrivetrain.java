@@ -1,33 +1,15 @@
-package org.firstinspires.ftc.teamcode.STEM;
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.STEM;
 
-import static dev.nextftc.bindings.Bindings.range;
-import static dev.nextftc.bindings.Bindings.variable;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.teamcode.Subsystems.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import dev.nextftc.bindings.BindingManager;
-import dev.nextftc.bindings.Range;
-import dev.nextftc.bindings.Variable;
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.utility.InstantCommand;
-import dev.nextftc.core.components.BindingsComponent;
-import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
-import dev.nextftc.ftc.components.BulkReadComponent;
-import dev.nextftc.hardware.driving.FieldCentric;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
-import dev.nextftc.hardware.impl.CRServoEx;
-import dev.nextftc.hardware.impl.Direction;
-import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
-import dev.nextftc.hardware.impl.ServoEx;
+
+@Disabled
 
 @TeleOp(name = "NextFTC TeleOp Program Java")
 public class SampleDrivetrain extends NextFTCOpMode{

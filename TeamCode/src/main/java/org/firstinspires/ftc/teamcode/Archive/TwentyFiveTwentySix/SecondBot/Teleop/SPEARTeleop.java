@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode.Teleop;
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.SecondBot.Teleop;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Flywheel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
-import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
@@ -19,16 +19,16 @@ import dev.nextftc.hardware.impl.CRServoEx;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.impl.ServoEx;
 
+@Disabled
 
-
-@TeleOp(name = "SPEAR TeleOp 2")
+@TeleOp(name = "SPEAR TeleOp")
 //@SuppressWarnings("FieldCanBeLocal")
-public class SPEARTeleopFLYWHEEL extends NextFTCOpMode {
-    private static final Logger log = LoggerFactory.getLogger(SPEARTeleopFLYWHEEL.class);
+public class SPEARTeleop extends NextFTCOpMode {
+    private static final Logger log = LoggerFactory.getLogger(SPEARTeleop.class);
 
-    public SPEARTeleopFLYWHEEL() {
+    public SPEARTeleop() {
         addComponents(
-                new SubsystemComponent(Flywheel.INSTANCE),
+                /*new SubsystemComponent(/*Shooter.INSTANCE, Lifter.INSTANCE),*/
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
@@ -53,9 +53,15 @@ public class SPEARTeleopFLYWHEEL extends NextFTCOpMode {
 
     private boolean flywheelOn = false;
     private boolean advancerOn = false;
-    private double flywheelSpeed = 1000;
+    private double flywheelGoal = 0.55;
     private final double advancerPower = -1.0;
     private boolean far = false;
+    private double flywheelPower = 0.75;
+
+    private double integralSum = 0;
+    private double lastError = 0;
+    ElapsedTime timer = new ElapsedTime();
+
 
     @Override
     public void onInit() {
@@ -127,23 +133,34 @@ public class SPEARTeleopFLYWHEEL extends NextFTCOpMode {
         */
         BindingManager.update();
         if(far) {
-            flywheelSpeed = 1750;
+            flywheelGoal = -1850;
             angleAdjuster.setPosition(1);
         }
         else {
-            flywheelSpeed = 1250;
+            flywheelGoal = -1350;
             angleAdjuster.setPosition(0);
         }
-        Flywheel.INSTANCE.setGoal((flywheelOn) ? flywheelSpeed : 0.0);
+        if (!flywheelOn) {
+            flywheelGoal = 0;
+        }
+
+        double flywheelPower = PIDController(flywheelGoal);
+
+        if ((Math.abs(flywheel.getVelocity()) <=20) && flywheelGoal == 0.0) {
+            flywheelPower = 0;
+        }
+        flywheel.setPower(flywheelPower);
+
+        //flywheel.setPower((flywheelOn) ? flywheelPower : 0.0);
         advancer.setPower((advancerOn) ? advancerPower : 0.0);
 
         rightLifter.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
         leftLifter.setPower(gamepad1.right_trigger-gamepad1.left_trigger);
         telemetry.addData("advancer on", advancerOn);
-        telemetry.addData("flywheel error", Flywheel.INSTANCE.getError());
-        telemetry.addData("flywheel speed", Flywheel.INSTANCE.getSpeed());
-        telemetry.addData("flywheel goal", Flywheel.INSTANCE.getGoal());
-        telemetry.addData("flywheel power", Flywheel.INSTANCE.getPower());
+        telemetry.addData("flywheel on", flywheelOn);
+        telemetry.addData("flywheel velocity", flywheel.getVelocity());
+        telemetry.addData("flywheel goal", flywheelGoal);
+        telemetry.addData("flywheel power", flywheel.getPower());
         telemetry.update();
     }
 
@@ -151,4 +168,18 @@ public class SPEARTeleopFLYWHEEL extends NextFTCOpMode {
         BindingManager.reset();
     }
 
+    public double PIDController(double goal) {
+        double kP = 0.05;
+        double kI = 0.0;
+        double kD = 0.0;
+
+        double flywheelVelocity = flywheel.getVelocity();
+        double error = goal-flywheelVelocity;
+        double derivative = error-lastError / timer.seconds();
+        integralSum += (error*timer.seconds());
+        lastError = error;
+        timer.reset();
+        double powerOutput = (kP * error) + (kI * integralSum) + (kD * derivative);
+        return -powerOutput;
+    }
 }
