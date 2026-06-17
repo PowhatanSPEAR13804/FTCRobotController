@@ -28,7 +28,7 @@
  */
 
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -49,7 +49,7 @@ import java.util.List;
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
+ *//*
 
 @Autonomous(name="TestAuto", group="Autonomous")
 @Disabled
@@ -76,14 +76,14 @@ public class TestAuto extends LinearOpMode {
 
     /**
      * The variable to store our instance of the vision portal.
-     */
+     *//*
     private VisionPortal visionPortal;
 
     /*
     public TestTensorFlowObjectDetection() {
         initTfod();
     }
-     */
+     *//*
 
     //@Override
     // runOpMode will never ever run using new!
@@ -222,7 +222,7 @@ public class TestAuto extends LinearOpMode {
 
         // Save more CPU resources when camera is no longer needed.
         visionPortal.close();
-    */
+    *//*
     }   // end runOpMode()
     /**
      * Initialize the TensorFlow Object Detection processor.
@@ -340,5 +340,6 @@ public class TestAuto extends LinearOpMode {
 
         return(y);
     }
+}
 */
-}   // end class
+

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -116,6 +116,6 @@ public class CameraAutonomusRedClose extends LinearOpMode{
         robot.stop();
 
         // idk if the arm needs to be extended first or something
-        */
+        *//*
     }
-}
+}*/

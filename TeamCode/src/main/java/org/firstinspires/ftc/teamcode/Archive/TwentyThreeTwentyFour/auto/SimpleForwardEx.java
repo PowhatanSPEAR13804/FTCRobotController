@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.auto;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,4 +21,4 @@ public class SimpleForwardEx extends LinearOpMode{
         robot.wait(1000);
         robot.stop();
     }
-}
+}*/

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyThreeTwentyFour.tests;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -148,4 +148,4 @@ public class    OutputTest extends LinearOpMode{
     public void linearServoTest(Servo servo) {
         servo.setPosition(gamepad1.left_trigger);
     }
-}
+}*/

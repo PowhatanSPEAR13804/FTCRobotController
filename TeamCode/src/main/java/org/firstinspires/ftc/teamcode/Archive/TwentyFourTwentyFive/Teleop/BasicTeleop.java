@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Teleop;
-
+/*
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -111,7 +111,7 @@ public class BasicTeleop extends CommandOpMode {
         }, pivot)).whenInactive(new InstantCommand(() -> {
             pivot.extend(0);
         }, pivot));
-*/
+*//*
         new Trigger(() -> gamepad2.left_bumper)
                 .whenActive(new RunCommand(() -> pivot.rotate(1), pivot))
                 .whenInactive(new RunCommand(() -> pivot.rotateTo(pivot.getAngle()), pivot));
@@ -133,3 +133,4 @@ public class BasicTeleop extends CommandOpMode {
         }));
     }
 }
+*/

@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Subsystems;
-
+/*
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-public class ViperSlide extends SubsystemBase {
-	private static final double kP = 0.01;
+*/
+public class ViperSlide /*extends SubsystemBase */{
+	/*private static final double kP = 0.01;
 	private static final double kD = 0.000008;
 
 	private final Motor motor;
@@ -65,6 +65,6 @@ public class ViperSlide extends SubsystemBase {
 	public void setSpeed(double speed) {
 		setpointPosition = null;
 		motor.set(speed);
-	}
+	}*/
 }
 

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Subsystems;
-
+/*
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
@@ -75,9 +75,9 @@ public class Pivot extends SubsystemBase {
 
     /*public void extend(double speed) {
            extender.set(speed);
-    }*/
+    }*//*
 
     public double getAngle() {
         return initialPosition + motor.getCurrentPosition();
     }
-}
+}*/

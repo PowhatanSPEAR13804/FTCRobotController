@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Auto;
-
+/*
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -83,5 +83,5 @@ public class RightAutoSpecimen extends CommandOpMode {
                     leftSlide.setPosition(0);
                     rightSlide.setPosition(0);
                     pivot.rotateTo(0);
-                })*/
-}
+                })*//*
+}*/

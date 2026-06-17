@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Auto;
-
+/*
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -109,7 +109,7 @@ public class LeftAutoBucket extends CommandOpMode {
                 .forward(13)
                 /*.turn(Math.toRadians(10))
                 .turn(Math.toRadians(-20))
-                .turn(Math.toRadians(10))*/
+                .turn(Math.toRadians(10))*//*
                 .addTemporalMarker(19.5, ()->{
                     leftSlide.setPosition(3400);
                     rightSlide.setPosition(3400);
@@ -137,5 +137,5 @@ public class LeftAutoBucket extends CommandOpMode {
                     leftSlide.setPosition(0);
                     rightSlide.setPosition(0);
                     pivot.rotateTo(0);
-                })*/
-}
+                })*//*
+}*/

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Archive.TwentyFourTwentyFive.Auto;
-
+/*
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -58,3 +58,4 @@ public class AutonomousLeftSimple extends CommandOpMode {
         ));
     }
 }
+*/

@@ -1,5 +1,5 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
-
+package org.firstinspires.ftc.teamcode.Archive.TwentyFiveTwentySix.FirstBot;
+/*
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -7,13 +7,15 @@ import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.constants.PinpointConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
+@Disabled
+*/
 public class Constants {
-    public static FollowerConstants followerConstants = new FollowerConstants().mass(0.5/*TODO: add mass*/);
+    /*public static FollowerConstants followerConstants = new FollowerConstants().mass(34.7);
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
@@ -27,10 +29,10 @@ public class Constants {
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .rightFrontMotorName("Hub1_Motor0")
-            .rightRearMotorName("Hub1_Motor1")
-            .leftRearMotorName("Hub1_Motor2")
-            .leftFrontMotorName("Hub1_Motor3")
+            .rightFrontMotorName("Hub2_Motor3")
+            .rightRearMotorName("Hub2_Motor2")
+            .leftRearMotorName("Hub2_Motor1")
+            .leftFrontMotorName("Hub2_Motor0")
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
@@ -40,8 +42,8 @@ public class Constants {
             .forwardPodY(1.886)
             .strafePodX(-1.496)
             .distanceUnit(DistanceUnit.INCH)
-            .hardwareMapName("pinpoint")
+            .hardwareMapName("Hub2_I2C1")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
             .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-}
+*/}
